@@ -32,9 +32,9 @@ const User = sequelize.define(
       type: DataTypes.INTEGER,
       allowNull: true,
     },
-    poto: {
+    photo: {
       type: DataTypes.STRING(255),
-      allowNull: false,
+      allowNull: true,
     },
     child_number: {
       type: DataTypes.INTEGER,
@@ -82,6 +82,10 @@ const User = sequelize.define(
       type: DataTypes.STRING(255),
       allowNull: true,
     },
+    reset_password_expire:{
+      type: DataTypes.STRING(255),
+      allowNull: true,
+    },
     confirm_email_token: {
       type: DataTypes.STRING(255),
       allowNull: true,
@@ -121,6 +125,16 @@ const User = sequelize.define(
         }
       },
     },
+    defaultScope: {
+      // Excludes the 'password' field by default from all queries
+      attributes: { exclude: ["password"] },
+    },
+    scopes: {
+      withPassword: {
+        // Include 'password' field when this scope is used
+        attributes: { include: ["password"] },
+      },
+    },
   }
 );
 
@@ -148,7 +162,7 @@ User.prototype.getResetPasswordToken = function () {
     .digest("hex");
 
   // Set expire
-  // this.resetPasswordExpire = Date.now() + 10 * 60 * 1000;
+  this.reset_password_expire = Date.now() + 10 * 60 * 1000;
 
   return resetToken;
 };

@@ -1,4 +1,5 @@
 const crypto = require("crypto");
+const { Op } = require("sequelize");
 const ErrorResponse = require("../resource/utils/errorResponse");
 const asyncHandler = require("../middleware/async");
 const User = require("../models/User");
@@ -203,7 +204,7 @@ exports.resetPassword = asyncHandler(async (req, res, next) => {
   const user = await User.findOne({
     where: {
       password_reset_token,
-      //  resetPasswordExpire: { $gt: Date.now() },
+      resetPasswordExpire: { [Op.gt]: new Date() },
     },
   });
 
