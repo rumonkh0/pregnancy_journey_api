@@ -1,44 +1,19 @@
-const mysql = require("mysql");
+const { Sequelize } = require("sequelize");
 
-// Database connection configuration
-const connection = mysql.createConnection({
-  host: process.env.HOST,
-  user: process.env.USER,
-  password: "",
-  database: process.env.DATABASE,
+// Initialize Sequelize with MySQL connection parameters
+const sequelize = new Sequelize(process.env.DATABASE, process.env.USER, "", {
+  host: "localhost", // or your MySQL server's host
+  dialect: "mysql",
 });
 
 //Create a function to connect asynchronously
-const setupDbConnection = () => {
+const setupDbConnection = async () => {
   try {
-    connection.connect((err) => {
-      if (err) {
-        console.error("Error connecting to MySQL: ", err);
-        return;
-      }
-      console.log("Connected to MySQL database!");
-    });
+    await sequelize.authenticate();
+    console.log("Connection has been established successfully.");
   } catch (error) {
-    console.error("Error connecting to database:", error);
+    console.error("Unable to connect to the database:", error);
   }
 };
 
-module.exports = { connection, setupDbConnection };
-
-// const mysql = require("mysql");
-
-// //database connection configuration
-// const con = mysql.createConnection({
-//   host: "process.enc.HOST",
-//   user: "process.enc.USER",
-//   password: "process.enc.PASSWORD",
-//   database: "process.enc.DATABASE",
-// });
-
-// // Create a function to connect asynchronously
-// const connectToDatabase = async () => {
-//   const connection = await con.connect;
-//   console.log("Connected to MySQL database!");
-// };
-// module.exports = connectToDatabase;
-// // module.exports = { connectToDatabase, con };
+module.exports = { sequelize, setupDbConnection };

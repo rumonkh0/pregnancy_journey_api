@@ -1,11 +1,11 @@
 const express = require("express");
-const UsersModel = require("../models/User");
 const userController = require("../controllers/users");
 
 const router = express.Router();
 
 // Route to get all users
 router.get("/", userController.getAllUsers);
+router.post("/login", userController.loginUser);
 
 // Route to get a user by ID
 router.get("/:userId", async (req, res) => {
@@ -65,17 +65,3 @@ router.delete("/:userId", async (req, res) => {
 });
 
 module.exports = router;
-
-// const express = require("express");
-// const {
-//     getUsers,
-//     getUser,
-//     createUser,
-//     updateUser,
-//     deleteUser
-//   } = require('../controllers/users');
-// const router = express.Router();
-
-// router.get("/", getusers);
-
-// module.exports = router;

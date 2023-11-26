@@ -1,10 +1,11 @@
 const express = require("express");
 const dotenv = require("dotenv");
 const morgan = require("morgan");
+const cookieParser = require("cookie-parser");
 
 dotenv.config({ path: "./config/config.env" });
 
-const { connection, setupDbConnection } = require("./config/db");
+const { setupDbConnection } = require("./config/db");
 
 //Establish database connection
 setupDbConnection();
@@ -17,6 +18,8 @@ const app = express();
 
 // Body parser
 app.use(express.json());
+//Cookie parser
+app.use(cookieParser());
 
 // Dev logging middleware
 if (process.env.NODE_ENV === "development") {
