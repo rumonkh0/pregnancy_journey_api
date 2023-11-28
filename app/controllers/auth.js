@@ -9,31 +9,31 @@ const sendEmail = require("../resource/utils/sendEmail");
 // @route     POST /api/v1/auth/register
 // @access    Public
 exports.register = asyncHandler(async (req, res, next) => {
-  const {
-    username,
-    first_name,
-    last_name,
-    age,
-    gender,
-    poto,
-    child_number,
-    edd_date,
-    email,
-    password,
-    language,
-    pregnency_loss,
-    baby_already_born,
-    login_type,
-    user_type,
-    subscription,
-    password_reset_token,
-    confirm_email_token,
-    lmp_date,
-    // Other fields from req.body
-  } = req.body;
+  // const {username, first_name, last_name,age,gender,photo, child_number, edd_date,email, password, language, pregnency_loss, baby_already_born,
+  //   login_type, user_type, subscription, password_reset_token, confirm_email_token, lmp_date,
+  // Other fields from req.body
+  // } = req.body;
 
   // Create a new user with the data from req.body
   const user = await User.create(req.body);
+
+  // grab token and send to email
+  const confirmEmailToken = user.generateEmailConfirmToken();
+
+  // Create reset url
+  const confirmEmailURL = `${req.protocol}://${req.get(
+    "host"
+  )}/api/v1/auth/confirmemail?token=${confirmEmailToken}`;
+
+  const message = `You are receiving this email because you need to confirm your email address. Please make a GET request to: \n\n ${confirmEmailURL}`;
+
+  user.save();
+
+  const sendResult = await sendEmail({
+    email: user.email,
+    subject: "Email confirmation token",
+    message,
+  });
 
   sendTokenResponse(user, 200, res);
 });
@@ -191,9 +191,11 @@ exports.forgotPassword = asyncHandler(async (req, res, next) => {
   }
 });
 
-// @desc      Reset password
-// @route     PUT /api/v1/auth/resetpassword/:resettoken
-// @access    Public
+/**
+ *@desc      Reset password
+ *@route     PUT /api/v1/auth/resetpassword/:resettoken
+ *@access    Public
+ */
 exports.resetPassword = asyncHandler(async (req, res, next) => {
   // Get hashed token
   const password_reset_token = crypto
@@ -204,7 +206,7 @@ exports.resetPassword = asyncHandler(async (req, res, next) => {
   const user = await User.findOne({
     where: {
       password_reset_token,
-      resetPasswordExpire: { [Op.gt]: new Date() },
+      reset_password_expire: { [Op.gt]: new Date() },
     },
   });
 
@@ -214,10 +216,52 @@ exports.resetPassword = asyncHandler(async (req, res, next) => {
 
   // Set new password
   user.password = req.body.password;
-  user.resetPasswordToken = undefined;
+  user.password_reset_token = undefined;
   //  user.resetPasswordExpire = undefined;
   await user.save();
 
+  sendTokenResponse(user, 200, res);
+});
+
+/**
+ * @desc    Confirm Email
+ * @route   GET /api/v1/auth/confirmemail
+ * @access  Public
+ */
+exports.confirmEmail = asyncHandler(async (req, res, next) => {
+  // grab token from email
+  const { token } = req.query;
+
+  if (!token) {
+    return next(new ErrorResponse("Invalid Token", 400));
+  }
+
+  const splitToken = token.split(".")[0];
+  const confirm_email_token = crypto
+    .createHash("sha256")
+    .update(splitToken)
+    .digest("hex");
+
+  // get user by token
+  const user = await User.findOne({
+    where: {
+      confirm_email_token,
+      is_email_confirmed: false,
+    },
+  });
+
+  if (!user) {
+    return next(new ErrorResponse("Invalid Token", 400));
+  }
+
+  // update confirmed to true
+  user.confirm_email_token = undefined;
+  user.is_email_confirmed = true;
+
+  // save
+  user.save();
+
+  // return token
   sendTokenResponse(user, 200, res);
 });
 

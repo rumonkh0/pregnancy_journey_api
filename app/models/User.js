@@ -15,6 +15,7 @@ const User = sequelize.define(
     username: {
       type: DataTypes.STRING(255),
       allowNull: false,
+      unique: true,
     },
     first_name: {
       type: DataTypes.STRING(255),
@@ -56,6 +57,10 @@ const User = sequelize.define(
       type: DataTypes.STRING(255),
       allowNull: true,
     },
+    country: {
+      type: DataTypes.STRING(255),
+      allowNull: true,
+    },
     pregnency_loss: {
       type: DataTypes.INTEGER,
       allowNull: true,
@@ -82,13 +87,23 @@ const User = sequelize.define(
       type: DataTypes.STRING(255),
       allowNull: true,
     },
-    reset_password_expire:{
+    reset_password_expire: {
       type: DataTypes.STRING(255),
       allowNull: true,
     },
     confirm_email_token: {
       type: DataTypes.STRING(255),
       allowNull: true,
+    },
+    is_email_confirmed: {
+      type: DataTypes.STRING(45),
+      allowNull: false,
+      defaultValue: false,
+    },
+    is_profile_complete: {
+      type: DataTypes.STRING(45),
+      allowNull: false,
+      defaultValue: false,
     },
     lmp_date: {
       type: DataTypes.DATE,
@@ -125,16 +140,16 @@ const User = sequelize.define(
         }
       },
     },
-    defaultScope: {
-      // Excludes the 'password' field by default from all queries
-      attributes: { exclude: ["password"] },
-    },
-    scopes: {
-      withPassword: {
-        // Include 'password' field when this scope is used
-        attributes: { include: ["password"] },
-      },
-    },
+    // defaultScope: {
+    //   // Excludes the 'password' field by default from all queries
+    //   attributes: { exclude: ["password"] },
+    // },
+    // scopes: {
+    //   withPassword: {
+    //     // Include 'password' field when this scope is used
+    //     attributes: { include: ["password"] },
+    //   },
+    // },
   }
 );
 
@@ -162,9 +177,23 @@ User.prototype.getResetPasswordToken = function () {
     .digest("hex");
 
   // Set expire
-  this.reset_password_expire = Date.now() + 10 * 60 * 1000;
+  this.reset_password_expire = new Date() + 10 * 60 * 1000;
 
   return resetToken;
+};
+
+User.prototype.generateEmailConfirmToken = function (next) {
+  // email confirmation token
+  const confirmationToken = crypto.randomBytes(20).toString("hex");
+
+  this.confirm_email_token = crypto
+    .createHash("sha256")
+    .update(confirmationToken)
+    .digest("hex");
+
+  const confirmTokenExtend = crypto.randomBytes(100).toString("hex");
+  const confirmTokenCombined = `${confirmationToken}.${confirmTokenExtend}`;
+  return confirmTokenCombined;
 };
 
 // Method to find a user by username
