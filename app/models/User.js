@@ -1,4 +1,4 @@
-const crypto = require("crypto");
+const { randomInt } = require("crypto");
 const { sequelize } = require("../../config/db");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
@@ -158,6 +158,12 @@ User.prototype.verifyPassword = function (password) {
   return bcrypt.compare(password, this.password);
 };
 
+// Method to verify OTP
+User.prototype.verifyOTP = function (OTP) {
+  return bcrypt.compare(OTP, this.password_reset_token);
+};
+
+
 //Method for sign in with jwt token
 User.prototype.getSignedJwtToken = function () {
   return jwt.sign({ id: this.id }, process.env.JWT_SECRET, {
@@ -166,20 +172,37 @@ User.prototype.getSignedJwtToken = function () {
 };
 
 // Generate and hash password token
-User.prototype.getResetPasswordToken = function () {
+// User.prototype.getResetPasswordToken = function () {
+//   // Generate token
+//   const resetToken = crypto.randomBytes(20).toString("hex");
+
+//   // Hash token and set to resetPasswordToken field
+//   this.password_reset_token = crypto
+//     .createHash("sha256")
+//     .update(resetToken)
+//     .digest("hex");
+
+//   // Set expire
+//   this.reset_password_expire = new Date() + 10 * 60 * 1000;
+
+//   return resetToken;
+// };
+
+//generate OTP
+User.prototype.getOTP = async function (next) {
   // Generate token
-  const resetToken = crypto.randomBytes(20).toString("hex");
+  const OTP = String(randomInt(1000, 9999));
+
+  const saltRounds = 10;
+  const hashedOTP = await bcrypt.hash(OTP, saltRounds);
 
   // Hash token and set to resetPasswordToken field
-  this.password_reset_token = crypto
-    .createHash("sha256")
-    .update(resetToken)
-    .digest("hex");
+  this.password_reset_token = hashedOTP;
 
   // Set expire
   this.reset_password_expire = new Date() + 10 * 60 * 1000;
 
-  return resetToken;
+  return OTP;
 };
 
 User.prototype.generateEmailConfirmToken = function (next) {

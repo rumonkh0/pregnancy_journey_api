@@ -153,10 +153,11 @@ exports.updatePassword = async (req, res, next) => {
     res.status(500).json({ error: error.message });
   }
 };
-
-// @desc      Forgot password
-// @route     POST /api/v1/auth/forgotpassword
-// @access    Public
+/**
+ *@desc      Forgot password
+ *@route     POST /api/v1/auth/forgotpassword
+ *@access    Public
+ */
 exports.forgotPassword = asyncHandler(async (req, res, next) => {
   const user = await User.findOne({ where: { username: req.body.username } });
 
@@ -164,19 +165,18 @@ exports.forgotPassword = asyncHandler(async (req, res, next) => {
     return next(new ErrorResponse("There is no user with that email", 404));
   }
   // Get reset token
-  const resetToken = user.getResetPasswordToken();
-  console.log(resetToken);
-  await user.save();
-  const resetUrl = `${req.protocol}://${req.get(
-    "host"
-  )}/api/v1/auth/resetpassword/${resetToken}`;
+  const OTP = await user.getOTP();
 
-  const message = `You are receiving this email because you (or someone else) has requested the reset of a password. Please make a PUT request to: \n\n ${resetUrl}`;
+  await user.save();
+
+  const message = `You are receiving this email because you (or someone else) has requested the reset of a password. your OTP is : \n\n ${OTP}\n\n Make sure to reset the password within 10 minits`;
+
+  res.status(200).json({ success: true, data: "Email sent" });
 
   try {
     await sendEmail({
       email: user.email,
-      subject: "Password reset token",
+      subject: "Password reset OTP",
       message,
     });
 
@@ -193,29 +193,31 @@ exports.forgotPassword = asyncHandler(async (req, res, next) => {
 
 /**
  *@desc      Reset password
- *@route     PUT /api/v1/auth/resetpassword/:resettoken
+ *@route     PUT /api/v1/auth/resetpassword
  *@access    Public
  */
 exports.resetPassword = asyncHandler(async (req, res, next) => {
-  // Get hashed token
-  const password_reset_token = crypto
-    .createHash("sha256")
-    .update(req.params.resettoken)
-    .digest("hex");
+  const { username, OTP, newPassword } = req.body;
 
   const user = await User.findOne({
     where: {
-      password_reset_token,
+      username,
       reset_password_expire: { [Op.gt]: new Date() },
     },
   });
 
   if (!user) {
-    return next(new ErrorResponse("Invalid token", 400));
+    return next(new ErrorResponse("No user found", 400));
   }
 
+  // Verify the OTP
+  const isOTPdValid = await user.verifyOTP(OTP);
+
+  if (!isOTPdValid)
+    return res.status(200).json({ success: false, message: "Invalid OTP" });
+
   // Set new password
-  user.password = req.body.password;
+  user.password = newPassword;
   user.password_reset_token = undefined;
   //  user.resetPasswordExpire = undefined;
   await user.save();

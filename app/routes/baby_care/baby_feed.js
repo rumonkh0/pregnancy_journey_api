@@ -12,6 +12,7 @@ const router = express.Router();
 const { protect } = require("../../middleware/auth");
 
 router.use(protect);
+
 router.get("/:babyId", getBabyFeedsHistory);
 router.get("/:babyId/:babyFeedId", getSingleBabyFeed);
 router.post("/:babyId/", createBabyFeed);

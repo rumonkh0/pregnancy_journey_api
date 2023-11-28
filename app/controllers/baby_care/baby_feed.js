@@ -105,13 +105,19 @@ exports.updateBabyFeed = asyncHandler(async (req, res) => {
     }
 
     // Get the feed history for the specified baby
-    const babyFeed = await BabyFeed.update(req.body, {
+    const updated = await BabyFeed.update(req.body, {
       where: {
         id: babyFeedId,
       },
     });
 
-    res.status(200).json({ success: true, data: babyFeed });
+    if (!updated[0]) {
+      return res
+        .status(304)
+        .json({ success: fase, message: "Recond no modified" });
+    }
+
+    res.status(200).json({ success: true });
   } catch (error) {
     res.status(500).json({ success: false, error: error.message });
   }
