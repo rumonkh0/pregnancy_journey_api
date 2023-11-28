@@ -43,10 +43,13 @@ exports.register = asyncHandler(async (req, res, next) => {
 // @access    Public
 exports.login = async (req, res, next) => {
   const { username, password } = req.body;
+  console.log(req.body);
 
   // Validate emil & password
   if (!username || !password) {
-    return next(new ErrorResponse("Please provide an email and password", 400));
+    return next(
+      new ErrorResponse("Please provide an username and password", 400)
+    );
   }
   //Find user from database
   const user = await User.findOne({ where: { username } });
@@ -285,6 +288,6 @@ const sendTokenResponse = (user, statusCode, res) => {
 
   res.status(statusCode).cookie("token", token, options).json({
     success: true,
-    token,
+    data: { token, user },
   });
 };

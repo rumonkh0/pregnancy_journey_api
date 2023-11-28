@@ -2,8 +2,8 @@ const asyncHandler = require("../../middleware/async");
 const Baby = require("../../models/Baby");
 const { where } = require("sequelize");
 
-// @desc      Get  Baby Feed history of a baby
-// @route     GET /api/v1/fabyfeed/:babyId
+// @desc      Get  Baby get all as history
+// @route     GET /api/v1/route/:modelPk
 // @access    Private
 exports.getHistory = (Model) => {
   return asyncHandler(async (req, res, next) => {
@@ -33,7 +33,7 @@ exports.getHistory = (Model) => {
   });
 };
 
-// @desc      Get single babyfeed
+// @desc      Get single
 // @route     GET /api/v1/babyfeed/:babyId/:modelPk
 // @access    Private
 exports.getOne = (Model) => {
@@ -63,8 +63,8 @@ exports.getOne = (Model) => {
   });
 };
 
-// @desc      Create baby feed
-// @route     POST /api/v1/babyfeed/:babyId
+// @desc      Create
+// @route     POST /api/v1/route/:babyId
 // @access    Private
 exports.create = (Model) => {
   return asyncHandler(async (req, res, next) => {
@@ -93,7 +93,7 @@ exports.create = (Model) => {
   });
 };
 
-// @desc      Update baby feed
+// @desc      Update
 // @route     PUT /api/v1/babyfeed/:babyId/:modelPk
 // @access    Private
 exports.update = (Model) => {
@@ -134,7 +134,7 @@ exports.update = (Model) => {
   });
 };
 
-// @desc      Delete baby feed
+// @desc      Delete
 // @route     DELETE /api/v1/babyfeed/:babyId/:modelPk
 // @access    Private/Admin
 exports.deleteOne = (Model) => {
@@ -163,8 +163,8 @@ exports.deleteOne = (Model) => {
   });
 };
 
-// @desc      Delete all baby feed
-// @route     DELETE /api/v1/babyfeed/:babyId/
+// @desc      Delete all
+// @route     DELETE /api/v1/babyfeed/:babyId
 // @access    Private/Admin
 exports.deleteAll = (Model) => {
   return asyncHandler(async (req, res) => {

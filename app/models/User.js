@@ -1,5 +1,6 @@
 const { randomInt } = require("crypto");
 const { sequelize } = require("../../config/db");
+const crypto = require("crypto");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 const { DataTypes } = require("sequelize");
@@ -67,21 +68,21 @@ const User = sequelize.define(
     },
     baby_already_born: {
       type: DataTypes.INTEGER,
-      allowNull: false,
+      allowNull: true,
     },
     login_type: {
       type: DataTypes.STRING(255),
-      allowNull: false,
+      allowNull: true,
       comment: "email=1 google=2 facebook=2 twitter=2",
     },
     user_type: {
       type: DataTypes.STRING(255),
-      allowNull: false,
+      allowNull: true,
       defaultValue: "general_user",
     },
     subscription: {
       type: DataTypes.STRING(255),
-      allowNull: false,
+      allowNull: true,
     },
     password_reset_token: {
       type: DataTypes.STRING(255),
@@ -107,7 +108,7 @@ const User = sequelize.define(
     },
     lmp_date: {
       type: DataTypes.DATE,
-      allowNull: false,
+      allowNull: true,
     },
     createdAt: {
       type: DataTypes.DATE,
@@ -162,7 +163,6 @@ User.prototype.verifyPassword = function (password) {
 User.prototype.verifyOTP = function (OTP) {
   return bcrypt.compare(OTP, this.password_reset_token);
 };
-
 
 //Method for sign in with jwt token
 User.prototype.getSignedJwtToken = function () {

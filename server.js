@@ -2,6 +2,7 @@ const express = require("express");
 const dotenv = require("dotenv");
 const morgan = require("morgan");
 const cookieParser = require("cookie-parser");
+const bodyParser = require('body-parser');
 
 dotenv.config({ path: "./config/config.env" });
 
@@ -24,6 +25,7 @@ const babyTemp = require("./app/routes/baby_care/baby_temperature");
 const app = express();
 
 // Body parser
+app.use(bodyParser.urlencoded({ extended: true }));
 app.use(express.json());
 //Cookie parser
 app.use(cookieParser());
