@@ -1,19 +1,19 @@
-const BabyFeed = require("../../models/Baby_care_models/Baby_feed");
+const BabySymptom = require("../../models/Baby_care_models/Baby_symptom");
 const asyncHandler = require("../../middleware/async");
 const Baby = require("../../models/Baby");
 const { where } = require("sequelize");
 
 // @desc      Get  Baby Feed history of a baby
-// @route     GET /api/v1/fabyfeed/:babyId
+// @route     GET /api/v1/symptom/:babyId
 // @access    Private
-exports.getBabyFeedsHistory = asyncHandler(async (req, res, next) => {
+exports.getBabySymptomsHistory = asyncHandler(async (req, res, next) => {
   try {
     // Extract baby ID from the request params or body
-    const { babyId } = req.params;
+    const { symptomId } = req.params;
 
     // Check if the requesting mother owns the specified baby
     const baby = await Baby.findOne({
-      where: { id: babyId, mother_id: req.user.id },
+      where: { id: symptomId, mother_id: req.user.id },
     });
     if (!baby) {
       return res.status(403).json({
@@ -22,23 +22,23 @@ exports.getBabyFeedsHistory = asyncHandler(async (req, res, next) => {
     }
 
     // Get the feed history for the specified baby
-    const babyFeedsHistory = await BabyFeed.findAll({
-      where: { baby_id: babyId },
+    const babySymptomHistory = await BabySymptom.findAll({
+      where: { baby_id: symptomId },
     });
 
-    res.status(200).json({ success: true, data: babyFeedsHistory });
+    res.status(200).json({ success: true, data: babySymptomHistory });
   } catch (error) {
     res.status(500).json({ success: false, error: error.message });
   }
 });
 
-// @desc      Get single babyfeed
-// @route     GET /api/v1/babyfeed/:babyId/:babyFeedId
+// @desc      Get single symptom
+// @route     GET /api/v1/symptom/:symptomId/
 // @access    Private
-exports.getSingleBabyFeed = asyncHandler(async (req, res, next) => {
+exports.getSingleSymptom = asyncHandler(async (req, res, next) => {
   try {
     // Extract baby ID from the request params or body
-    const { babyId, babyFeedId } = req.params;
+    const { babyId, symptomId } = req.params;
 
     // Check if the requesting mother owns the specified baby
     const baby = await Baby.findOne({
@@ -51,18 +51,18 @@ exports.getSingleBabyFeed = asyncHandler(async (req, res, next) => {
     }
 
     // Get the feed history for the specified baby
-    const babyFeed = await BabyFeed.findByPk(babyFeedId);
+    const symptom = await BabySymptom.findByPk(symptomId);
 
-    res.status(200).json({ success: true, data: babyFeed });
+    res.status(200).json({ success: true, data: symptom });
   } catch (error) {
     res.status(500).json({ success: false, error: error.message });
   }
 });
 
 // @desc      Create baby feed
-// @route     POST /api/v1/babyfeed/:babyId
+// @route     POST /api/v1/symptom/:symptomId
 // @access    Private
-exports.createBabyFeed = asyncHandler(async (req, res, next) => {
+exports.createBabySymptom = asyncHandler(async (req, res, next) => {
   try {
     // Extract baby ID from the request params or body
     const { babyId } = req.params;
@@ -79,25 +79,25 @@ exports.createBabyFeed = asyncHandler(async (req, res, next) => {
 
     req.body.baby_id = babyId;
     // Get the feed history for the specified baby
-    const babyFeed = await BabyFeed.create(req.body);
+    const symptom = await BabySymptom.create(req.body);
 
-    res.status(200).json({ success: true, data: babyFeed });
+    res.status(200).json({ success: true, data: symptom });
   } catch (error) {
     res.status(500).json({ success: false, error: error.message });
   }
 });
 
 // @desc      Update baby feed
-// @route     PUT /api/v1/babyfeed/:babyId/:babyFeedId
+// @route     PUT /api/v1/symptom/:symptomId/:symptomId
 // @access    Private
-exports.updateBabyFeed = asyncHandler(async (req, res) => {
+exports.updateBabySymptom = asyncHandler(async (req, res) => {
   try {
     // Extract baby ID from the request params or body
-    const { babyId, babyFeedId } = req.params;
+    const { babyId, symptomId } = req.params;
 
     // Check if the requesting mother owns the specified baby
     const baby = await Baby.findOne({
-      where: { id: babyId, mother_id: req.user.id },
+      where: { id: symptomId, mother_id: req.user.id },
     });
     if (!baby) {
       return res.status(403).json({
@@ -106,9 +106,9 @@ exports.updateBabyFeed = asyncHandler(async (req, res) => {
     }
 
     // Get the feed history for the specified baby
-    const updated = await BabyFeed.update(req.body, {
+    const updated = await BabySymptom.update(req.body, {
       where: {
-        id: babyFeedId,
+        id: symptomId,
       },
     });
 
@@ -125,12 +125,12 @@ exports.updateBabyFeed = asyncHandler(async (req, res) => {
 });
 
 // @desc      Delete baby feed
-// @route     DELETE /api/v1/babyfeed/:babyId/:babyFeedId
+// @route     DELETE /api/v1/symptom/:symptomId/:symptomId
 // @access    Private/Admin
-exports.deleteBabyFeed = asyncHandler(async (req, res) => {
+exports.deleteBabySymptom = asyncHandler(async (req, res) => {
   try {
     // Extract baby ID from the request params or body
-    const { babyId, feedId } = req.params;
+    const { babyId, symptomId } = req.params;
 
     // Check if the requesting mother owns the specified baby
     const baby = await Baby.findOne({
@@ -143,7 +143,7 @@ exports.deleteBabyFeed = asyncHandler(async (req, res) => {
     }
 
     // Get the feed history for the specified baby
-    const deleted = await BabyFeed.destroy({ where: { id: feedId } });
+    const deleted = await BabySymptom.destroy({ where: { id: symptomId } });
 
     res.status(200).json({ success: true });
   } catch (error) {
@@ -152,9 +152,9 @@ exports.deleteBabyFeed = asyncHandler(async (req, res) => {
 });
 
 // @desc      Delete all baby feed
-// @route     DELETE /api/v1/babyfeed/:babyId/
+// @route     DELETE /api/v1/symptom/:symptomId/
 // @access    Private/Admin
-exports.deleteAllBabyFeed = asyncHandler(async (req, res) => {
+exports.deleteAllBabySymptom = asyncHandler(async (req, res) => {
   try {
     // Extract baby ID from the request params or body
     const { babyId } = req.params;
@@ -170,7 +170,9 @@ exports.deleteAllBabyFeed = asyncHandler(async (req, res) => {
     }
 
     // Get the feed history for the specified baby
-    const deleted = await BabyFeed.destroy({ where: { baby_id: babyId } });
+    const deleted = await BabySymptom.destroy({
+      where: { baby_id: babyId },
+    });
 
     res.status(200).json({ success: true });
   } catch (error) {

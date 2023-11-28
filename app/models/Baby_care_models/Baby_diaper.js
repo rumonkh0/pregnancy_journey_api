@@ -8,6 +8,7 @@ const BabyDiaper = sequelize.define(
     id: {
       type: DataTypes.INTEGER,
       allowNull: false,
+      autoIncrement: true,
       primaryKey: true,
     },
     baby_id: {
@@ -33,7 +34,7 @@ const BabyDiaper = sequelize.define(
     },
   },
   {
-    tableName: "baby_feed",
+    tableName: "baby_diaper",
     timestamps: true,
   }
 );

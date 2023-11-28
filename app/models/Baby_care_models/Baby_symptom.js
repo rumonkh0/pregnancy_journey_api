@@ -8,6 +8,7 @@ const BabySymptom = sequelize.define(
     id: {
       type: DataTypes.INTEGER,
       allowNull: false,
+      autoIncrement:true,
       primaryKey: true,
     },
     status: {
@@ -28,7 +29,7 @@ const BabySymptom = sequelize.define(
     },
   },
   {
-    tableName: "baby_feed",
+    tableName: "baby_symptoms",
     timestamps: true,
     comment: "ml",
   }

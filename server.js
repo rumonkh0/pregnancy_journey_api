@@ -15,6 +15,8 @@ const auth = require("./app/routes/auth");
 const users = require("./app/routes/users");
 const babyList = require("./app/routes/baby");
 const babyFeed = require("./app/routes/baby_care/baby_feed");
+const babyDiaper = require("./app/routes/baby_care/baby_diaper");
+const babySymptom = require("./app/routes/baby_care/baby_symptom");
 
 const app = express();
 
@@ -33,6 +35,8 @@ app.use("/api/v1/auth", auth);
 app.use("/api/v1/users", users);
 app.use("/api/v1/babylist", babyList);
 app.use("/api/v1/babyfeed", babyFeed);
+app.use("/api/v1/diaper", babyDiaper);
+app.use("/api/v1/symptom", babySymptom);
 
 const PORT = process.env.PORT || 5000;
 const server = app.listen(
