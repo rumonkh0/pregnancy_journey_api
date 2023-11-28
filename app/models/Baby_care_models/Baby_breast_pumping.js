@@ -54,9 +54,9 @@ const BabyBreastPumping = sequelize.define(
   }
 );
 
-BabyBreastPumping.belongsTo(Baby, {
-  foreignKey: "baby_id",
-  onDelete: "CASCADE",
-});
+// BabyBreastPumping.belongsTo(Baby, {
+//   foreignKey: "baby_id",
+//   onDelete: "CASCADE",
+// });
 
 module.exports = BabyBreastPumping;

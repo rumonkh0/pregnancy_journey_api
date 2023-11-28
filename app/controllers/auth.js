@@ -18,20 +18,15 @@ exports.register = asyncHandler(async (req, res, next) => {
   const user = await User.create(req.body);
 
   // grab token and send to email
-  const confirmEmailToken = user.generateEmailConfirmToken();
+  const OTP = await user.getOTP();
 
-  // Create reset url
-  const confirmEmailURL = `${req.protocol}://${req.get(
-    "host"
-  )}/api/v1/auth/confirmemail?token=${confirmEmailToken}`;
-
-  const message = `You are receiving this email because you need to confirm your email address. Please make a GET request to: \n\n ${confirmEmailURL}`;
+  const message = `You are receiving this email because you need to confirm your email address. Heres your OTP: \n\n ${OTP}`;
 
   user.save();
 
   const sendResult = await sendEmail({
     email: user.email,
-    subject: "Email confirmation token",
+    subject: "Email confirmation OTP",
     message,
   });
 
@@ -43,7 +38,7 @@ exports.register = asyncHandler(async (req, res, next) => {
 // @access    Public
 exports.login = async (req, res, next) => {
   const { username, password } = req.body;
-  console.log(req.body);
+  console.log(req);
 
   // Validate emil & password
   if (!username || !password) {
@@ -52,7 +47,9 @@ exports.login = async (req, res, next) => {
     );
   }
   //Find user from database
-  const user = await User.findOne({ where: { username } });
+  const user = await User.scope("withPassword").findOne({
+    where: { username },
+  });
   if (!user) {
     return next(new ErrorResponse("Invalid credentials", 401));
   }
@@ -131,7 +128,9 @@ exports.updatePassword = async (req, res, next) => {
 
     // Find the user by username
     // const user = await User.findByUsername(username);
-    const user = await User.findOne({ where: { id: req.user.id } });
+    const user = await User.scope("withPassword").findOne({
+      where: { id: req.user.id },
+    });
 
     if (!user) {
       return res.status(404).json({ success: false, error: "User not found" });
@@ -202,7 +201,7 @@ exports.forgotPassword = asyncHandler(async (req, res, next) => {
 exports.resetPassword = asyncHandler(async (req, res, next) => {
   const { username, OTP, newPassword } = req.body;
 
-  const user = await User.findOne({
+  const user = await User.scope("withPassword").findOne({
     where: {
       username,
       reset_password_expire: { [Op.gt]: new Date() },
@@ -235,29 +234,30 @@ exports.resetPassword = asyncHandler(async (req, res, next) => {
  */
 exports.confirmEmail = asyncHandler(async (req, res, next) => {
   // grab token from email
-  const { token } = req.query;
+  const { username, OTP } = req.body;
 
-  if (!token) {
+  if (!OTP) {
     return next(new ErrorResponse("Invalid Token", 400));
   }
 
-  const splitToken = token.split(".")[0];
-  const confirm_email_token = crypto
-    .createHash("sha256")
-    .update(splitToken)
-    .digest("hex");
-
-  // get user by token
+  // get user by OTP
   const user = await User.findOne({
     where: {
-      confirm_email_token,
+      username,
       is_email_confirmed: false,
     },
   });
 
   if (!user) {
-    return next(new ErrorResponse("Invalid Token", 400));
+    return res
+      .status(200)
+      .json({ success: false, message: "already verified" });
   }
+  // Verify the OTP
+  const isOTPdValid = await user.verifyOTP(OTP);
+
+  if (!isOTPdValid)
+    return res.status(200).json({ success: false, message: "Invalid OTP" });
 
   // update confirmed to true
   user.confirm_email_token = undefined;

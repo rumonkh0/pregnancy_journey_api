@@ -2,7 +2,7 @@ const express = require("express");
 const dotenv = require("dotenv");
 const morgan = require("morgan");
 const cookieParser = require("cookie-parser");
-const bodyParser = require('body-parser');
+const bodyParser = require("body-parser");
 
 dotenv.config({ path: "./config/config.env" });
 
@@ -21,10 +21,12 @@ const babySymptom = require("./app/routes/baby_care/baby_symptom");
 const breastPump = require("./app/routes/baby_care/baby_breast_pumping");
 const babySleep = require("./app/routes/baby_care/baby_sleep");
 const babyTemp = require("./app/routes/baby_care/baby_temperature");
+const allHistory = require("./app/routes/baby_care/allHistory");
 
 const app = express();
 
 // Body parser
+app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(express.json());
 //Cookie parser
@@ -45,6 +47,7 @@ app.use("/api/v1/symptom", babySymptom);
 app.use("/api/v1/breastpump", breastPump);
 app.use("/api/v1/sleep", babySleep);
 app.use("/api/v1/temp", babyTemp);
+app.use("/api/v1/allhistory", allHistory);
 
 const PORT = process.env.PORT || 5000;
 const server = app.listen(

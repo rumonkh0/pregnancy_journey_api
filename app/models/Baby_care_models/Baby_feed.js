@@ -1,6 +1,7 @@
 const { DataTypes } = require("sequelize");
 const Baby = require("../Baby");
 const { sequelize } = require("../../../config/db");
+const BabyList = require("../Baby");
 
 const BabyFeed = sequelize.define(
   "baby_feed",
@@ -65,9 +66,9 @@ const BabyFeed = sequelize.define(
   }
 );
 
-BabyFeed.belongsTo(Baby, {
-  foreignKey: "baby_id",
-  onDelete: "CASCADE",
-});
+// BabyFeed.belongsTo(BabyList, {
+//   foreignKey: "baby_id",
+//   onDelete: "CASCADE",
+// });
 
 module.exports = BabyFeed;

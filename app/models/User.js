@@ -141,16 +141,16 @@ const User = sequelize.define(
         }
       },
     },
-    // defaultScope: {
-    //   // Excludes the 'password' field by default from all queries
-    //   attributes: { exclude: ["password"] },
-    // },
-    // scopes: {
-    //   withPassword: {
-    //     // Include 'password' field when this scope is used
-    //     attributes: { include: ["password"] },
-    //   },
-    // },
+    defaultScope: {
+      // Excludes the 'password' field by default from all queries
+      attributes: { exclude: ["password"] },
+    },
+    scopes: {
+      withPassword: {
+        // Include 'password' field when this scope is used
+        attributes: { include: ["password"] },
+      },
+    },
   }
 );
 

@@ -1,6 +1,14 @@
 const { DataTypes } = require("sequelize");
-const { sequelize } = require("../../config/db"); 
-const User = require('./User')
+const { sequelize } = require("../../config/db");
+const BabyBreastPumping = require("./Baby_care_models/Baby_breast_pumping");
+const BabyDiaper = require("./Baby_care_models/Baby_diaper");
+const BabyFeed = require("./Baby_care_models/Baby_feed");
+const BabyMedication = require("./Baby_care_models/Baby_medication");
+const BabyNote = require("./Baby_care_models/Baby_note");
+const BabySleep = require("./Baby_care_models/Baby_sleep");
+const BabySymptom = require("./Baby_care_models/Baby_symptom");
+const BabyTemperature = require("./Baby_care_models/Baby_temperature");
+const User = require("./User");
 
 const BabyList = sequelize.define(
   "BabyList",
@@ -62,5 +70,15 @@ const BabyList = sequelize.define(
     timestamps: true, // Enable timestamps (createdAt, updatedAt)
   }
 );
+
+// Define associations
+BabyList.hasMany(BabySleep, { foreignKey: 'baby_id' });
+BabyList.hasMany(BabyDiaper, { foreignKey: 'baby_id' });
+BabyList.hasMany(BabyNote, { foreignKey: 'baby_id' });
+BabyList.hasMany(BabyFeed, { foreignKey: 'baby_id' });
+BabyList.hasMany(BabyMedication, { foreignKey: 'baby_id' });
+BabyList.hasMany(BabySymptom, { foreignKey: 'baby_id' });
+BabyList.hasMany(BabyTemperature, { foreignKey: 'baby_id' });
+BabyList.hasMany(BabyBreastPumping, { foreignKey: 'baby_id' });
 
 module.exports = BabyList;

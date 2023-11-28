@@ -38,9 +38,9 @@ const BabyNote = sequelize.define(
   }
 );
 
-BabyNote.belongsTo(Baby, {
-  foreignKey: "baby_id",
-  onDelete: "CASCADE",
-});
+// BabyNote.belongsTo(Baby, {
+//   foreignKey: "baby_id",
+//   onDelete: "CASCADE",
+// });
 
 module.exports = BabyNote;

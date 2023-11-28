@@ -32,7 +32,9 @@ exports.protect = asyncHandler(async (req, res, next) => {
     console.log(decoded.id);
     // console.log(`token ${decoded}`);
 
-    req.user = await User.findOne({ where: { id: decoded.id } });
+    req.user = await User.findOne({
+      where: { id: decoded.id },
+    });
 
     next();
   } catch (err) {

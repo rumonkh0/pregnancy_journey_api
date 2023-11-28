@@ -39,9 +39,9 @@ const BabyTemperature = sequelize.define(
   }
 );
 
-BabyTemperature.belongsTo(Baby, {
-  foreignKey: "baby_id",
-  onDelete: "CASCADE",
-});
+// BabyTemperature.belongsTo(Baby, {
+//   foreignKey: "baby_id",
+//   onDelete: "CASCADE",
+// });
 
 module.exports = BabyTemperature;
