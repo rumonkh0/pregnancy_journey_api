@@ -115,7 +115,7 @@ exports.updateBabyFeed = asyncHandler(async (req, res) => {
     if (!updated[0]) {
       return res
         .status(304)
-        .json({ success: fase, message: "Recond no modified" });
+        .json({ success: false, message: "Recond no modified" });
     }
 
     res.status(200).json({ success: true });

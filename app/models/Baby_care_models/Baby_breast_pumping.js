@@ -8,6 +8,7 @@ const BabyBreastPumping = sequelize.define(
     id: {
       type: DataTypes.INTEGER,
       allowNull: false,
+      autoIncrement: true,
       primaryKey: true,
     },
     baby_id: {
@@ -48,12 +49,12 @@ const BabyBreastPumping = sequelize.define(
     },
   },
   {
-    tableName: "baby_feed",
+    tableName: "baby_breast_pumping",
     timestamps: true,
   }
 );
 
-BabyBreastPumping.belongsTo(BabyList, {
+BabyBreastPumping.belongsTo(Baby, {
   foreignKey: "baby_id",
   onDelete: "CASCADE",
 });

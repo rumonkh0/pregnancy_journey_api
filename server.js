@@ -17,6 +17,7 @@ const babyList = require("./app/routes/baby");
 const babyFeed = require("./app/routes/baby_care/baby_feed");
 const babyDiaper = require("./app/routes/baby_care/baby_diaper");
 const babySymptom = require("./app/routes/baby_care/baby_symptom");
+const breastPump = require("./app/routes/baby_care/baby_breast_pumping");
 
 const app = express();
 
@@ -37,6 +38,7 @@ app.use("/api/v1/babylist", babyList);
 app.use("/api/v1/babyfeed", babyFeed);
 app.use("/api/v1/diaper", babyDiaper);
 app.use("/api/v1/symptom", babySymptom);
+app.use("/api/v1/breastpump", breastPump);
 
 const PORT = process.env.PORT || 5000;
 const server = app.listen(
