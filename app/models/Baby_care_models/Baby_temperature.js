@@ -8,6 +8,7 @@ const BabyTemperature = sequelize.define(
     id: {
       type: DataTypes.INTEGER,
       allowNull: false,
+      autoIncrement: true,
       primaryKey: true,
     },
     baby_id: {
@@ -32,7 +33,7 @@ const BabyTemperature = sequelize.define(
     },
   },
   {
-    tableName: "baby_feed",
+    tableName: "baby_temperature",
     comment: "ml",
     timestamps: true,
   }
