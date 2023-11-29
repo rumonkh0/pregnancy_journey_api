@@ -14,9 +14,12 @@ const { protect } = require("../../middleware/auth");
 
 // Retrieve data from related tables based on baby_id and sort by createdAt
 const getCombinedBabyData = async (req, res, next) => {
-  console.log(req.params.babyId);
   try {
-    const babyData = await BabyList.findByPk(req.params.babyId, {
+    const babyData = await BabyList.findOne({
+      where: {
+        id: req.params.babyId,
+        mother_id: req.user.id,
+      },
       include: [
         { model: BabySleep },
         { model: BabyPump },
@@ -27,12 +30,17 @@ const getCombinedBabyData = async (req, res, next) => {
         { model: babySymptom },
         { model: BabyTemp },
       ],
-      //   order: [[{ model: BabySleep }, 'createdAt', 'ASC']], // Sort by BabySleep's createdAt field
     });
+
+    if (!babyData) {
+      return res.status(403).json({
+        message: "Access denied. You are not the mother of this baby.",
+      });
+    }
 
     // Access related data using babyData
     const combinedData = [];
-    const pushFunc = (table) => {
+    const pushData = (table) => {
       if (babyData[table]) {
         let Objects = babyData[table].map((obj) => ({
           ...obj.toJSON(),
@@ -42,14 +50,14 @@ const getCombinedBabyData = async (req, res, next) => {
       }
     };
     // Push related data from other tables
-    pushFunc("baby_sleeps");
-    pushFunc("baby_breast_pumpings");
-    pushFunc("baby_diapers");
-    pushFunc("baby_feeds");
-    pushFunc("baby_medications");
-    pushFunc("baby_notes");
-    pushFunc("baby_symptoms");
-    pushFunc("baby_temperatures");
+    pushData("baby_sleeps");
+    pushData("baby_breast_pumpings");
+    pushData("baby_diapers");
+    pushData("baby_feeds");
+    pushData("baby_medications");
+    pushData("baby_notes");
+    pushData("baby_symptoms");
+    pushData("baby_temperatures");
 
     // Sort the combined array by createdAt
     combinedData.sort((a, b) => new Date(a.createdAt) - new Date(b.createdAt));
@@ -60,6 +68,6 @@ const getCombinedBabyData = async (req, res, next) => {
   }
 };
 
-// router.use(protect);
+router.use(protect);
 router.get("/:babyId", getCombinedBabyData);
 module.exports = router;

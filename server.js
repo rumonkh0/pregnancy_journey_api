@@ -15,6 +15,7 @@ setupDbConnection();
 const auth = require("./app/routes/auth");
 const users = require("./app/routes/users");
 const babyList = require("./app/routes/baby");
+const babygallery = require("./app/routes/baby_care/baby_gallery");
 const babyFeed = require("./app/routes/baby_care/baby_feed");
 const babyDiaper = require("./app/routes/baby_care/baby_diaper");
 const babySymptom = require("./app/routes/baby_care/baby_symptom");
@@ -41,6 +42,7 @@ if (process.env.NODE_ENV === "development") {
 app.use("/api/v1/auth", auth);
 app.use("/api/v1/users", users);
 app.use("/api/v1/babylist", babyList);
+app.use("/api/v1/babygallery", babygallery);
 app.use("/api/v1/babyfeed", babyFeed);
 app.use("/api/v1/diaper", babyDiaper);
 app.use("/api/v1/symptom", babySymptom);
