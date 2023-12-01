@@ -1,8 +1,9 @@
 const { DataTypes } = require("sequelize");
 const { sequelize } = require("../../../config/db");
+const Media = require('../Media')
 
 const BabyGallery = sequelize.define(
-  "BabyGallery",
+  "baby_gallery",
   {
     id: {
       type: DataTypes.INTEGER,
@@ -11,6 +12,10 @@ const BabyGallery = sequelize.define(
       autoIncrement: true,
     },
     baby_id: {
+      type: DataTypes.INTEGER,
+      allowNull: true,
+    },
+    file_id: {
       type: DataTypes.INTEGER,
       allowNull: true,
     },
@@ -36,5 +41,8 @@ const BabyGallery = sequelize.define(
     timestamps: true, // Assuming you don't want Sequelize to manage timestamps
   }
 );
+
+// BabyGallery.hasOne(Media, {foreignKey: 'id' })
+BabyGallery.belongsTo(Media, {as: 'media', foreignKey: 'file_id'});
 
 module.exports = BabyGallery;

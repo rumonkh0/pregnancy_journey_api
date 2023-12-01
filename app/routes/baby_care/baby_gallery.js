@@ -3,6 +3,8 @@ const express = require("express");
 const multer = require("multer");
 const {
   createBabyGallery,
+  getAll,
+  getOne
 } = require("../../controllers/baby_care/baby_gallery");
 const { protect } = require("../../middleware/auth");
 
@@ -31,5 +33,7 @@ const upload = multer({
 const router = express.Router();
 
 router.post("/:babyId", protect, upload.any(), createBabyGallery);
+router.get("/:babyId",protect, getAll)
+router.get("/:babyId/:galleryId",protect, getOne)
 
 module.exports = router;
