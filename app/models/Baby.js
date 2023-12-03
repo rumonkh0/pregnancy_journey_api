@@ -14,9 +14,10 @@ const BabyList = sequelize.define(
   "BabyList",
   {
     id: {
-      type: DataTypes.INTEGER.UNSIGNED,
+      type: DataTypes.INTEGER,
       primaryKey: true,
       autoIncrement: true,
+      allowNull: false,
     },
     mother_id: {
       type: DataTypes.INTEGER.UNSIGNED,
@@ -72,13 +73,13 @@ const BabyList = sequelize.define(
 );
 
 // Define associations
-BabyList.hasMany(BabySleep, { foreignKey: 'baby_id' });
-BabyList.hasMany(BabyDiaper, { foreignKey: 'baby_id' });
-BabyList.hasMany(BabyNote, { foreignKey: 'baby_id' });
-BabyList.hasMany(BabyFeed, { foreignKey: 'baby_id' });
-BabyList.hasMany(BabyMedication, { foreignKey: 'baby_id' });
-BabyList.hasMany(BabySymptom, { foreignKey: 'baby_id' });
-BabyList.hasMany(BabyTemperature, { foreignKey: 'baby_id' });
-BabyList.hasMany(BabyBreastPumping, { foreignKey: 'baby_id' });
+BabyList.hasMany(BabySleep, { foreignKey: "baby_id" });
+BabyList.hasMany(BabyDiaper, { foreignKey: "baby_id" });
+BabyList.hasMany(BabyNote, { foreignKey: "baby_id" });
+BabyList.hasMany(BabyFeed, { foreignKey: "baby_id" });
+BabyList.hasMany(BabyMedication, { foreignKey: "baby_id" });
+BabyList.hasMany(BabySymptom, { foreignKey: "baby_id" });
+BabyList.hasMany(BabyTemperature, { foreignKey: "baby_id" });
+BabyList.hasMany(BabyBreastPumping, { foreignKey: "baby_id" });
 
 module.exports = BabyList;

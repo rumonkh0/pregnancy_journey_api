@@ -7,13 +7,15 @@ const {
   updateUser,
   deleteUser,
 } = require("../controllers/users");
+const advancedResults = require("../middleware/advancedResults");
+const User = require("../models/User");
 
 const router = express.Router();
 
 // router.use('/:motherId/babylist', babyListRouter);
 
 // Route to get all users
-router.get("/", getUsers);
+router.get("/",advancedResults(User), getUsers);
 router.get("/:userId", getUser);
 router.post("/", createUser);
 router.put("/:userId", updateUser);

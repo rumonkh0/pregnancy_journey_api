@@ -1,15 +1,16 @@
-const User = require("../models/user");
+const User = require("../models/User");
 const asyncHandler = require("../middleware/async");
 // @desc      Get all users
 // @route     GET /api/v1/bootcamps
 // @access    Public
 exports.getUsers = asyncHandler(async (req, res, next) => {
-  try {
-    const users = await User.findAll();
-    res.json(users);
-  } catch (error) {
-    res.status(500).json({ error: error.message });
-  }
+  res.status(200).json({success: true, data: res.advancedResults})
+  // try {
+  //   const users = await User.findAll();
+  //   res.json(users);
+  // } catch (error) {
+  //   res.status(500).json({ error: error.message });
+  // }
 });
 
 // @desc      Get single user

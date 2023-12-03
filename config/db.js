@@ -6,6 +6,12 @@ const sequelize = new Sequelize(process.env.DATABASE, process.env.USER, "", {
   dialect: "mysql",
 });
 
+// const sequelize = new Sequelize({
+//   dialect: "sqlite",
+//   // storage: "C:/Users/RUMON/Desktop/pregnancy_journey_api/private/data.sqlite",
+//   storage: "private/data.sqlite",
+// });
+
 //Create a function to connect asynchronously
 const setupDbConnection = async () => {
   try {
