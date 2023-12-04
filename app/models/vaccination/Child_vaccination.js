@@ -1,4 +1,4 @@
-const { sequelize } = require("../../config/db");
+const { sequelize } = require("../../../config/db");
 const { DataTypes } = require("sequelize");
 
 const ChildVaccineReminder = sequelize.define(
@@ -25,6 +25,11 @@ const ChildVaccineReminder = sequelize.define(
     vaccine_date: {
       type: DataTypes.DATE,
       allowNull: false,
+    },
+    status: {
+      type: DataTypes.STRING(255),
+      allowNull: true,
+      defaultValue: "pending",
     },
     createdAt: {
       type: DataTypes.DATE,

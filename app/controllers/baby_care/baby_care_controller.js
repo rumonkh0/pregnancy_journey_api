@@ -88,7 +88,7 @@ exports.create = (Model) => {
 
       res.status(200).json({ success: true, data: babyFeed });
     } catch (error) {
-      res.status(500).json({ success: false, error: error.message });
+      res.status(500).json({ success: false, message: error.message, error });
     }
   });
 };

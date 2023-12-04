@@ -10,6 +10,10 @@ const MotherContractionTimers = sequelize.define(
       primaryKey: true,
       autoIncrement: true,
     },
+    user_id: {
+      type: DataTypes.INTEGER,
+      allowNull: false,
+    },
     start: {
       type: DataTypes.DATE,
       allowNull: true,

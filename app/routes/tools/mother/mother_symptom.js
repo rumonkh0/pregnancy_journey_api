@@ -7,7 +7,7 @@ const {
   create,
   deleteOne,
   deleteAll,
-} = require("../../../controllers/tools/mother/crudController");
+} = require("../../../controllers/crudCrontroller");
 
 const router = express.Router();
 const { protect } = require("../../../middleware/auth");
@@ -15,9 +15,9 @@ const { protect } = require("../../../middleware/auth");
 router.use(protect);
 
 router.get("/", getHistory(symptom));
-router.get("/:pk", getOne(symptom));
+router.get("/:modelPk", getOne(symptom));
 router.post("/", create(symptom));
-router.put("/:pk", update(symptom));
-router.delete("/:pk", deleteOne(symptom));
+router.put("/:modelPk", update(symptom));
+router.delete("/:modelPk", deleteOne(symptom));
 router.delete("/", deleteAll(symptom));
 module.exports = router;

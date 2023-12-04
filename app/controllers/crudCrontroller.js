@@ -1,31 +1,25 @@
 const asyncHandler = require("../middleware/async");
+const User = require("../models/User");
 const { where } = require("sequelize");
 
-// @desc      Get get all as history
-// @route     GET /api/v1/route/:modelPk
+// @desc      Get  Baby get all as history
+// @route     GET /api/v1/route/history
 // @access    Private
 exports.getHistory = (Model) => {
   return asyncHandler(async (req, res, next) => {
     try {
-      // Extract baby ID from the request params or body
-      const { babyId } = req.params;
-
       // Check if the requesting mother owns the specified baby
-      const baby = await Baby.findOne({
-        where: { id: babyId, mother_id: req.user.id },
+      const data = await Model.findAll({
+        where: { user_id: req.user.id },
       });
-      if (!baby) {
+      if (!data) {
         return res.status(403).json({
-          message: "Access denied. You are not the owner of this baby.",
+          message: "no record found.",
         });
       }
 
       // Get the feed history for the specified baby
-      const babyFeedsHistory = await Model.findAll({
-        where: { baby_id: babyId },
-      });
-
-      res.status(200).json({ success: true, data: babyFeedsHistory });
+      res.status(200).json({ success: true, data });
     } catch (error) {
       res.status(500).json({ success: false, error: error.message });
     }
@@ -33,29 +27,24 @@ exports.getHistory = (Model) => {
 };
 
 // @desc      Get single
-// @route     GET /api/v1/babyfeed/:babyId/:modelPk
+// @route     GET /api/v1/route/:modelPk
 // @access    Private
 exports.getOne = (Model) => {
   return asyncHandler(async (req, res, next) => {
     try {
       // Extract baby ID from the request params or body
-      const { babyId, modelPk } = req.params;
-
-      // Check if the requesting mother owns the specified baby
-      const baby = await Baby.findOne({
-        where: { id: babyId, mother_id: req.user.id },
-      });
-      if (!baby) {
-        return res.status(403).json({
-          message: "Access denied. You are not the owner of this baby.",
-        });
-      }
+      const { modelPk } = req.params;
 
       // Get the feed history for the specified baby
-      const babyFeed = await Model.findByPk(modelPk);
+      const data = await Model.findOne({
+        where: {
+          id: modelPk,
+          user_id: req.user.id,
+        },
+      });
       console.log(modelPk);
 
-      res.status(200).json({ success: true, data: babyFeed });
+      res.status(200).json({ success: true, data });
     } catch (error) {
       res.status(500).json({ success: false, error: error.message });
     }
@@ -71,23 +60,13 @@ exports.create = (Model) => {
       // Extract baby ID from the request params or body
       const { babyId } = req.params;
 
-      // Check if the requesting mother owns the specified baby
-      const baby = await Baby.findOne({
-        where: { id: babyId, mother_id: req.user.id },
-      });
-      if (!baby) {
-        return res.status(403).json({
-          message: "Access denied. You are not the owner of this baby.",
-        });
-      }
-
-      req.body.baby_id = babyId;
       // Get the feed history for the specified baby
+      req.body.user_id = req.user.id;
       const babyFeed = await Model.create(req.body);
 
       res.status(200).json({ success: true, data: babyFeed });
     } catch (error) {
-      res.status(500).json({ success: false, error: error.message });
+      res.status(500).json({ success: false, message: error.message, error });
     }
   });
 };
@@ -99,31 +78,20 @@ exports.update = (Model) => {
   return asyncHandler(async (req, res) => {
     try {
       // Extract baby ID from the request params or body
-      const { babyId, modelPk } = req.params;
-
-      // Check if the requesting mother owns the specified baby
-      const baby = await Baby.findOne({
-        where: { id: babyId, mother_id: req.user.id },
-      });
-      if (!baby) {
-        return res.status(403).json({
-          message: "Access denied. You are not the owner of this baby.",
-        });
-      }
-
-      console.log(req.body);
+      const { modelPk } = req.params;
 
       // Get the feed history for the specified baby
       const updated = await Model.update(req.body, {
         where: {
           id: modelPk,
+          user_id: req.user.id,
         },
       });
 
       if (!updated[0]) {
         return res
           .status(200)
-          .json({ success: false, message: "Recond no modified" });
+          .json({ success: false, message: "Record no modified" });
       }
 
       res.status(200).json({ success: true });
@@ -140,20 +108,12 @@ exports.deleteOne = (Model) => {
   return asyncHandler(async (req, res) => {
     try {
       // Extract baby ID from the request params or body
-      const { babyId, modelPk } = req.params;
-
-      // Check if the requesting mother owns the specified baby
-      const baby = await Baby.findOne({
-        where: { id: babyId, mother_id: req.user.id },
-      });
-      if (!baby) {
-        return res.status(403).json({
-          message: "Access denied. You are not the owner of this baby.",
-        });
-      }
+      const { modelPk } = req.params;
 
       // Get the feed history for the specified baby
-      const deleted = await Model.destroy({ where: { id: modelPk } });
+      const deleted = await Model.destroy({
+        where: { id: modelPk, user_id: req.user.id },
+      });
 
       res.status(200).json({ success: true });
     } catch (error) {
@@ -168,21 +128,8 @@ exports.deleteOne = (Model) => {
 exports.deleteAll = (Model) => {
   return asyncHandler(async (req, res) => {
     try {
-      // Extract baby ID from the request params or body
-      const { babyId } = req.params;
-
-      // Check if the requesting mother owns the specified baby
-      const baby = await Baby.findOne({
-        where: { id: babyId, mother_id: req.user.id },
-      });
-      if (!baby) {
-        return res.status(403).json({
-          message: "Access denied. You are not the owner of this baby.",
-        });
-      }
-
       // Get the feed history for the specified baby
-      const deleted = await Model.destroy({ where: { baby_id: babyId } });
+      const deleted = await Model.destroy({ where: { user_id: req.user.id } });
 
       res.status(200).json({ success: true });
     } catch (error) {

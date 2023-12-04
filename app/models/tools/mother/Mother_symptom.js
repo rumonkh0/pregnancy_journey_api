@@ -10,6 +10,10 @@ const MotherSymptoms = sequelize.define(
       primaryKey: true,
       autoIncrement: true,
     },
+    user_id: {
+      type: DataTypes.INTEGER,
+      allowNull: false,
+    },
     symptom: {
       type: DataTypes.STRING(255),
       allowNull: true,

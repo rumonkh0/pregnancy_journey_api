@@ -7,7 +7,7 @@ const {
   create,
   deleteOne,
   deleteAll,
-} = require("../../../controllers/tools/mother/crudController");
+} = require("../../../controllers/crudCrontroller");
 
 const router = express.Router();
 const { protect } = require("../../../middleware/auth");
@@ -15,9 +15,9 @@ const { protect } = require("../../../middleware/auth");
 router.use(protect);
 
 router.get("/", getHistory(contractionTime));
-router.get("/:pk", getOne(contractionTime));
+router.get("/:modelPk", getOne(contractionTime));
 router.post("/", create(contractionTime));
-router.put("/:pk", update(contractionTime));
-router.delete("/:pk", deleteOne(contractionTime));
+router.put("/:modelPk", update(contractionTime));
+router.delete("/:modelPk", deleteOne(contractionTime));
 router.delete("/", deleteAll(contractionTime));
 module.exports = router;
