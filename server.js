@@ -29,6 +29,7 @@ const mvaccination = require("./app/routes/vaccination/mother_vaccination");
 const mcontraction = require("./app/routes/tools/mother/mother_contraction_time");
 const msymptom = require("./app/routes/tools/mother/mother_symptom");
 const drugReminder = require("./app/routes/tools/mother/drug_reminder");
+const mweight = require("./app/routes/tools/mother/weight");
 
 const app = express();
 
@@ -62,6 +63,7 @@ app.use("/api/v1/mother/vaccination", mvaccination);
 app.use("/api/v1/mother/contraction", mcontraction);
 app.use("/api/v1/mother/symptom", msymptom);
 app.use("/api/v1/mother/drugreminder", drugReminder);
+app.use("/api/v1/mother/weight", mweight);
 
 app.get("/", (req, res) => {
   res.status(200).json({

@@ -9,6 +9,7 @@ const {
   forgotPassword,
   resetPassword,
   confirmEmail,
+  oAuth,
 } = require("../controllers/auth");
 const router = express.Router();
 
@@ -23,5 +24,6 @@ router.put("/updatepassword", protect, updatePassword);
 router.post("/forgotpassword", forgotPassword);
 router.put("/resetpassword/", resetPassword);
 router.post("/confirmemail", confirmEmail);
+router.post("/social-auth", oAuth);
 
 module.exports = router;

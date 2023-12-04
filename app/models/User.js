@@ -13,6 +13,10 @@ const User = sequelize.define(
       primaryKey: true,
       autoIncrement: true,
     },
+    social_id: {
+      type: DataTypes.STRING(255),
+      unique: true,
+    },
     username: {
       type: DataTypes.STRING(255),
       allowNull: false,
@@ -38,6 +42,10 @@ const User = sequelize.define(
       type: DataTypes.STRING(255),
       allowNull: true,
     },
+    social_photo: {
+      type: DataTypes.STRING(255),
+      allowNull: true,
+    },
     child_number: {
       type: DataTypes.INTEGER,
       allowNull: true,
@@ -49,10 +57,17 @@ const User = sequelize.define(
     email: {
       type: DataTypes.STRING(255),
       allowNull: false,
+      unique: true,
     },
     password: {
       type: DataTypes.STRING(255),
-      allowNull: false,
+      allowNull: true,
+      validate: {
+        len: {
+          args: [7],
+          msg: "The password length should be between 7 and 42 characters.",
+        },
+      },
     },
     language: {
       type: DataTypes.STRING(255),

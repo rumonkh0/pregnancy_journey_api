@@ -270,6 +270,79 @@ exports.confirmEmail = asyncHandler(async (req, res, next) => {
   sendTokenResponse(user, 200, res);
 });
 
+/**
+ * @desc    Social oauth verification
+ * @route   POST /api/v1/auth/social
+ * @access  Public
+ */
+exports.oAuth = asyncHandler(async (req, res, next) => {
+  const { token, type } = req.body;
+  // const { email, social_id, first_name, last_name, image } = req.body;
+  switch (type) {
+    case "google":
+      // code block
+      const oauthdata = await fetch(
+        `https://www.googleapis.com/oauth2/v1/userinfo?alt=json&access_token=${token}`
+      );
+      let userInfo;
+      // const {
+      //   id: social_id,
+      //   email,
+      //   given_name: first_name,
+      //   family_name: last_name,
+      //   verified_email,
+      //   picture: photo,
+      // } = oauthdata;
+      if (oauthdata.ok) {
+        userInfo = await oauthdata.json();
+      } else {
+        throw new Error("Failed to fetch user information");
+      }
+
+      const {
+        id: social_id,
+        email,
+        given_name: first_name,
+        family_name: last_name,
+        verified_email,
+        picture: social_photo,
+      } = userInfo;
+
+      const user = await User.findOne({
+        where: {
+          email,
+          social_id,
+        },
+      });
+
+      console.log(user);
+
+      if (!user) {
+        userdata = {
+          username: social_id,
+          social_id,
+          email,
+          first_name,
+          social_photo,
+          last_name,
+          login_type: "google",
+        };
+        const user = await User.create(userdata);
+        sendTokenResponse(user, 200, res);
+      } else {
+        sendTokenResponse(user, 200, res);
+      }
+
+      break;
+    case "facebook":
+      // code block
+      break;
+    default:
+    // code block
+  }
+  const data = await User.findOne({ where: {} });
+});
+
 // Get token from model, create cookie and send response
 const sendTokenResponse = (user, statusCode, res) => {
   // Create token

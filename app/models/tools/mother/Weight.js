@@ -10,6 +10,10 @@ const WeightLog = sequelize.define(
       primaryKey: true,
       autoIncrement: true,
     },
+    user_id: {
+      type: DataTypes.INTEGER,
+      allowNull: false,
+    },
     date: {
       type: DataTypes.DATE,
       allowNull: true,
@@ -33,9 +37,5 @@ const WeightLog = sequelize.define(
   }
 );
 
-WeightLogs.belongsTo(User, {
-  foreignKey: "user_id",
-  onDelete: "CASCADE",
-});
 
 module.exports = WeightLog;
