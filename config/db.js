@@ -1,10 +1,15 @@
 const { Sequelize } = require("sequelize");
 
 // Initialize Sequelize with MySQL connection parameters
-const sequelize = new Sequelize(process.env.DATABASE, process.env.USER, "", {
-  host: "localhost", // or your MySQL server's host
-  dialect: "mysql",
-});
+const sequelize = new Sequelize(
+  process.env.DATABASE,
+  process.env.USER,
+  process.env.PASSWORD,
+  {
+    host: process.env.HOST, // or your MySQL server's host
+    dialect: "mysql",
+  }
+);
 
 // const sequelize = new Sequelize({
 //   dialect: "sqlite",

@@ -50,6 +50,11 @@ app.use("/api/v1/breastpump", breastPump);
 app.use("/api/v1/sleep", babySleep);
 app.use("/api/v1/temp", babyTemp);
 app.use("/api/v1/allhistory", allHistory);
+app.get("/", (req, res) => {
+  res
+    .status(200)
+    .json({ success: true, message: "Hello from pregnancy journey!" });
+});
 
 const PORT = process.env.PORT || 5000;
 const server = app.listen(
