@@ -48,7 +48,6 @@ const advancedResults = (model, include) => async (req, res, next) => {
     );
   }
   const where = convertToSequelizeQuery(reqQuery);
-  console.log(where);
 
   // Finding resource
   const query = {
@@ -85,7 +84,6 @@ const advancedResults = (model, include) => async (req, res, next) => {
       limit,
     };
   }
-  // console.log(pagination);
 
   res.advancedResults = {
     success: true,

@@ -142,7 +142,6 @@ const User = sequelize.define(
       // Before creating a new user, hash the password
       beforeCreate: async (user) => {
         if (user.password) {
-          console.log("password hassing..............");
           const saltRounds = 10;
           const hashedPassword = await bcrypt.hash(user.password, saltRounds);
           user.password = hashedPassword;

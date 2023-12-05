@@ -8,7 +8,6 @@ const Media = require("../../models/Media");
 // @route     POST /api/v1/babygallery
 // @access    Private
 exports.createBabyGallery = asyncHandler(async (req, res, next) => {
-  console.log(req.body);
   if (!req.files.length)
     res.status(200).json({ success: true, message: "please insert an image" });
 
@@ -28,7 +27,6 @@ exports.createBabyGallery = asyncHandler(async (req, res, next) => {
     }
 
     req.body.baby_id = babyId;
-    console.log(req.body);
     // Get the feed history for the specified baby
     const babygallery = await BabyGallery.create(req.body);
 

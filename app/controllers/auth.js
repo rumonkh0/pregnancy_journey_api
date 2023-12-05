@@ -38,7 +38,6 @@ exports.register = asyncHandler(async (req, res, next) => {
 // @access    Public
 exports.login = async (req, res, next) => {
   const { username, password } = req.body;
-  console.log(req);
 
   // Validate emil & password
   if (!username || !password) {
@@ -184,7 +183,6 @@ exports.forgotPassword = asyncHandler(async (req, res, next) => {
 
     res.status(200).json({ success: true, data: "Email sent" });
   } catch (err) {
-    console.log(err);
     user.password_reset_token = undefined;
 
     await user.save();
@@ -314,8 +312,6 @@ exports.oAuth = asyncHandler(async (req, res, next) => {
           social_id,
         },
       });
-
-      console.log(user);
 
       if (!user) {
         userdata = {

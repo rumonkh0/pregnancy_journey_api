@@ -42,7 +42,6 @@ exports.getOne = (Model) => {
           user_id: req.user.id,
         },
       });
-      console.log(modelPk);
 
       res.status(200).json({ success: true, data });
     } catch (error) {

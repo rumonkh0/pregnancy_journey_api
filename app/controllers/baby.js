@@ -40,7 +40,6 @@ exports.getBaby = asyncHandler(async (req, res, next) => {
 exports.createBaby = asyncHandler(async (req, res, next) => {
   const babyData = req.body;
   babyData.mother_id = req.user.id;
-  console.log(babyData);
   try {
     const baby = await Baby.create(babyData);
     res.status(201).json({ message: "Baby created", baby });

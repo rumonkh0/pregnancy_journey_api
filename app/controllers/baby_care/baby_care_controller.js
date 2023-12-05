@@ -54,7 +54,6 @@ exports.getOne = (Model) => {
 
       // Get the feed history for the specified baby
       const babyFeed = await Model.findByPk(modelPk);
-      console.log(modelPk);
 
       res.status(200).json({ success: true, data: babyFeed });
     } catch (error) {
@@ -111,8 +110,6 @@ exports.update = (Model) => {
           message: "Access denied. You are not the owner of this baby.",
         });
       }
-
-      console.log(req.body);
 
       // Get the feed history for the specified baby
       const updated = await Model.update(req.body, {
