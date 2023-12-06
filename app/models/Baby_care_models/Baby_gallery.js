@@ -1,6 +1,6 @@
 const { DataTypes } = require("sequelize");
 const { sequelize } = require("../../../config/db");
-const Media = require('../Media')
+const Media = require("../Media");
 
 const BabyGallery = sequelize.define(
   "baby_gallery",
@@ -18,6 +18,7 @@ const BabyGallery = sequelize.define(
     file_id: {
       type: DataTypes.INTEGER,
       allowNull: true,
+      defaultValue: null,
     },
     image: {
       type: DataTypes.STRING(255),
@@ -43,6 +44,6 @@ const BabyGallery = sequelize.define(
 );
 
 // BabyGallery.hasOne(Media, {foreignKey: 'id' })
-BabyGallery.belongsTo(Media, {as: 'media', foreignKey: 'file_id'});
+BabyGallery.belongsTo(Media, { as: "media", foreignKey: "file_id" });
 
 module.exports = BabyGallery;

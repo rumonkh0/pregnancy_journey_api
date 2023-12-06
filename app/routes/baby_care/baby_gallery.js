@@ -1,24 +1,40 @@
 const path = require("path");
+const fs = require("fs");
 const express = require("express");
 const multer = require("multer");
 const {
   createBabyGallery,
   getAll,
-  getOne
+  getOne,
+  checkBabyOwner,
+  updateBabyGallery,
+  deleteBabygallery,
 } = require("../../controllers/baby_care/baby_gallery");
 const { protect } = require("../../middleware/auth");
+const uploadDirectory = "public/uploads/baby/";
+
+// Ensure that the upload directory exists; if not, create it
+if (!fs.existsSync(uploadDirectory)) {
+  fs.mkdirSync(uploadDirectory, { recursive: true });
+}
 
 const storage = multer.diskStorage({
   destination: function (req, file, cb) {
-    cb(null, "public/uploads/baby/");
+    cb(null, uploadDirectory);
   },
   filename: function (req, file, cb) {
     cb(
       null,
-      file.fieldname + "-" + Date.now() + path.extname(file.originalname)
+      file.fieldname +
+        "-" +
+        req.user.username +
+        "-" +
+        Date.now() +
+        path.extname(file.originalname)
     );
   },
 });
+
 const upload = multer({
   storage: storage,
   fileFilter: (req, file, cb) => {
@@ -28,12 +44,29 @@ const upload = multer({
       cb(null, false);
     }
   },
+  limits: {
+    fileSize: 5 * 1024 * 1024, // 5 MB size limit
+  },
 });
 
 const router = express.Router();
 
-router.post("/:babyId", protect, upload.any(), createBabyGallery);
-router.get("/:babyId",protect, getAll)
-router.get("/:babyId/:galleryId",protect, getOne)
+router.post(
+  "/:babyId",
+  protect,
+  checkBabyOwner,
+  upload.any(),
+  createBabyGallery
+);
+router.put(
+  "/:babyId/:modelPk",
+  protect,
+  checkBabyOwner,
+  upload.any(),
+  updateBabyGallery
+);
+router.get("/:babyId", protect, checkBabyOwner, getAll);
+router.get("/:babyId/:modelPk", protect, checkBabyOwner, getOne);
+router.delete("/:babyId/:modelPk", protect, checkBabyOwner, deleteBabygallery);
 
 module.exports = router;

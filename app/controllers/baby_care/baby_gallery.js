@@ -1,54 +1,35 @@
+const path = require("path");
+const fs = require("fs");
+const { promisify } = require("util");
+const unlinkAsync = promisify(fs.unlink);
 const asyncHandler = require("../../middleware/async");
 const Baby = require("../../models/Baby");
-const { where, col } = require("sequelize");
+const { where } = require("sequelize");
 const BabyGallery = require("../../models/Baby_care_models/Baby_gallery");
 const Media = require("../../models/Media");
 
-// @desc      Upload babay image and title
-// @route     POST /api/v1/babygallery
-// @access    Private
-exports.createBabyGallery = asyncHandler(async (req, res, next) => {
-  if (!req.files.length)
-    res.status(200).json({ success: true, message: "please insert an image" });
+exports.checkBabyOwner = asyncHandler(async (req, res, next) => {
+  const { babyId } = req.params;
 
-  req.body.image = req.files[0].path;
-  try {
-    // Extract baby ID from the request params or body
-    const { babyId } = req.params;
-
-    // Check if the requesting mother owns the specified baby
-    const baby = await Baby.findOne({
-      where: { id: babyId, mother_id: req.user.id },
-    });
-    if (!baby) {
-      return res.status(403).json({
-        message: "Access denied. You are not the owner of this baby.",
-      });
-    }
-
-    req.body.baby_id = babyId;
-    // Get the feed history for the specified baby
-    const babygallery = await BabyGallery.create(req.body);
-
-    res.status(200).json({ success: true, data: babygallery });
-  } catch (error) {
-    res.status(500).json({ success: false, error: error });
-  }
-});
-
-exports.getAll = asyncHandler(async (req, res, next) => {
   // Check if the requesting mother owns the specified baby
   const baby = await Baby.findOne({
-    where: { id: req.params.babyId, mother_id: req.user.id },
+    where: { id: babyId, mother_id: req.user.id },
   });
+
   if (!baby) {
     return res.status(403).json({
-      success: false,
       message: "Access denied. You are not the owner of this baby.",
     });
   }
 
+  next();
+});
+
+exports.getAll = asyncHandler(async (req, res, next) => {
+  const { babyId } = req.params;
+
   const allPhoto = await BabyGallery.findAll({
+    where: { baby_id: babyId },
     include: [
       {
         model: Media,
@@ -61,20 +42,10 @@ exports.getAll = asyncHandler(async (req, res, next) => {
 });
 
 exports.getOne = asyncHandler(async (req, res, next) => {
-  const { babyId, galleryId } = req.params;
-  // Check if the requesting mother owns the specified baby
-  const baby = await Baby.findOne({
-    where: { id: babyId, mother_id: req.user.id },
-  });
-  if (!baby) {
-    return res.status(403).json({
-      success: false,
-      message: "Access denied. You are not the owner of this baby.",
-    });
-  }
+  const { babyId, modelPk } = req.params;
 
   const allPhoto = await BabyGallery.findOne({
-    where: { id: galleryId, baby_id: babyId },
+    where: { id: modelPk, baby_id: babyId },
     include: [
       {
         model: Media,
@@ -86,28 +57,134 @@ exports.getOne = asyncHandler(async (req, res, next) => {
   res.status(200).json({ success: true, data: allPhoto });
 });
 
+// @desc      Upload babay image and title
+// @route     POST /api/v1/babygallery
+// @access    Private
+exports.createBabyGallery = asyncHandler(async (req, res, next) => {
+  if (!req.files.length)
+    res.status(200).json({ success: true, message: "please insert an image" });
+  const { mimetype, filename, path: file_path } = req.files[0];
+
+  req.body.image = req.files[0].path;
+
+  req.media = {
+    uploaded_by: req.user.username,
+    file_path,
+    mime_type: mimetype,
+    file_name: filename,
+    file_type: path.extname(filename).slice(1),
+  };
+  let media;
+  try {
+    media = await Media.create(req.media);
+  } catch (err) {
+    if (req.files && req.files[0] && req.files[0].path) {
+      const filePath = req.files[0].path;
+      await unlinkAsync(filePath);
+      console.log("File removed:", filePath);
+    }
+    return res.status(200).json({ success: false, message: err });
+  }
+  // Extract baby ID from the request params or body
+  const { babyId } = req.params;
+
+  req.body.baby_id = babyId;
+  req.body.file_id = media.id;
+  // Get the feed history for the specified baby
+  const babygallery = await BabyGallery.create(req.body);
+
+  res.status(200).json({ success: true, data: babygallery });
+});
+
+// @desc      update babay image and title
+// @route     PUT /api/v1/babygallery
+// @access    Private
+exports.updateBabyGallery = asyncHandler(async (req, res, next) => {
+  let babygallery;
+  const { babyId, modelPk } = req.params;
+
+  if (!req.files.length) {
+    babygallery = await BabyGallery.update(req.body, {
+      where: { id: modelPk, baby_id: babyId },
+    });
+
+    if (!babygallery[0]) {
+      return res
+        .status(304)
+        .json({ success: false, message: "Recond no modified" });
+    }
+
+    return res.status(200).json({ success: true, data: babygallery });
+  }
+
+  const { mimetype, filename, path: file_path } = req.files[0];
+  req.body.image = req.files[0].path;
+
+  req.media = {
+    uploaded_by: req.user.username,
+    file_path,
+    mime_type: mimetype,
+    file_name: filename,
+    file_type: path.extname(filename).slice(1),
+  };
+
+  let media, prevMedia;
+  try {
+    babygallery = await BabyGallery.findByPk(modelPk);
+    prevMedia = await Media.findByPk(babygallery.file_id);
+    media = await Media.create(req.media);
+    req.body.file_id = media.id;
+    //delete previous photo
+    await unlinkAsync(prevMedia.file_path);
+  } catch (err) {
+    if (req.files && req.files[0] && req.files[0].path) {
+      const filePath = req.files[0].path;
+      await unlinkAsync(filePath);
+      console.log("File removed:", filePath);
+    }
+    return res.status(200).json({ success: false, message: err });
+  }
+
+  req.body.baby_id = babyId;
+  babygallery = await BabyGallery.update(req.body, {
+    where: { id: modelPk },
+  });
+
+  res.status(200).json({ success: true, data: babygallery });
+});
+
 // @desc      Delete baby feed
 // @route     DELETE /api/v1/babyfeed/:babyId/:babyFeedId
 // @access    Private/Admin
-exports.deleteBabyFeed = asyncHandler(async (req, res) => {
+exports.deleteBabygallery = asyncHandler(async (req, res) => {
   try {
     // Extract baby ID from the request params or body
-    const { babyId, feedId } = req.params;
+    const { babyId, modelPk } = req.params;
 
-    // Check if the requesting mother owns the specified baby
-    const baby = await Baby.findOne({
-      where: { id: babyId, mother_id: req.user.id },
+    const gallery = await BabyGallery.findOne({
+      where: { id: modelPk, baby_id: babyId },
+      include: [
+        {
+          model: Media,
+          as: "media",
+          required: false,
+        },
+      ],
     });
-    if (!baby) {
-      return res.status(403).json({
-        message: "Access denied. You are not the owner of this baby.",
-      });
-    }
+
+    if (!gallery)
+      return res
+        .status(200)
+        .json({ success: false, message: "data not found" });
 
     // Get the feed history for the specified baby
-    const deleted = await BabyFeed.destroy({ where: { id: feedId } });
+    const deleted = await BabyGallery.destroy({ where: { id: modelPk } });
+    if (!gallery.media) {
+      await Media.destroy({ where: { id: file_id } });
+      await unlinkAsync(file_path);
+    }
 
-    res.status(200).json({ success: true });
+    res.status(200).json({ success: true, data: deleted });
   } catch (error) {
     res.status(500).json({ success: false, error: error.message });
   }
