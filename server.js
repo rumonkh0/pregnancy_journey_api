@@ -1,5 +1,6 @@
 const express = require("express");
 const dotenv = require("dotenv");
+const path = require("path");
 const morgan = require("morgan");
 const cookieParser = require("cookie-parser");
 const bodyParser = require("body-parser");
@@ -45,6 +46,9 @@ if (process.env.NODE_ENV === "development") {
   app.use(morgan("dev"));
 }
 
+// Set static folder
+app.use(express.static(path.join(__dirname, "public")));
+
 //Mount routes
 app.use("/api/v1/auth", auth);
 app.use("/api/v1/users", users);
@@ -83,6 +87,6 @@ const server = app.listen(
 // Handle unhandled promise rejections
 // process.on("unhandledRejection", (err, promise) => {
 //   console.log(`Error: ${err.message} \nfull error:${err}`);
-  // Close server & exit process
-  // server.close(() => process.exit(1));
+// Close server & exit process
+// server.close(() => process.exit(1));
 // });

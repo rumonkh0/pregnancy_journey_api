@@ -4,7 +4,7 @@ const asyncHandler = require("../middleware/async");
 // @route     GET /api/v1/bootcamps
 // @access    Public
 exports.getUsers = asyncHandler(async (req, res, next) => {
-  res.status(200).json({success: true, data: res.advancedResults})
+  res.status(200).json(res.advancedResults);
   // try {
   //   const users = await User.findAll();
   //   res.json(users);
