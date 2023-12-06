@@ -4,6 +4,7 @@ const crypto = require("crypto");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 const { DataTypes } = require("sequelize");
+const Media = require('./Media')
 
 const User = sequelize.define(
   "User",
@@ -39,7 +40,7 @@ const User = sequelize.define(
       allowNull: true,
     },
     photo: {
-      type: DataTypes.STRING(255),
+      type: DataTypes.INTEGER,
       allowNull: true,
     },
     social_photo: {
@@ -89,6 +90,7 @@ const User = sequelize.define(
       type: DataTypes.STRING(255),
       allowNull: true,
       comment: "email=1 google=2 facebook=2 twitter=2",
+      defaultValue: "email",
     },
     user_type: {
       type: DataTypes.STRING(255),
@@ -167,6 +169,8 @@ const User = sequelize.define(
     },
   }
 );
+
+User.belongsTo(Media, { as: "media", foreignKey: "photo" });
 
 // Method to verify password
 User.prototype.verifyPassword = function (password) {

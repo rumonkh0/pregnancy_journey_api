@@ -8,6 +8,7 @@ const { where } = require("sequelize");
 const BabyGallery = require("../../models/Baby_care_models/Baby_gallery");
 const Media = require("../../models/Media");
 
+//Check baby owner middleware
 exports.checkBabyOwner = asyncHandler(async (req, res, next) => {
   const { babyId } = req.params;
 
@@ -25,6 +26,9 @@ exports.checkBabyOwner = asyncHandler(async (req, res, next) => {
   next();
 });
 
+// @desc      Get all babay image and title
+// @route     POST /api/v1/babygallery/:babyId
+// @access    Private
 exports.getAll = asyncHandler(async (req, res, next) => {
   const { babyId } = req.params;
 
@@ -41,6 +45,9 @@ exports.getAll = asyncHandler(async (req, res, next) => {
   res.status(200).json({ success: true, data: allPhoto });
 });
 
+// @desc      Get single babay image and title
+// @route     POST /api/v1/babygallery/:babyId/:modelPk
+// @access    Private
 exports.getOne = asyncHandler(async (req, res, next) => {
   const { babyId, modelPk } = req.params;
 
@@ -130,12 +137,22 @@ exports.updateBabyGallery = asyncHandler(async (req, res, next) => {
 
   let media, prevMedia;
   try {
-    babygallery = await BabyGallery.findByPk(modelPk);
-    prevMedia = await Media.findByPk(babygallery.file_id);
+    babygallery = await BabyGallery.findByPk(modelPk, {
+      include: [
+        {
+          model: Media,
+          as: "media",
+          required: false,
+        },
+      ],
+    });
     media = await Media.create(req.media);
     req.body.file_id = media.id;
     //delete previous photo
-    await unlinkAsync(prevMedia.file_path);
+    if (babygallery.media) {
+      await unlinkAsync(babygallery.media.file_path);
+      await Media.destroy({ where: { id: babygallery.file_id } });
+    }
   } catch (err) {
     if (req.files && req.files[0] && req.files[0].path) {
       const filePath = req.files[0].path;

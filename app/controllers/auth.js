@@ -3,6 +3,7 @@ const { Op } = require("sequelize");
 const ErrorResponse = require("../resource/utils/errorResponse");
 const asyncHandler = require("../middleware/async");
 const User = require("../models/User");
+const Media = require("../models/Media");
 const sendEmail = require("../resource/utils/sendEmail");
 
 // @desc      Register user
@@ -14,6 +15,7 @@ exports.register = asyncHandler(async (req, res, next) => {
   // Other fields from req.body
   // } = req.body;
 
+  req.body.user_type = "user";
   // Create a new user with the data from req.body
   const user = await User.create(req.body);
 
@@ -74,6 +76,7 @@ exports.logout = asyncHandler(async (req, res, next) => {
 
   res.status(200).json({
     success: true,
+    message: "logged out",
     data: {},
   });
 });
@@ -87,6 +90,7 @@ exports.getMe = asyncHandler(async (req, res, next) => {
 
   res.status(200).json({
     success: true,
+    message: 'User data found',
     data: user,
   });
 });
@@ -102,15 +106,77 @@ exports.updateDetails = async (req, res, next) => {
     const user = await User.findOne({ where: { id: req.user.id } });
 
     if (!user) {
-      return res.status(404).json({ error: "User not found" });
+      return res.status(404).json({ success: false, error: "User not found" });
     }
 
-    // Update the user details
-    await user.update(userDetailsToUpdate);
+    if (!req.files.length) {
+      updated = await User.update(userDetailsToUpdate, {
+        where: {
+          id: req.user.id,
+        },
+      });
+
+      if (!updated[0]) {
+        return res
+          .status(304)
+          .json({ success: false, message: "Recond no modified" });
+      }
+
+      return res.status(200).json({ success: true, data: "updated" });
+    }
+
+    const { mimetype, filename, path: file_path } = req.files[0];
+    req.media = {
+      uploaded_by: req.user.username,
+      file_path,
+      mime_type: mimetype,
+      file_name: filename,
+      file_type: path.extname(filename).slice(1),
+    };
+
+    let media, prevMedia;
+    try {
+      userWithMedia = await User.findByPk(req.user.id, {
+        include: [
+          {
+            model: Media,
+            as: "media",
+            required: false,
+          },
+        ],
+      });
+
+      media = await Media.create(req.media);
+      req.body.photo = media.id;
+      //delete previous photo
+      if (userWithMedia.media) {
+        await unlinkAsync(userWithMedia.media.file_path);
+        await Media.destroy({ where: { id: user.photo } });
+      }
+    } catch (err) {
+      if (req.files && req.files[0] && req.files[0].path) {
+        const filePath = req.files[0].path;
+        await unlinkAsync(filePath);
+        console.log("File removed:", filePath);
+      }
+      return res.status(200).json({ success: false, message: err });
+    }
+
+    updated = await User.update(userDetailsToUpdate, {
+      where: {
+        id: req.user.id,
+      },
+    });
+
+    if (!updated[0]) {
+      return res
+        .status(304)
+        .json({ success: false, message: "Recond no modified" });
+    }
 
     res.status(200).json({
       success: true,
-      data: user,
+      data: "updated",
     });
   } catch (error) {
     // Handle errors
