@@ -5,14 +5,10 @@ const asyncHandler = require("../middleware/async");
 // @route     GET /api/v1/babylist
 // @access    Private
 exports.getBabyList = asyncHandler(async (req, res, next) => {
-  try {
-    const babyList = await Baby.findAll({
-      where: { mother_id: req.user.id },
-    });
-    res.json(babyList);
-  } catch (error) {
-    res.status(500).json({ success: false, error: error.message });
-  }
+  const babyList = await Baby.findAll({
+    where: { mother_id: req.user.id },
+  });
+  res.json({ success: true, message: "Found babies", data: babyList });
 });
 
 // @desc      Get single baby
@@ -20,18 +16,14 @@ exports.getBabyList = asyncHandler(async (req, res, next) => {
 // @access    Private
 exports.getBaby = asyncHandler(async (req, res, next) => {
   const id = req.params.id;
-  try {
-    const baby = await Baby.findAll({
-      where: { id, mother_id: req.user.id },
-    });
-    if (!baby.length) {
-      res.status(404).json({ message: "Baby not found" });
-      return;
-    }
-    res.status(200).json({ success: true, data: baby });
-  } catch (error) {
-    res.status(500).json({ error: "Failed to fetch baby" });
+  const baby = await Baby.findAll({
+    where: { id, mother_id: req.user.id },
+  });
+  if (!baby.length) {
+    res.status(404).json({ success: false, message: "Baby not found" });
+    return;
   }
+  res.status(200).json({ success: true, message: "Baby found", data: baby });
 });
 
 // @desc      Create baby
@@ -42,9 +34,13 @@ exports.createBaby = asyncHandler(async (req, res, next) => {
   babyData.mother_id = req.user.id;
   try {
     const baby = await Baby.create(babyData);
-    res.status(201).json({ message: "Baby created", baby });
+    res.status(201).json({ success: true, message: "Baby created", baby });
   } catch (error) {
-    res.status(500).json({ error: "Failed to create baby" });
+    res.status(500).json({
+      success: false,
+      message: "baby not created",
+      error: "Failed to create baby",
+    });
   }
 });
 
@@ -59,12 +55,12 @@ exports.updateBaby = asyncHandler(async (req, res) => {
       where: { id, mother_id: req.user.id },
     });
     if (!updated[0]) {
-      res.status(404).json({ message: "Baby not found" });
+      res.status(404).json({ success: false, message: "Baby not found" });
       return;
     }
     res.json({ message: "Baby updated" });
   } catch (error) {
-    res.status(500).json({ error: "Failed to update user" });
+    res.status(500).json({ success: false, error: "Failed to update user" });
   }
 });
 
@@ -73,16 +69,12 @@ exports.updateBaby = asyncHandler(async (req, res) => {
 // @access    Private/Admin
 exports.deleteBaby = asyncHandler(async (req, res) => {
   const id = req.params.babyId;
-  try {
-    const deleted = await Baby.destroy({
-      where: { id, mother_id: req.user.id },
-    });
-    if (!deleted) {
-      res.status(404).json({ message: "Baby not found" });
-      return;
-    }
-    res.json({ message: "Baby deleted" });
-  } catch (error) {
-    res.status(500).json({ error: "Failed to delete user" });
+  const deleted = await Baby.destroy({
+    where: { id, mother_id: req.user.id },
+  });
+  if (!deleted) {
+    res.status(404).json({ success: false, message: "Baby not found" });
+    return;
   }
+  res.json({ message: "Baby deleted" });
 });

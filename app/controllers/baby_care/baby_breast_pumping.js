@@ -3,33 +3,46 @@ const asyncHandler = require("../../middleware/async");
 const Baby = require("../../models/Baby");
 const { where } = require("sequelize");
 
+//Check owner of baby
+// exports.checkOwner = asyncHandler(async (req, res, next) => {
+//   // Check if the requesting mother owns the specified baby
+//   const baby = await Baby.findOne({
+//     where: { id: babyId, mother_id: req.user.id },
+//   });
+//   if (!baby) {
+//     return res.status(403).json({
+//       success: false,
+//       message: "Access denied. You are not the owner of this baby.",
+//     });
+//   }
+// });
+
 // @desc      Get  Baby Feed history of a baby
 // @route     GET /api/v1/breastpump/:babyId
 // @access    Private
 exports.getBabyBreastPumpsHistory = asyncHandler(async (req, res, next) => {
-  try {
-    // Extract baby ID from the request params or body
-    const { babyId } = req.params;
+  // Extract baby ID from the request params or body
+  const { babyId } = req.params;
 
-    // Check if the requesting mother owns the specified baby
-    const baby = await Baby.findOne({
-      where: { id: babyId, mother_id: req.user.id },
+  // Check if the requesting mother owns the specified baby
+  const baby = await Baby.findOne({
+    where: { id: babyId, mother_id: req.user.id },
+  });
+  if (!baby) {
+    return res.status(403).json({
+      success: false,
+      message: "Access denied. You are not the owner of this baby.",
     });
-    if (!baby) {
-      return res.status(403).json({
-        message: "Access denied. You are not the owner of this baby.",
-      });
-    }
-
-    // Get the feed history for the specified baby
-    const breastPumpsHistory = await BreastPump.findAll({
-      where: { baby_id: babyId },
-    });
-
-    res.status(200).json({ success: true, data: breastPumpsHistory });
-  } catch (error) {
-    res.status(500).json({ success: false, error: error.message });
   }
+
+  // Get the feed history for the specified baby
+  const breastPumpsHistory = await BreastPump.findAll({
+    where: { baby_id: babyId },
+  });
+
+  res
+    .status(200)
+    .json({ success: true, messae: "Found History", data: breastPumpsHistory });
 });
 
 // @desc      Get single breastpump
@@ -145,7 +158,10 @@ exports.deleteBreastPump = asyncHandler(async (req, res) => {
     // Get the feed history for the specified baby
     const deleted = await BreastPump.destroy({ where: { id: breastPumpId } });
 
-    if(!deleted) return res.status(200).json({success: false, message: "data not found"})
+    if (!deleted)
+      return res
+        .status(200)
+        .json({ success: false, message: "data not found" });
 
     res.status(200).json({ success: true, messae: "deleted" });
   } catch (error) {
@@ -174,9 +190,12 @@ exports.deleteAllBreastPump = asyncHandler(async (req, res) => {
     // Get the feed history for the specified baby
     const deleted = await BreastPump.destroy({ where: { baby_id: babyId } });
 
-    if(!deleted) return res.status(200).json({success: false, message: "data not found"})
+    if (!deleted)
+      return res
+        .status(200)
+        .json({ success: false, message: "data not found" });
 
-    res.status(200).json({ success: true , message: "deleted"});
+    res.status(200).json({ success: true, message: "deleted" });
   } catch (error) {
     res.status(500).json({ success: false, error: error.message });
   }

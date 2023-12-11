@@ -1,3 +1,7 @@
+const path = require("path");
+const fs = require("fs");
+const { promisify } = require("util");
+const unlinkAsync = promisify(fs.unlink);
 const crypto = require("crypto");
 const { Op } = require("sequelize");
 const ErrorResponse = require("../resource/utils/errorResponse");
@@ -90,7 +94,7 @@ exports.getMe = asyncHandler(async (req, res, next) => {
 
   res.status(200).json({
     success: true,
-    message: 'User data found',
+    message: "User data found",
     data: user,
   });
 });
@@ -99,69 +103,16 @@ exports.getMe = asyncHandler(async (req, res, next) => {
 // @route     PUT /api/v1/auth/updatedetails
 // @access    Private
 exports.updateDetails = async (req, res, next) => {
-  try {
-    const userDetailsToUpdate = req.body; // Contains the updated details
+  const userDetailsToUpdate = req.body; // Contains the updated details
 
-    // Find the user by username
-    const user = await User.findOne({ where: { id: req.user.id } });
+  // Find the user by username
+  const user = await User.findOne({ where: { id: req.user.id } });
 
-    if (!user) {
-      return res.status(404).json({ success: false, error: "User not found" });
-    }
+  if (!user) {
+    return res.status(404).json({ success: false, error: "User not found" });
+  }
 
-    if (!req.files.length) {
-      updated = await User.update(userDetailsToUpdate, {
-        where: {
-          id: req.user.id,
-        },
-      });
-
-      if (!updated[0]) {
-        return res
-          .status(304)
-          .json({ success: false, message: "Recond no modified" });
-      }
-
-      return res.status(200).json({ success: true, data: "updated" });
-    }
-
-    const { mimetype, filename, path: file_path } = req.files[0];
-    req.media = {
-      uploaded_by: req.user.username,
-      file_path,
-      mime_type: mimetype,
-      file_name: filename,
-      file_type: path.extname(filename).slice(1),
-    };
-
-    let media, prevMedia;
-    try {
-      userWithMedia = await User.findByPk(req.user.id, {
-        include: [
-          {
-            model: Media,
-            as: "media",
-            required: false,
-          },
-        ],
-      });
-
-      media = await Media.create(req.media);
-      req.body.photo = media.id;
-      //delete previous photo
-      if (userWithMedia.media) {
-        await unlinkAsync(userWithMedia.media.file_path);
-        await Media.destroy({ where: { id: user.photo } });
-      }
-    } catch (err) {
-      if (req.files && req.files[0] && req.files[0].path) {
-        const filePath = req.files[0].path;
-        await unlinkAsync(filePath);
-        console.log("File removed:", filePath);
-      }
-      return res.status(200).json({ success: false, message: err });
-    }
-
+  if (!req.files.length) {
     updated = await User.update(userDetailsToUpdate, {
       where: {
         id: req.user.id,
@@ -174,14 +125,64 @@ exports.updateDetails = async (req, res, next) => {
         .json({ success: false, message: "Recond no modified" });
     }
 
-    res.status(200).json({
-      success: true,
-      data: "updated",
-    });
-  } catch (error) {
-    // Handle errors
-    res.status(500).json({ error: error.message });
+    return res.status(200).json({ success: true, message: "updated" });
   }
+
+  const { mimetype, filename, path: file_path } = req.files[0];
+  req.media = {
+    uploaded_by: req.user.username,
+    file_path,
+    mime_type: mimetype,
+    file_name: filename,
+    file_type: path.extname(filename).slice(1),
+  };
+
+  let media, prevMedia;
+  try {
+    userWithMedia = await User.findByPk(req.user.id, {
+      include: [
+        {
+          model: Media,
+          as: "media",
+          required: false,
+        },
+      ],
+    });
+
+    media = await Media.create(req.media);
+    req.body.photo = media.id;
+    //delete previous photo
+    if (userWithMedia.media) {
+      await unlinkAsync(userWithMedia.media.file_path);
+      await Media.destroy({ where: { id: user.photo } });
+    }
+  } catch (err) {
+    if (req.files && req.files[0] && req.files[0].path) {
+      const filePath = req.files[0].path;
+      await unlinkAsync(filePath);
+      console.log("File removed:", filePath);
+    }
+    return res
+      .status(200)
+      .json({ success: false, message: "data upload failed", error: err });
+  }
+
+  updated = await User.update(userDetailsToUpdate, {
+    where: {
+      id: req.user.id,
+    },
+  });
+
+  if (!updated[0]) {
+    return res
+      .status(304)
+      .json({ success: false, message: "Recond no modified" });
+  }
+
+  res.status(200).json({
+    success: true,
+    data: "updated",
+  });
 };
 
 // @desc      Update password
@@ -214,7 +215,9 @@ exports.updatePassword = async (req, res, next) => {
     user.password = newPassword;
     await user.save();
 
-    res.status(200).json({ message: "Password updated successfully" });
+    res
+      .status(200)
+      .json({ success: true, message: "Password updated successfully" });
   } catch (error) {
     // Handle errors
     res.status(500).json({ error: error.message });
@@ -238,7 +241,7 @@ exports.forgotPassword = asyncHandler(async (req, res, next) => {
 
   const message = `You are receiving this email because you (or someone else) has requested the reset of a password. your OTP is : \n\n ${OTP}\n\n Make sure to reset the password within 10 minits`;
 
-  res.status(200).json({ success: true, data: "Email sent" });
+  res.status(200).json({ success: true, message: "Email sent" });
 
   try {
     await sendEmail({
@@ -247,7 +250,7 @@ exports.forgotPassword = asyncHandler(async (req, res, next) => {
       message,
     });
 
-    res.status(200).json({ success: true, data: "Email sent" });
+    res.status(200).json({ success: true, message: "Email sent" });
   } catch (err) {
     user.password_reset_token = undefined;
 
@@ -423,6 +426,7 @@ const sendTokenResponse = (user, statusCode, res) => {
 
   res.status(statusCode).cookie("token", token, options).json({
     success: true,
+    message: "Authentication successfull",
     data: { token, user },
   });
 };

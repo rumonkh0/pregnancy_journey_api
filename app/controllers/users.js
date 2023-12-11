@@ -18,29 +18,21 @@ exports.getUsers = asyncHandler(async (req, res, next) => {
 // @access    Private/Admin
 exports.getUser = asyncHandler(async (req, res, next) => {
   const id = req.params.userId;
-  try {
-    const user = await User.findOne({ where: { id } });
-    if (!user) {
-      res.status(404).json({ message: "User not found" });
-      return;
-    }
-    res.json(user);
-  } catch (error) {
-    res.status(500).json({ error: "Failed to fetch user" });
+  const user = await User.findOne({ where: { id } });
+  if (!user) {
+    res.status(404).json({ success: false, message: "User not found" });
+    return;
   }
+  res.json(user);
 });
 
 // @desc      Create user
 // @route     POST /api/v1/users
 // @access    Private/Admin
 exports.createUser = asyncHandler(async (req, res, next) => {
-  const userData = req.body; // Assuming data comes in as JSON in the request body
-  try {
-    const user = await User.create(userData);
-    res.status(201).json({ message: "User created", user });
-  } catch (error) {
-    res.status(500).json({ error: "Failed to create user" });
-  }
+  const userData = req.body;
+  const user = await User.create(userData);
+  res.status(201).json({ success: true, message: "User created", data: user });
 });
 
 // @desc      Update user
@@ -49,16 +41,12 @@ exports.createUser = asyncHandler(async (req, res, next) => {
 exports.updateUser = asyncHandler(async (req, res) => {
   const id = req.params.userId;
   const newData = req.body;
-  try {
-    const updated = await User.update(newData, { where: { id } });
-    if (!updated) {
-      res.status(404).json({ message: "User not found" });
-      return;
-    }
-    res.json({ message: "User updated" });
-  } catch (error) {
-    res.status(500).json({ error: "Failed to update user" });
+  const updated = await User.update(newData, { where: { id } });
+  if (!updated) {
+    res.status(404).json({ message: "User not found" });
+    return;
   }
+  res.json({ success: true, message: "User updated" });
 });
 
 // @desc      Delete user
@@ -66,14 +54,10 @@ exports.updateUser = asyncHandler(async (req, res) => {
 // @access    Private/Admin
 exports.deleteUser = asyncHandler(async (req, res) => {
   const id = req.params.userId;
-  try {
-    const deleted = await User.destroy({ where: { id } });
-    if (!deleted) {
-      res.status(404).json({ message: "User not found" });
-      return;
-    }
-    res.json({ message: "User deleted" });
-  } catch (error) {
-    res.status(500).json({ error: "Failed to delete user" });
+  const deleted = await User.destroy({ where: { id } });
+  if (!deleted) {
+    res.status(404).json({ message: "User not found" });
+    return;
   }
+  res.json({ success: true, message: "User deleted" });
 });
