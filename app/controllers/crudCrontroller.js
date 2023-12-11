@@ -38,7 +38,7 @@ exports.getOne = (Model) => {
       },
     });
 
-    res.status(200).json({ success: true, data });
+    res.status(200).json({ success: true, message: 'Data found', data });
   });
 };
 

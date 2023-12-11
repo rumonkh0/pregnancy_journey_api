@@ -109,7 +109,11 @@ exports.updateDetails = async (req, res, next) => {
   const user = await User.findOne({ where: { id: req.user.id } });
 
   if (!user) {
-    return res.status(404).json({ success: false, error: "User not found" });
+    return res.status(404).json({
+      success: false,
+      message: "User not found",
+      error: "User not found",
+    });
   }
 
   if (!req.files.length) {
@@ -181,7 +185,7 @@ exports.updateDetails = async (req, res, next) => {
 
   res.status(200).json({
     success: true,
-    data: "updated",
+    message: "Data updated",
   });
 };
 
@@ -199,7 +203,11 @@ exports.updatePassword = async (req, res, next) => {
     });
 
     if (!user) {
-      return res.status(404).json({ success: false, error: "User not found" });
+      return res.status(404).json({
+        success: false,
+        message: "User not found",
+        error: "User not found",
+      });
     }
 
     // Verify the old password
@@ -208,7 +216,11 @@ exports.updatePassword = async (req, res, next) => {
     if (!isPasswordValid) {
       return res
         .status(401)
-        .json({ success: false, error: "Invalid old password" });
+        .json({
+          success: false,
+          message: "Invalid old password",
+          error: "Invalid old password",
+        });
     }
 
     // Update the user's password
@@ -220,7 +232,11 @@ exports.updatePassword = async (req, res, next) => {
       .json({ success: true, message: "Password updated successfully" });
   } catch (error) {
     // Handle errors
-    res.status(500).json({ error: error.message });
+    res.status(500).json({
+      success: false,
+      message: "Password not changed",
+      error: error.message,
+    });
   }
 };
 /**

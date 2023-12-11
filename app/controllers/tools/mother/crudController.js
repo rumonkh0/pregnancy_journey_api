@@ -15,7 +15,9 @@ exports.getHistory = (Model) => {
       },
     });
 
-    res.status(200).json({ success: true, data: History });
+    res
+      .status(200)
+      .json({ success: true, message: "Data found", data: History });
   });
 };
 
@@ -29,7 +31,9 @@ exports.getOne = (Model) => {
       where: { id: req.params.pk, user_id: req.user.id },
     });
 
-    res.status(200).json({ success: true, data: result });
+    res
+      .status(200)
+      .json({ success: true, message: "Data found", data: result });
   });
 };
 
@@ -42,7 +46,7 @@ exports.create = (Model) => {
     // Get the feed history for the specified baby
     const data = await Model.create(req.body);
 
-    res.status(200).json({ success: true, data: data });
+    res.status(200).json({ success: true, message: "Data created", data });
   });
 };
 
@@ -65,7 +69,7 @@ exports.update = (Model) => {
         .json({ success: false, message: "Recond not modified" });
     }
 
-    res.status(200).json({ success: true });
+    res.status(200).json({ success: true, message: "Data updated" });
   });
 };
 
@@ -79,7 +83,7 @@ exports.deleteOne = (Model) => {
       where: { id: req.params.pk, user_id: req.user.user_id },
     });
 
-    res.status(200).json({ success: true });
+    res.status(200).json({ success: true, message: "Data deleted" });
   });
 };
 
@@ -93,6 +97,6 @@ exports.deleteAll = (Model) => {
       where: { id: req.params.pk, user_id: req.user.id },
     });
 
-    res.status(200).json({ success: true });
+    res.status(200).json({ success: true, message: "All data deleted" });
   });
 };

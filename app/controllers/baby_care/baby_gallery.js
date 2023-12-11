@@ -19,6 +19,7 @@ exports.checkBabyOwner = asyncHandler(async (req, res, next) => {
 
   if (!baby) {
     return res.status(403).json({
+      success: false,
       message: "Access denied. You are not the owner of this baby.",
     });
   }
@@ -42,7 +43,9 @@ exports.getAll = asyncHandler(async (req, res, next) => {
       },
     ],
   });
-  res.status(200).json({ success: true, data: allPhoto });
+  res
+    .status(200)
+    .json({ success: true, message: "Data found", data: allPhoto });
 });
 
 // @desc      Get single babay image and title
@@ -61,7 +64,9 @@ exports.getOne = asyncHandler(async (req, res, next) => {
       },
     ],
   });
-  res.status(200).json({ success: true, data: allPhoto });
+  res
+    .status(200)
+    .json({ success: true, message: "Data found", data: allPhoto });
 });
 
 // @desc      Upload babay image and title
@@ -100,7 +105,9 @@ exports.createBabyGallery = asyncHandler(async (req, res, next) => {
   // Get the feed history for the specified baby
   const babygallery = await BabyGallery.create(req.body);
 
-  res.status(200).json({ success: true, data: babygallery });
+  res
+    .status(200)
+    .json({ success: true, message: "Data created", data: babygallery });
 });
 
 // @desc      update babay image and title
@@ -121,7 +128,9 @@ exports.updateBabyGallery = asyncHandler(async (req, res, next) => {
         .json({ success: false, message: "Recond no modified" });
     }
 
-    return res.status(200).json({ success: true, data: babygallery });
+    return res
+      .status(200)
+      .json({ success: true, message: "Baby updated", data: babygallery });
   }
 
   const { mimetype, filename, path: file_path } = req.files[0];
@@ -159,7 +168,9 @@ exports.updateBabyGallery = asyncHandler(async (req, res, next) => {
       await unlinkAsync(filePath);
       console.log("File removed:", filePath);
     }
-    return res.status(200).json({ success: false, message: err });
+    return res
+      .status(200)
+      .json({ success: false, message: "Data not updated", message: err });
   }
 
   req.body.baby_id = babyId;
@@ -167,42 +178,40 @@ exports.updateBabyGallery = asyncHandler(async (req, res, next) => {
     where: { id: modelPk },
   });
 
-  res.status(200).json({ success: true, data: babygallery });
+  res
+    .status(200)
+    .json({ success: true, message: "Data updated", data: babygallery });
 });
 
 // @desc      Delete baby feed
 // @route     DELETE /api/v1/babyfeed/:babyId/:babyFeedId
 // @access    Private/Admin
 exports.deleteBabygallery = asyncHandler(async (req, res) => {
-  try {
-    // Extract baby ID from the request params or body
-    const { babyId, modelPk } = req.params;
+  // Extract baby ID from the request params or body
+  const { babyId, modelPk } = req.params;
 
-    const gallery = await BabyGallery.findOne({
-      where: { id: modelPk, baby_id: babyId },
-      include: [
-        {
-          model: Media,
-          as: "media",
-          required: false,
-        },
-      ],
-    });
+  const gallery = await BabyGallery.findOne({
+    where: { id: modelPk, baby_id: babyId },
+    include: [
+      {
+        model: Media,
+        as: "media",
+        required: false,
+      },
+    ],
+  });
 
-    if (!gallery)
-      return res
-        .status(200)
-        .json({ success: false, message: "data not found" });
+  if (!gallery)
+    return res.status(200).json({ success: false, message: "data not found" });
 
-    // Get the feed history for the specified baby
-    const deleted = await BabyGallery.destroy({ where: { id: modelPk } });
-    if (!gallery.media) {
-      await Media.destroy({ where: { id: file_id } });
-      await unlinkAsync(file_path);
-    }
-
-    res.status(200).json({ success: true, data: deleted });
-  } catch (error) {
-    res.status(500).json({ success: false, error: error.message });
+  // Get the feed history for the specified baby
+  const deleted = await BabyGallery.destroy({ where: { id: modelPk } });
+  if (!gallery.media) {
+    await Media.destroy({ where: { id: file_id } });
+    await unlinkAsync(file_path);
   }
+
+  res
+    .status(200)
+    .json({ success: true, messsage: "Data deleted", data: deleted });
 });

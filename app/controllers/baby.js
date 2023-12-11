@@ -34,7 +34,9 @@ exports.createBaby = asyncHandler(async (req, res, next) => {
   babyData.mother_id = req.user.id;
   try {
     const baby = await Baby.create(babyData);
-    res.status(201).json({ success: true, message: "Baby created", baby });
+    res
+      .status(201)
+      .json({ success: true, message: "Baby created", data: baby });
   } catch (error) {
     res.status(500).json({
       success: false,
@@ -50,7 +52,6 @@ exports.createBaby = asyncHandler(async (req, res, next) => {
 exports.updateBaby = asyncHandler(async (req, res) => {
   const id = req.params.babyId;
   const newData = req.body;
-  try {
     const updated = await Baby.update(newData, {
       where: { id, mother_id: req.user.id },
     });
@@ -59,9 +60,6 @@ exports.updateBaby = asyncHandler(async (req, res) => {
       return;
     }
     res.json({ message: "Baby updated" });
-  } catch (error) {
-    res.status(500).json({ success: false, error: "Failed to update user" });
-  }
 });
 
 // @desc      Delete baby

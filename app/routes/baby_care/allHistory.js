@@ -34,6 +34,7 @@ const getCombinedBabyData = async (req, res, next) => {
 
     if (!babyData) {
       return res.status(403).json({
+        success: false,
         message: "Access denied. You are not the mother of this baby.",
       });
     }
@@ -61,7 +62,13 @@ const getCombinedBabyData = async (req, res, next) => {
 
     // Sort the combined array by createdAt
     combinedData.sort((a, b) => new Date(a.createdAt) - new Date(b.createdAt));
-    res.status(200).json({ data: combinedData });
+    res
+      .status(200)
+      .json({
+        success: true,
+        message: "Filtered result prepared",
+        data: combinedData,
+      });
   } catch (error) {
     console.error("Error:", error);
     throw error;

@@ -19,7 +19,7 @@ exports.getHistory = (Model) => {
     }
 
     // Get the feed history for the specified baby
-    res.status(200).json({ success: true, data });
+    res.status(200).json({ success: true, message: "Found history", data });
   });
 };
 
@@ -39,7 +39,7 @@ exports.getOne = (Model) => {
       },
     });
 
-    res.status(200).json({ success: true, data });
+    res.status(200).json({ success: true, message:'Data found', data });
   });
 };
 
