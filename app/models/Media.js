@@ -1,7 +1,11 @@
 const { sequelize } = require("../../config/db");
 const { DataTypes } = require("sequelize");
+const Post = require("./community/Post");
+const PostMedia = require("./community/PostMedia");
 
-const Media = sequelize.define('Media', {
+const Media = sequelize.define(
+  "Media",
+  {
     id: {
       type: DataTypes.INTEGER,
       primaryKey: true,
@@ -36,8 +40,14 @@ const Media = sequelize.define('Media', {
       type: DataTypes.DATE,
       allowNull: false,
     },
-  }, {
-    tableName: 'media', // Ensure the table name matches your table name in the database
-  });
+  },
+  {
+    tableName: "media",
+    timestamp: true,
+  }
+);
 
-  module.exports = Media
+// Media.belongsToMany(Post, { through: PostMedia, foreignKey: 'id' });
+
+
+module.exports = Media;
