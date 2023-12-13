@@ -31,12 +31,17 @@ const mcontraction = require("./app/routes/tools/mother/mother_contraction_time"
 const msymptom = require("./app/routes/tools/mother/mother_symptom");
 const drugReminder = require("./app/routes/tools/mother/drug_reminder");
 const mweight = require("./app/routes/tools/mother/weight");
+const reactionType = require("./app/routes/community/reactionType");
+const post = require('./app/routes/community/post')
+// const reactionType = require('./app/routes/community/reactionType')
+// const reactionType = require('./app/routes/community/reactionType')
+// const reactionType = require('./app/routes/community/reactionType')
 
 const app = express();
 
 // Body parser
-app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({ extended: true }));
+// app.use(bodyParser.json());
+// app.use(bodyParser.urlencoded({ extended: true }));
 app.use(express.json());
 //Cookie parser
 app.use(cookieParser());
@@ -68,6 +73,11 @@ app.use("/api/v1/mother/contraction", mcontraction);
 app.use("/api/v1/mother/symptom", msymptom);
 app.use("/api/v1/mother/drugreminder", drugReminder);
 app.use("/api/v1/mother/weight", mweight);
+app.use("/api/v1/reactiontype", reactionType);
+app.use("/api/v1/post", post);
+// app.use("/api/v1/reactiontype", reactionType);
+// app.use("/api/v1/reactiontype", reactionType);
+// app.use("/api/v1/reactiontype", reactionType);
 
 app.get("/", (req, res) => {
   res.status(200).json({
