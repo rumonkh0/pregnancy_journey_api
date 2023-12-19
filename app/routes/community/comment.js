@@ -1,19 +1,22 @@
 const express = require("express");
 const {
-  getAllPost,
-  getPost,
-  createPost,
-  updatePost,
-  deletePost,
-} = require("../../controllers/community/post");
+  getAllComment,
+  getComment,
+  createComment,
+  updateComment,
+  deleteComment,
+} = require("../../controllers/community/comment");
 const router = express.Router({ mergeParams: true });
+const reactionRouter = require("./reaction");
 const { protect } = require("../../middleware/auth");
 
+router.use("/:commentId/reaction", reactionRouter);
+
 router.use(protect);
-router.get("/", getAllPost);
-router.get("/:id", getPost);
-router.post("/", createPost);
-router.put("/:id", updatePost);
-router.delete("/:id", deletePost);
+router.get("/", getAllComment);
+router.get("/:id", getComment);
+router.post("/", createComment);
+router.put("/:id", updateComment);
+router.delete("/:id", deleteComment);
 
 module.exports = router;

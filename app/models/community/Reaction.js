@@ -4,7 +4,7 @@ const { sequelize } = require("../../../config/db"); // Replace with your Sequel
 const Reaction = sequelize.define(
   "Reaction",
   {
-    reaction_id: {
+    id: {
       type: DataTypes.INTEGER,
       allowNull: false,
       primaryKey: true,

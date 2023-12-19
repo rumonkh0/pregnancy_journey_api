@@ -32,10 +32,10 @@ const msymptom = require("./app/routes/tools/mother/mother_symptom");
 const drugReminder = require("./app/routes/tools/mother/drug_reminder");
 const mweight = require("./app/routes/tools/mother/weight");
 const reactionType = require("./app/routes/community/reactionType");
-const post = require('./app/routes/community/post')
-// const reactionType = require('./app/routes/community/reactionType')
-// const reactionType = require('./app/routes/community/reactionType')
-// const reactionType = require('./app/routes/community/reactionType')
+const post = require("./app/routes/community/post");
+const comment = require("./app/routes/community/comment");
+const reaction = require("./app/routes/community/reaction");
+// const reaction = require("./app/routes/community/reaction");
 
 const app = express();
 
@@ -75,9 +75,9 @@ app.use("/api/v1/mother/drugreminder", drugReminder);
 app.use("/api/v1/mother/weight", mweight);
 app.use("/api/v1/reactiontype", reactionType);
 app.use("/api/v1/post", post);
-// app.use("/api/v1/reactiontype", reactionType);
-// app.use("/api/v1/reactiontype", reactionType);
-// app.use("/api/v1/reactiontype", reactionType);
+app.use("/api/v1/comment", comment);
+app.use("/api/v1/reaction", reaction);
+// app.use("/api/v1/reaction", reaction);
 
 app.get("/", (req, res) => {
   res.status(200).json({
