@@ -4,23 +4,23 @@ const { Sequelize } = require("sequelize");
 
 let sequelize;
 
-if (process.env.NODE_ENV === "development") {
-  sequelize = new Sequelize(
-    process.env.DATABASE,
-    process.env.USER,
-    process.env.PASSWORD,
-    {
-      host: process.env.HOST,
-      post: 3306,
-      dialect: "mysql",
-    }
-  );
-} else {
-  sequelize = new Sequelize({
-    dialect: "sqlite",
-    storage: "private/data.sqlite",
-  });
-}
+// if (process.env.NODE_ENV === "development") {
+sequelize = new Sequelize(
+  process.env.DATABASE,
+  process.env.USER,
+  process.env.PASSWORD,
+  {
+    host: process.env.HOST,
+    post: 3306,
+    dialect: "mysql",
+  }
+);
+// } else {
+//   sequelize = new Sequelize({
+//     dialect: "sqlite",
+//     storage: "private/data.sqlite",
+//   });
+// }
 //Create a function to connect asynchronously
 const setupDbConnection = async () => {
   try {

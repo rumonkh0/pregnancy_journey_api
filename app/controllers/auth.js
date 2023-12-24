@@ -76,6 +76,8 @@ exports.login = async (req, res, next) => {
     });
   }
 
+  user.password = null;
+
   sendTokenResponse(user, 200, res);
 };
 
