@@ -47,23 +47,33 @@ exports.login = async (req, res, next) => {
 
   // Validate emil & password
   if (!username || !password) {
-    return next(
-      new ErrorResponse("Please provide an username and password", 400)
-    );
+    return res.status(404).json({
+      success: false,
+      message: "Please enter username and password",
+      error: "Please enter username and password",
+    });
   }
   //Find user from database
   const user = await User.scope("withPassword").findOne({
     where: { username },
   });
   if (!user) {
-    return next(new ErrorResponse("Invalid credentials", 401));
+    return res.status(404).json({
+      success: false,
+      message: "User not found",
+      error: "User not found",
+    });
   }
 
   //Match hash password
   const isMatch = await user.verifyPassword(password);
 
   if (!isMatch) {
-    return next(new ErrorResponse("Invalid credentials", 401));
+    return res.status(404).json({
+      success: false,
+      message: "Invalid credential",
+      error: "Invalid credential",
+    });
   }
 
   sendTokenResponse(user, 200, res);
@@ -214,13 +224,11 @@ exports.updatePassword = async (req, res, next) => {
     const isPasswordValid = await user.verifyPassword(oldPassword);
 
     if (!isPasswordValid) {
-      return res
-        .status(401)
-        .json({
-          success: false,
-          message: "Invalid old password",
-          error: "Invalid old password",
-        });
+      return res.status(401).json({
+        success: false,
+        message: "Invalid old password",
+        error: "Invalid old password",
+      });
     }
 
     // Update the user's password
