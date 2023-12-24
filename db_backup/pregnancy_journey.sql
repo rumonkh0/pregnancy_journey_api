@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Dec 05, 2023 at 08:18 AM
+-- Generation Time: Dec 24, 2023 at 02:25 PM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.0.30
 
@@ -371,6 +371,31 @@ INSERT INTO `child_vaccine_remiinders` (`id`, `baby_id`, `name`, `vaccine_date`,
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `comments`
+--
+
+CREATE TABLE `comments` (
+  `id` int(11) NOT NULL,
+  `user_id` int(11) NOT NULL,
+  `post_id` int(11) NOT NULL,
+  `content` text DEFAULT NULL,
+  `createdAt` datetime DEFAULT NULL,
+  `updatedAt` datetime DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `comments`
+--
+
+INSERT INTO `comments` (`id`, `user_id`, `post_id`, `content`, `createdAt`, `updatedAt`) VALUES
+(1, 12, 3, 'this is a large content', '2023-12-14 12:52:57', '2023-12-14 12:52:57'),
+(3, 12, 3, 'this is a last content', '2023-12-14 12:53:17', '2023-12-14 12:53:17'),
+(4, 12, 3, 'this is a checking content', '2023-12-14 12:55:38', '2023-12-14 12:55:38'),
+(5, 12, 2, 'this is a checking content', '2023-12-14 13:20:23', '2023-12-14 13:20:23');
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `daily_reads`
 --
 
@@ -522,6 +547,106 @@ INSERT INTO `mother_vaccine_reminders` (`id`, `user_id`, `name`, `vaccine_date`,
 (2, 12, 'Flu Vaccine', '2023-12-20 00:00:00', '2023-12-04 14:34:03', '2023-12-04 14:34:03'),
 (3, 12, 'Flu Vaccine', '2023-12-20 00:00:00', '2023-12-04 14:34:06', '2023-12-04 14:34:06'),
 (4, 12, 'Flu Vaccine', '2023-12-20 00:00:00', '2023-12-04 14:34:07', '2023-12-04 14:34:07');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `postmedia`
+--
+
+CREATE TABLE `postmedia` (
+  `post_id` int(11) NOT NULL,
+  `media_id` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `posts`
+--
+
+CREATE TABLE `posts` (
+  `id` int(11) NOT NULL,
+  `user_id` int(11) NOT NULL,
+  `title` varchar(255) DEFAULT NULL,
+  `content` text DEFAULT NULL,
+  `updatedAt` datetime DEFAULT NULL,
+  `createdAt` datetime DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `posts`
+--
+
+INSERT INTO `posts` (`id`, `user_id`, `title`, `content`, `updatedAt`, `createdAt`) VALUES
+(1, 12, 'hello i am first title', 'this is a large content', '2023-12-13 17:58:37', '2023-12-13 17:58:37'),
+(3, 12, 'hello i am another title', 'this is a large content', '2023-12-13 17:59:04', '2023-12-13 17:59:04'),
+(4, 12, 'hello i am last title', 'this is a large content', '2023-12-13 17:59:09', '2023-12-13 17:59:09');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `reactions`
+--
+
+CREATE TABLE `reactions` (
+  `id` int(11) NOT NULL,
+  `type` int(11) DEFAULT NULL,
+  `user_id` int(11) NOT NULL,
+  `post_id` int(11) DEFAULT NULL,
+  `comment_id` int(11) DEFAULT NULL,
+  `createdAt` datetime DEFAULT NULL,
+  `updatedAt` datetime DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `reactions`
+--
+
+INSERT INTO `reactions` (`id`, `type`, `user_id`, `post_id`, `comment_id`, `createdAt`, `updatedAt`) VALUES
+(1, 1, 12, 3, NULL, '2023-12-14 14:41:52', '2023-12-14 14:41:52'),
+(2, 1, 12, 4, NULL, '2023-12-14 14:43:16', '2023-12-14 14:43:16'),
+(4, 3, 12, 1, NULL, '2023-12-14 15:03:26', '2023-12-14 15:05:21'),
+(5, 2, 12, NULL, 1, '2023-12-14 15:24:51', '2023-12-14 15:24:59'),
+(6, 3, 13, 1, NULL, '2023-12-14 15:03:26', '2023-12-14 15:05:21');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `reactiontypes`
+--
+
+CREATE TABLE `reactiontypes` (
+  `id` int(11) NOT NULL,
+  `type_name` varchar(255) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `reactiontypes`
+--
+
+INSERT INTO `reactiontypes` (`id`, `type_name`) VALUES
+(1, 'like'),
+(2, 'sad'),
+(3, 'happy'),
+(4, 'angry'),
+(5, 'wow'),
+(6, 'dislike');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `replies`
+--
+
+CREATE TABLE `replies` (
+  `id` int(11) NOT NULL,
+  `user_id` int(11) NOT NULL,
+  `comment_id` int(11) NOT NULL,
+  `content` text DEFAULT NULL,
+  `createAt` datetime DEFAULT NULL,
+  `updatedAt` datetime DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
 
@@ -789,6 +914,12 @@ ALTER TABLE `child_vaccine_remiinders`
   ADD KEY `FK_1` (`baby_id`);
 
 --
+-- Indexes for table `comments`
+--
+ALTER TABLE `comments`
+  ADD PRIMARY KEY (`id`);
+
+--
 -- Indexes for table `daily_reads`
 --
 ALTER TABLE `daily_reads`
@@ -837,6 +968,37 @@ ALTER TABLE `mother_progress_timeline`
 ALTER TABLE `mother_vaccine_reminders`
   ADD PRIMARY KEY (`id`),
   ADD KEY `FK_1` (`user_id`);
+
+--
+-- Indexes for table `postmedia`
+--
+ALTER TABLE `postmedia`
+  ADD PRIMARY KEY (`post_id`,`media_id`),
+  ADD KEY `media_id` (`media_id`);
+
+--
+-- Indexes for table `posts`
+--
+ALTER TABLE `posts`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `reactions`
+--
+ALTER TABLE `reactions`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `reactiontypes`
+--
+ALTER TABLE `reactiontypes`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `replies`
+--
+ALTER TABLE `replies`
+  ADD PRIMARY KEY (`id`);
 
 --
 -- Indexes for table `tool_mother_baby_kick_counters`
@@ -934,6 +1096,12 @@ ALTER TABLE `child_vaccine_remiinders`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
+-- AUTO_INCREMENT for table `comments`
+--
+ALTER TABLE `comments`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+
+--
 -- AUTO_INCREMENT for table `drug_reminder`
 --
 ALTER TABLE `drug_reminder`
@@ -956,6 +1124,30 @@ ALTER TABLE `media`
 --
 ALTER TABLE `mother_vaccine_reminders`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+
+--
+-- AUTO_INCREMENT for table `posts`
+--
+ALTER TABLE `posts`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+
+--
+-- AUTO_INCREMENT for table `reactions`
+--
+ALTER TABLE `reactions`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
+
+--
+-- AUTO_INCREMENT for table `reactiontypes`
+--
+ALTER TABLE `reactiontypes`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
+
+--
+-- AUTO_INCREMENT for table `replies`
+--
+ALTER TABLE `replies`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT for table `tool_mother_baby_kick_counters`
@@ -1068,6 +1260,13 @@ ALTER TABLE `drug_reminder`
 --
 ALTER TABLE `mother_vaccine_reminders`
   ADD CONSTRAINT `FK_20` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`);
+
+--
+-- Constraints for table `postmedia`
+--
+ALTER TABLE `postmedia`
+  ADD CONSTRAINT `postmedia_ibfk_1` FOREIGN KEY (`post_id`) REFERENCES `posts` (`id`) ON DELETE CASCADE,
+  ADD CONSTRAINT `postmedia_ibfk_2` FOREIGN KEY (`media_id`) REFERENCES `media` (`id`) ON DELETE CASCADE;
 
 --
 -- Constraints for table `weight_logs`

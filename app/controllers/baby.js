@@ -1,5 +1,6 @@
 const Baby = require("../models/Baby");
 const asyncHandler = require("../middleware/async");
+const Media = require("../models/Media");
 
 // @desc      Get  Baby List Of Mother
 // @route     GET /api/v1/babylist
@@ -52,14 +53,14 @@ exports.createBaby = asyncHandler(async (req, res, next) => {
 exports.updateBaby = asyncHandler(async (req, res) => {
   const id = req.params.babyId;
   const newData = req.body;
-    const updated = await Baby.update(newData, {
-      where: { id, mother_id: req.user.id },
-    });
-    if (!updated[0]) {
-      res.status(404).json({ success: false, message: "Baby not found" });
-      return;
-    }
-    res.json({ message: "Baby updated" });
+  const updated = await Baby.update(newData, {
+    where: { id, mother_id: req.user.id },
+  });
+  if (!updated[0]) {
+    res.status(404).json({ success: false, message: "Baby not found" });
+    return;
+  }
+  res.json({ message: "Baby updated" });
 });
 
 // @desc      Delete baby

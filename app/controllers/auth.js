@@ -35,7 +35,7 @@ exports.register = asyncHandler(async (req, res, next) => {
     subject: "Email confirmation OTP",
     message,
   });
-
+  user.password = null;
   sendTokenResponse(user, 200, res);
 });
 
@@ -124,6 +124,7 @@ exports.updateDetails = async (req, res, next) => {
       error: "User not found",
     });
   }
+  const userData = await User.findByPk(req.user.id);
 
   if (!req.files.length) {
     updated = await User.update(userDetailsToUpdate, {
@@ -138,7 +139,13 @@ exports.updateDetails = async (req, res, next) => {
         .json({ success: false, message: "Recond no modified" });
     }
 
-    return res.status(200).json({ success: true, message: "updated" });
+    return res
+      .status(200)
+      .json({
+        success: true,
+        message: "User information updated successfully",
+        data: { user: userData },
+      });
   }
 
   const { mimetype, filename, path: file_path } = req.files[0];

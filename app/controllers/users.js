@@ -42,11 +42,14 @@ exports.updateUser = asyncHandler(async (req, res) => {
   const id = req.params.userId;
   const newData = req.body;
   const updated = await User.update(newData, { where: { id } });
+  const user = await User.findByPk(id);
   if (!updated) {
-    res.status(404).json({ success: 'false', message: "User not found" });
+    res.status(404).json({ success: "false", message: "User not found" });
     return;
   }
-  res.status(200).json({ success: true, message: "User updated" });
+  res
+    .status(200)
+    .json({ success: true, message: "User updated", data: { user } });
 });
 
 // @desc      Delete user
@@ -56,7 +59,7 @@ exports.deleteUser = asyncHandler(async (req, res) => {
   const id = req.params.userId;
   const deleted = await User.destroy({ where: { id } });
   if (!deleted) {
-    res.status(404).json({success: false, message: "User not found" });
+    res.status(404).json({ success: false, message: "User not found" });
     return;
   }
   res.json({ success: true, message: "User deleted" });

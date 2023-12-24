@@ -18,6 +18,10 @@ const DrugReminder = sequelize.define(
       type: DataTypes.STRING(255),
       allowNull: false,
     },
+    reminder_info: {
+      type: DataTypes.TEXT("long"),
+      allowNull: false,
+    },
     medication_time: {
       type: DataTypes.STRING(45),
       allowNull: false,

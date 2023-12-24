@@ -18,7 +18,11 @@ const WeightLog = sequelize.define(
       type: DataTypes.DATE,
       allowNull: true,
     },
-    weight: {
+    weight_kg: {
+      type: DataTypes.DOUBLE,
+      allowNull: true,
+    },
+    weight_lbs: {
       type: DataTypes.DOUBLE,
       allowNull: true,
     },
@@ -36,6 +40,5 @@ const WeightLog = sequelize.define(
     timestamps: true,
   }
 );
-
 
 module.exports = WeightLog;
