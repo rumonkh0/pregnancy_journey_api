@@ -50,7 +50,6 @@ exports.login = async (req, res, next) => {
     return res.status(404).json({
       success: false,
       message: "Please enter username and password",
-      error: "Please enter username and password",
     });
   }
   //Find user from database
@@ -61,7 +60,6 @@ exports.login = async (req, res, next) => {
     return res.status(404).json({
       success: false,
       message: "User not found",
-      error: "User not found",
     });
   }
 
@@ -72,7 +70,6 @@ exports.login = async (req, res, next) => {
     return res.status(404).json({
       success: false,
       message: "Invalid credential",
-      error: "Invalid credential",
     });
   }
 

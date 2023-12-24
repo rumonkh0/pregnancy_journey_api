@@ -1,11 +1,26 @@
 const Post = require("../../models/community/Post");
 const asyncHandler = require("../../middleware/async");
+const Reaction = require("../../models/community/Reaction");
+const Comment = require("../../models/community/Comment");
 
 // @desc      Get  Post List Of Mother
 // @route     GET /api/v1/babylist
 // @access    Private
 exports.getAllPost = asyncHandler(async (req, res, next) => {
-  const posts = await Post.findAll();
+  const posts = await Post.findAll({
+    include: [
+      {
+        model: Reaction,
+        attributes: ["type", "user_id"],
+        required: false,
+      },
+      {
+        model: Comment,
+        attributes: ["content", "user_id"],
+        required: false,
+      },
+    ],
+  });
   res.json({ success: true, message: "Found posts", data: posts });
 });
 
@@ -14,10 +29,22 @@ exports.getAllPost = asyncHandler(async (req, res, next) => {
 // @access    Private
 exports.getPost = asyncHandler(async (req, res, next) => {
   const id = req.params.id;
-  const post = await Post.findAll({
+  const post = await Post.findOne({
     where: { id },
+    include: [
+      {
+        model: Reaction,
+        attributes: ["type", "user_id"],
+        required: false,
+      },
+      {
+        model: Comment,
+        attributes: ["content", "user_id"],
+        required: false,
+      },
+    ],
   });
-  if (!post.length)
+  if (!post)
     return res.status(404).json({ success: false, message: "Post not found" });
   res.status(200).json({ success: true, message: "Post found", data: post });
 });
