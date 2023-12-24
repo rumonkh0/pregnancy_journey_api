@@ -34,12 +34,12 @@ const Post = sequelize.define(
     },
   },
   {
-    tableName: "Posts", // Define table name explicitly
+    tableName: "posts", // Define table name explicitly
     timestamps: true, // Set to true if you want timestamps
   }
 );
 
-Post.hasMany(Comment, { foreignKey: 'post_id', onDelete: 'CASCADE' });
-Post.hasMany(Reaction, { foreignKey: 'post_id', onDelete: 'CASCADE' });
+Post.hasMany(Comment, { foreignKey: "post_id", onDelete: "CASCADE" });
+Post.hasMany(Reaction, { foreignKey: "post_id", onDelete: "CASCADE" });
 
 module.exports = Post;
