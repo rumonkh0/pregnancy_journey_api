@@ -18,6 +18,21 @@ exports.register = asyncHandler(async (req, res, next) => {
   //   login_type, user_type, subscription, password_reset_token, confirm_email_token, lmp_date,
   // Other fields from req.body
   // } = req.body;
+  let prev = await User.findOne({ where: { email: req.body.email } });
+  if (prev) {
+    return res.status(404).json({
+      success: false,
+      message: "email already exists",
+    });
+  }
+
+  prev = await User.findOne({ where: { username: req.body.username } });
+  if (prev) {
+    return res.status(404).json({
+      success: false,
+      message: "username already exists",
+    });
+  }
 
   req.body.user_type = "user";
   // Create a new user with the data from req.body
@@ -139,13 +154,11 @@ exports.updateDetails = async (req, res, next) => {
         .json({ success: false, message: "Recond no modified" });
     }
 
-    return res
-      .status(200)
-      .json({
-        success: true,
-        message: "User information updated successfully",
-        data: { user: userData },
-      });
+    return res.status(200).json({
+      success: true,
+      message: "User information updated successfully",
+      data: { user: userData },
+    });
   }
 
   const { mimetype, filename, path: file_path } = req.files[0];

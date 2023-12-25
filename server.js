@@ -31,11 +31,15 @@ const mcontraction = require("./app/routes/tools/mother/mother_contraction_time"
 const msymptom = require("./app/routes/tools/mother/mother_symptom");
 const drugReminder = require("./app/routes/tools/mother/drug_reminder");
 const mweight = require("./app/routes/tools/mother/weight");
+const activity = require("./app/routes/tools/mother/mother_activity");
+const antenatalVisit = require("./app/routes/tools/mother/antenatal_visit");
+const postnatalVisit = require("./app/routes/tools/mother/postnatal_visit");
+const mood = require("./app/routes/tools/mother/mother_mood");
+const note = require("./app/routes/tools/mother/note");
 const reactionType = require("./app/routes/community/reactionType");
 const post = require("./app/routes/community/post");
 const comment = require("./app/routes/community/comment");
 const reaction = require("./app/routes/community/reaction");
-// const reaction = require("./app/routes/community/reaction");
 
 const app = express();
 
@@ -73,6 +77,11 @@ app.use("/api/v1/mother/contraction", mcontraction);
 app.use("/api/v1/mother/symptom", msymptom);
 app.use("/api/v1/mother/drugreminder", drugReminder);
 app.use("/api/v1/mother/weight", mweight);
+app.use("/api/v1/mother/activity", activity);
+app.use("/api/v1/mother/antenatalvisit", antenatalVisit);
+app.use("/api/v1/mother/mood", mood);
+app.use("/api/v1/mother/postnatalvisit", postnatalVisit);
+app.use("/api/v1/mother/note", note);
 app.use("/api/v1/reactiontype", reactionType);
 app.use("/api/v1/post", post);
 app.use("/api/v1/comment", comment);

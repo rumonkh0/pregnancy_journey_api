@@ -18,7 +18,7 @@ exports.getHistory = (Model) => {
       });
     }
     // Get the feed history for the specified baby
-    (200).json({ success: true, data });
+    res.status(200).json({ success: true, data });
   });
 };
 
@@ -38,7 +38,13 @@ exports.getOne = (Model) => {
       },
     });
 
-    res.status(200).json({ success: true, message: 'Data found', data });
+    if (!data) {
+      return res
+        .status(200)
+        .json({ success: false, message: "Data not found" });
+    }
+
+    res.status(200).json({ success: true, message: "Data found", data });
   });
 };
 
