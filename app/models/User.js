@@ -66,7 +66,7 @@ const User = sequelize.define(
       validate: {
         len: {
           args: [7],
-          msg: "The password length should be between 7 and 42 characters.",
+          msg: "The password length should be between at least 7 characters.",
         },
       },
     },
