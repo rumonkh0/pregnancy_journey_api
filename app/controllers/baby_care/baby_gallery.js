@@ -73,8 +73,9 @@ exports.getOne = asyncHandler(async (req, res, next) => {
 // @route     POST /api/v1/babygallery
 // @access    Private
 exports.createBabyGallery = asyncHandler(async (req, res, next) => {
+  
   if (!req.file)
-    return res.status(200).json({ success: true, message: "please insert an image" });
+    return res.status(200).json({ success: false, message: "please insert an image" });
   const { mimetype, filename, path: file_path } = req.file;
 
   req.body.image = req.file.path;
