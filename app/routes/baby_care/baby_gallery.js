@@ -41,7 +41,7 @@ const upload = multer({
   //   if (file.mimetype.startsWith("image")) {
   //     cb(null, true);
   //   } else {
-  //     cb(null, false);
+  //     cb(new Error('Invalid file type. Only octet-stream files are allowed.'));
   //   }
   // },
   limits: {
@@ -55,14 +55,14 @@ router.post(
   "/:babyId",
   protect,
   checkBabyOwner,
-  upload.single('baby_Image_file'),
+  upload.single("baby_Image_file"),
   createBabyGallery
 );
 router.put(
   "/:babyId/:modelPk",
   protect,
   checkBabyOwner,
-  upload.single('baby_Image_file'),
+  upload.single("baby_Image_file"),
   updateBabyGallery
 );
 router.get("/:babyId", protect, checkBabyOwner, getAll);
