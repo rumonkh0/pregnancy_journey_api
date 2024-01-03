@@ -59,7 +59,7 @@ router.post("/register", register);
 router.post("/login", login);
 router.get("/logout", logout);
 router.get("/me", protect, getMe);
-router.put("/updatedetails", protect, upload.any(), updateDetails);
+router.put("/updatedetails", protect, upload.single('user_image_field'), updateDetails);
 router.put("/updatepassword", protect, updatePassword);
 router.post("/forgotpassword", forgotPassword);
 router.put("/resetpassword/", resetPassword);

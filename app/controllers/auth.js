@@ -141,7 +141,7 @@ exports.updateDetails = async (req, res, next) => {
   }
   const userData = await User.findByPk(req.user.id);
 
-  if (!req.files.length) {
+  if (!req.files) {
     updated = await User.update(userDetailsToUpdate, {
       where: {
         id: req.user.id,
@@ -161,7 +161,7 @@ exports.updateDetails = async (req, res, next) => {
     });
   }
 
-  const { mimetype, filename, path: file_path } = req.files[0];
+  const { mimetype, filename, path: file_path } = req.file;
   req.media = {
     uploaded_by: req.user.username,
     file_path,
@@ -190,8 +190,8 @@ exports.updateDetails = async (req, res, next) => {
       await Media.destroy({ where: { id: user.photo } });
     }
   } catch (err) {
-    if (req.files && req.files[0] && req.files[0].path) {
-      const filePath = req.files[0].path;
+    if (req.file && req.file && req.file.path) {
+      const filePath = req.file.path;
       await unlinkAsync(filePath);
       console.log("File removed:", filePath);
     }

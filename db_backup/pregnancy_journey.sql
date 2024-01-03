@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Dec 24, 2023 at 02:25 PM
+-- Generation Time: Jan 03, 2024 at 06:15 AM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.0.30
 
@@ -20,6 +20,27 @@ SET time_zone = "+00:00";
 --
 -- Database: `pregnancy_journey`
 --
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `antenatal_visit`
+--
+
+CREATE TABLE `antenatal_visit` (
+  `id` int(11) NOT NULL,
+  `user_id` int(10) UNSIGNED NOT NULL,
+  `visit_type` varchar(255) NOT NULL,
+  `doctor_name` varchar(255) NOT NULL,
+  `visit_no` int(11) NOT NULL,
+  `hospital_address` varchar(255) NOT NULL,
+  `receptionist` varchar(255) NOT NULL,
+  `mobile` int(20) NOT NULL,
+  `visit_date` datetime NOT NULL,
+  `remarks` varchar(255) NOT NULL,
+  `updatedAt` datetime NOT NULL,
+  `createdAt` datetime NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
 
@@ -149,7 +170,8 @@ INSERT INTO `baby_gallery` (`id`, `file_id`, `baby_id`, `image`, `image_title`, 
 (3, 5, 27, 'public\\uploads\\baby\\file-1701281617905.jpg', 'first photo', '2023-11-29 18:13:37', '2023-11-29 18:13:37'),
 (4, 1, 27, 'public\\uploads\\baby\\file-1701281619081.jpg', 'first photo', '2023-11-29 18:13:39', '2023-11-29 18:13:39'),
 (5, 5, 27, 'public\\uploads\\baby\\file-1701428051879.png', 'first photo', '2023-12-01 10:54:11', '2023-12-01 10:54:11'),
-(6, 0, 27, 'public\\uploads\\baby\\file-1701715188194.png', 'first photo', '2023-12-04 18:39:48', '2023-12-04 18:39:48');
+(6, 0, 27, 'public\\uploads\\baby\\file-1701715188194.png', 'first photo', '2023-12-04 18:39:48', '2023-12-04 18:39:48'),
+(8, 3, 30, 'public\\uploads\\baby\\file-jinia-1704258886978.jpg', 'awew', '2024-01-03 05:14:47', '2024-01-03 05:14:47');
 
 -- --------------------------------------------------------
 
@@ -181,7 +203,9 @@ INSERT INTO `baby_list` (`id`, `mother_id`, `name`, `photo`, `baby_serial`, `gen
 (23, 12, 'Baby3', 'baby3.jpg', 1, 'male', '2023-05-20 00:00:00', '2023-06-01 00:00:00', '2023-06-15 00:00:00', '2023-02-01 00:00:00', NULL),
 (24, 12, 'Baby4', 'baby4.jpg', 2, 'female', '2023-07-25 00:00:00', '2023-08-05 00:00:00', '2023-08-20 00:00:00', '2023-02-01 00:00:00', NULL),
 (25, 13, 'Baby5', 'baby5.jpg', 1, 'male', '2023-09-30 00:00:00', '2023-10-15 00:00:00', '2023-10-30 00:00:00', '2023-02-01 00:00:00', NULL),
-(27, 12, 'arman baby', 'baby1.jpg', 1, 'male', '2023-01-10 00:00:00', '2023-01-20 00:00:00', '2023-02-01 00:00:00', '2023-11-29 11:44:06', '2023-11-29 11:44:06');
+(27, 12, 'arman baby', 'baby1.jpg', 1, 'male', '2023-01-10 00:00:00', '2023-01-20 00:00:00', '2023-02-01 00:00:00', '2023-11-29 11:44:06', '2023-11-29 11:44:06'),
+(30, 40, 'arman baby 1', NULL, 1, 'male', '2023-01-10 00:00:00', NULL, NULL, '2024-01-03 05:08:30', '2024-01-03 05:08:30'),
+(31, 40, 'arman baby 2', NULL, 1, 'male', '2023-01-10 00:00:00', NULL, NULL, '2024-01-03 05:08:40', '2024-01-03 05:08:40');
 
 -- --------------------------------------------------------
 
@@ -436,6 +460,7 @@ CREATE TABLE `drug_reminder` (
   `name` varchar(255) NOT NULL,
   `dose` varchar(255) NOT NULL,
   `medication_time` varchar(45) NOT NULL,
+  `reminder_info` longtext DEFAULT NULL,
   `created_at` datetime NOT NULL,
   `user_id` int(10) UNSIGNED NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
@@ -444,9 +469,24 @@ CREATE TABLE `drug_reminder` (
 -- Dumping data for table `drug_reminder`
 --
 
-INSERT INTO `drug_reminder` (`id`, `name`, `dose`, `medication_time`, `created_at`, `user_id`) VALUES
-(1, 'Ibuprofen', '200mg', '8:00 AM', '2023-12-04 15:46:14', 12),
-(2, 'napa ace', '200mg', '8:00 AM', '2023-12-04 15:47:00', 12);
+INSERT INTO `drug_reminder` (`id`, `name`, `dose`, `medication_time`, `reminder_info`, `created_at`, `user_id`) VALUES
+(1, 'Ibuprofen', '200mg', '8:00 AM', NULL, '2023-12-04 15:46:14', 12),
+(2, 'napa ace', '200mg', '8:00 AM', NULL, '2023-12-04 15:47:00', 12);
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `drug_slider`
+--
+
+CREATE TABLE `drug_slider` (
+  `id` int(11) NOT NULL,
+  `title` varchar(255) NOT NULL,
+  `media` int(11) NOT NULL,
+  `link` varchar(255) DEFAULT NULL,
+  `createdAt` datetime NOT NULL,
+  `updatedAt` datetime NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
 
@@ -507,7 +547,75 @@ CREATE TABLE `media` (
 --
 
 INSERT INTO `media` (`id`, `uploaded_by`, `file_name`, `file_path`, `file_type`, `mime_type`, `createdAt`, `updatedAt`) VALUES
-(1, 'user', 'asdfas.jpg', 'public/upload/baby/path/image', 'image', 'image/jpg', '2023-12-01 03:28:36', '2023-12-01 12:28:36');
+(1, 'user', 'asdfas.jpg', 'public/upload/baby/path/image', 'image', 'image/jpg', '2023-12-01 03:28:36', '2023-12-01 12:28:36'),
+(2, 'jinia', 'file-jinia-1704258616845.jpg', 'public\\uploads\\baby\\file-jinia-1704258616845.jpg', 'jpg', 'image/jpeg', '2024-01-03 05:10:16', '2024-01-03 05:10:16'),
+(3, 'jinia', 'file-jinia-1704258886978.jpg', 'public\\uploads\\baby\\file-jinia-1704258886978.jpg', 'jpg', 'image/jpeg', '2024-01-03 05:14:46', '2024-01-03 05:14:46');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `mother_activity`
+--
+
+CREATE TABLE `mother_activity` (
+  `id` int(11) NOT NULL,
+  `user_id` int(10) UNSIGNED NOT NULL,
+  `activity` varchar(255) NOT NULL,
+  `createdAt` datetime NOT NULL,
+  `updatedAt` datetime NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `mother_activity`
+--
+
+INSERT INTO `mother_activity` (`id`, `user_id`, `activity`, `createdAt`, `updatedAt`) VALUES
+(1, 12, 'Yoga session', '2023-12-25 11:37:27', '2023-12-25 11:37:27'),
+(3, 12, 'chill', '2023-12-25 11:37:47', '2023-12-25 11:37:47'),
+(4, 12, 'cooking', '2023-12-25 11:37:53', '2023-12-25 11:37:53'),
+(5, 12, 'flying', '2023-12-25 11:37:58', '2023-12-25 11:37:58'),
+(6, 12, 'tour', '2023-12-25 11:38:10', '2023-12-25 11:38:10'),
+(7, 12, 'aldksfjalkdfj', '2023-12-25 11:39:05', '2023-12-25 11:39:05'),
+(8, 12, 'reading', '2023-12-25 11:39:26', '2023-12-25 11:39:26'),
+(9, 12, 'reading', '2023-11-21 08:00:00', '2023-12-25 11:40:58'),
+(11, 12, 'valo', '0000-00-00 00:00:00', '2023-12-25 11:41:58'),
+(12, 12, 'valo', '2023-06-21 08:00:00', '2023-12-25 11:42:48'),
+(13, 12, 'chill', '2023-05-21 08:00:00', '2023-12-25 11:43:00'),
+(14, 12, 'farm', '2023-01-21 08:00:00', '2023-12-25 11:43:12'),
+(15, 12, 'invest', '2023-02-21 08:00:00', '2023-12-25 11:43:36'),
+(16, 12, 'invest', '2023-05-21 08:00:00', '2023-12-25 11:43:59'),
+(17, 12, 'invest', '2023-06-21 08:00:00', '2023-12-25 11:44:12'),
+(18, 12, 'invest', '2023-06-21 08:00:00', '2023-12-25 11:44:23');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `mother_mood_trackers`
+--
+
+CREATE TABLE `mother_mood_trackers` (
+  `id` int(11) NOT NULL,
+  `user_id` int(10) UNSIGNED NOT NULL,
+  `mood_time` datetime NOT NULL,
+  `current_mood` varchar(255) NOT NULL,
+  `createdAt` datetime NOT NULL,
+  `updatedAt` datetime NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `mother_mood_trackers`
+--
+
+INSERT INTO `mother_mood_trackers` (`id`, `user_id`, `mood_time`, `current_mood`, `createdAt`, `updatedAt`) VALUES
+(1, 39, '2023-12-21 08:00:00', 'angry', '2023-12-25 11:14:10', '2023-12-25 11:15:00'),
+(2, 39, '2023-12-21 08:00:00', 'sad', '2023-12-25 11:15:06', '2023-12-25 11:15:06'),
+(3, 39, '2023-12-21 08:00:00', 'Happy', '2023-12-25 11:15:09', '2023-12-25 11:15:09'),
+(4, 39, '2023-12-21 08:00:00', 'anoxious', '2023-12-25 11:15:18', '2023-12-25 11:15:18'),
+(5, 39, '2023-12-21 08:00:00', 'vallage na', '2023-12-25 11:15:23', '2023-12-25 11:15:23'),
+(6, 39, '2023-12-21 08:00:00', 'vallage', '2023-12-25 11:15:27', '2023-12-25 11:15:27'),
+(7, 39, '2023-12-21 08:00:00', 'chill', '2023-12-25 11:15:30', '2023-12-25 11:15:30'),
+(8, 39, '2023-12-21 08:00:00', 'urtechi', '2023-12-25 11:15:35', '2023-12-25 11:15:35'),
+(9, 12, '2023-12-21 08:00:00', 'urtechi', '2023-12-25 11:20:00', '2023-12-25 11:20:00');
 
 -- --------------------------------------------------------
 
@@ -551,12 +659,59 @@ INSERT INTO `mother_vaccine_reminders` (`id`, `user_id`, `name`, `vaccine_date`,
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `notes`
+--
+
+CREATE TABLE `notes` (
+  `id` int(11) NOT NULL,
+  `user_id` int(10) UNSIGNED NOT NULL,
+  `title` varchar(255) NOT NULL,
+  `description` longtext NOT NULL,
+  `deadline` datetime DEFAULT NULL,
+  `status` int(11) NOT NULL DEFAULT 0,
+  `createdAt` datetime NOT NULL,
+  `updatedAt` datetime NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `notes`
+--
+
+INSERT INTO `notes` (`id`, `user_id`, `title`, `description`, `deadline`, `status`, `createdAt`, `updatedAt`) VALUES
+(1, 39, 'first note', 'All text goes here.. bye bye long text', '2023-12-31 23:59:59', 1, '2023-12-25 11:01:47', '2023-12-25 11:01:47'),
+(3, 39, 'first note', 'All text goes here.. bye bye long text', '2023-12-31 23:59:59', 1, '2023-12-25 11:08:07', '2023-12-25 11:08:07'),
+(4, 39, 'first note', 'All text goes here.. bye bye long text', '2023-12-31 23:59:59', 1, '2023-12-25 11:08:08', '2023-12-25 11:08:08');
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `postmedia`
 --
 
 CREATE TABLE `postmedia` (
   `post_id` int(11) NOT NULL,
   `media_id` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `postnatal_visit`
+--
+
+CREATE TABLE `postnatal_visit` (
+  `id` int(11) NOT NULL,
+  `user_id` int(10) UNSIGNED NOT NULL,
+  `visit_type` varchar(255) NOT NULL,
+  `doctor_name` varchar(255) NOT NULL,
+  `visit_no` int(11) NOT NULL,
+  `hospital_address` varchar(255) NOT NULL,
+  `receptionist` varchar(255) NOT NULL,
+  `mobile` int(20) NOT NULL,
+  `visit_date` datetime NOT NULL,
+  `remarks` varchar(255) NOT NULL,
+  `updatedAt` datetime NOT NULL,
+  `createdAt` datetime NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
@@ -762,26 +917,23 @@ CREATE TABLE `users` (
 
 INSERT INTO `users` (`id`, `social_id`, `username`, `first_name`, `last_name`, `age`, `gender`, `photo`, `social_photo`, `child_number`, `edd_date`, `email`, `password`, `language`, `country`, `pregnency_loss`, `baby_already_born`, `login_type`, `user_type`, `subscription`, `password_reset_token`, `reset_password_expire`, `confirm_email_token`, `is_email_confirmed`, `is_profile_complete`, `lmp_date`, `createdAt`, `updatedAt`) VALUES
 (1, NULL, 'newUser', 'Sam', 'Johnson', 28, 1, 'user_photo.jpg', NULL, 2, '2023-12-15 00:00:00', 'newuser@email.com', '$2b$10$wKOyz0WONapbY61aUAVfaOMgvDAj54/HxE0YElJBPv8FCH10s09YS', 'English', NULL, NULL, 1, 'email', 'general_user', 'free', '88829178b29618b9947da913fde23b950bec8cef33caa86a1e641390db055ab6', NULL, NULL, '0', 0, '2023-01-01 00:00:00', '2023-11-26 10:05:05', '2023-11-26 13:27:06'),
-(4, NULL, 'mahbub', 'mela', 'reza', 28, 1, 'user_photo.jpg', NULL, 2, '2023-12-15 00:00:00', 'newuser@email.com', 'newPassword', 'English', NULL, NULL, 1, 'email', 'general_user', 'free', 'resetToken123', NULL, NULL, '0', 0, '2023-01-01 00:00:00', '2023-11-26 10:10:11', '2023-11-26 10:10:11'),
-(5, NULL, 'mahbub', 'mela', 'reza', 28, 1, 'user_photo.jpg', NULL, 2, '2023-12-15 00:00:00', 'newuser@email.com', 'newPassword', 'English', NULL, NULL, 1, 'email', 'general_user', 'free', 'resetToken123', NULL, NULL, '0', 0, '2023-01-01 00:00:00', '2023-11-26 10:10:36', '2023-11-26 10:10:36'),
-(6, NULL, 'hasan', 'hasu', 'reza', 28, 1, 'user_photo.jpg', NULL, 2, '2023-12-15 00:00:00', 'newuser@email.com', '$2b$10$g2mg/6jNBgvQQ96abgCK7OY5Q1PlETEDs..p9.hyrbSORi4PmeqEe', 'English', NULL, NULL, 1, 'email', 'general_user', 'free', '$2b$10$anuZk7v.Rbx5CGyV33hMAe1iQzwZG4Nm1mWtOpoWt0pYNrdQUTMje', 'Tue Nov 28 2023 18:27:38 GMT+0600 (Bangladesh Standard Time)600000', NULL, '0', 0, '2023-01-01 00:00:00', '2023-11-26 10:11:07', '2023-11-28 12:29:50'),
-(7, NULL, 'kamal', 'kalu', 'reza', 28, 1, 'user_photo.jpg', NULL, 2, '2023-12-15 00:00:00', 'newuser@email.com', '$2b$10$M5LSsfNStlqUq/XHRL5qS.FsRwSZ3Tsgze.569oFqgum5Q2kTbq3S', 'English', NULL, NULL, 1, 'email', 'general_user', 'free', '2f1cbc7873708f75f944e1c39831f55cd37e0d5d4d58f900b63c66c6cfd3b286', 'Sun Nov 26 2023 23:02:41 GMT+0600 (Bangladesh Standard Time)600000', NULL, '0', 0, '2023-01-01 00:00:00', '2023-11-26 10:28:12', '2023-11-26 17:03:22'),
-(8, NULL, 'salam', 'kalu', 'reza', 28, 1, 'user_photo.jpg', NULL, 2, '2023-12-15 00:00:00', 'newuser@email.com', '$2b$10$D71ODxKMjsS8cvGgF7i0bOXtQnXUBls8NLdWGJTLoHTXUB.0mIoqW', 'English', NULL, NULL, 1, 'email', 'general_user', 'free', '$2b$10$xArq5CdhaICbny6WmtMtAOK1b0WKzY8eUsnltw4BYF/k2kslRS/HW', 'Tue Nov 28 2023 22:46:03 GMT+0600 (Bangladesh Standard Time)600000', NULL, '0', 0, '2023-01-01 00:00:00', '2023-11-26 10:30:17', '2023-11-28 16:46:38'),
-(9, NULL, 'mala', 'kalu', 'reza', 28, 1, 'user_photo.jpg', NULL, 2, '2023-12-15 00:00:00', 'newuser@email.com', '000', 'English', NULL, NULL, 1, 'email', 'general_user', 'free', 'resetToken123', NULL, NULL, '0', 0, '2023-01-01 00:00:00', '2023-11-26 10:30:39', '2023-11-26 10:30:39'),
-(10, NULL, 'dala', 'kalu', 'reza', 28, 1, 'user_photo.jpg', NULL, 2, '2023-12-15 00:00:00', 'newuser@email.com', '000', 'English', NULL, NULL, 1, 'email', 'general_user', 'free', 'resetToken123', NULL, NULL, '0', 0, '2023-01-01 00:00:00', '2023-11-26 10:33:34', '2023-11-26 10:33:34'),
-(11, NULL, 'jala', 'kalu', 'reza', 28, 1, 'user_photo.jpg', NULL, 2, '2023-12-15 00:00:00', 'newuser@email.com', '000', 'English', NULL, NULL, 1, 'email', 'general_user', 'free', 'resetToken123', NULL, NULL, '0', 0, '2023-01-01 00:00:00', '2023-11-26 10:38:54', '2023-11-26 10:38:54'),
+(4, NULL, 'mahbub', 'mela', 'reza', 28, 1, 'user_photo.jpg', NULL, 2, '2023-12-15 00:00:00', 'newuser@email.com1', 'newPassword', 'English', NULL, NULL, 1, 'email', 'general_user', 'free', 'resetToken123', NULL, NULL, '0', 0, '2023-01-01 00:00:00', '2023-11-26 10:10:11', '2023-11-26 10:10:11'),
+(6, NULL, 'hasan', 'hasu', 'reza', 28, 1, 'user_photo.jpg', NULL, 2, '2023-12-15 00:00:00', 'newuser@1email.com', '$2b$10$g2mg/6jNBgvQQ96abgCK7OY5Q1PlETEDs..p9.hyrbSORi4PmeqEe', 'English', NULL, NULL, 1, 'email', 'general_user', 'free', '$2b$10$anuZk7v.Rbx5CGyV33hMAe1iQzwZG4Nm1mWtOpoWt0pYNrdQUTMje', 'Tue Nov 28 2023 18:27:38 GMT+0600 (Bangladesh Standard Time)600000', NULL, '0', 0, '2023-01-01 00:00:00', '2023-11-26 10:11:07', '2023-11-28 12:29:50'),
+(7, NULL, 'kamal', 'kalu', 'reza', 28, 1, 'user_photo.jpg', NULL, 2, '2023-12-15 00:00:00', 'new1user@email.com', '$2b$10$M5LSsfNStlqUq/XHRL5qS.FsRwSZ3Tsgze.569oFqgum5Q2kTbq3S', 'English', NULL, NULL, 1, 'email', 'general_user', 'free', '2f1cbc7873708f75f944e1c39831f55cd37e0d5d4d58f900b63c66c6cfd3b286', 'Sun Nov 26 2023 23:02:41 GMT+0600 (Bangladesh Standard Time)600000', NULL, '0', 0, '2023-01-01 00:00:00', '2023-11-26 10:28:12', '2023-11-26 17:03:22'),
+(9, NULL, 'mala', 'kalu', 'reza', 28, 1, 'user_photo.jpg', NULL, 2, '2023-12-15 00:00:00', 'newuser@email.co1m', '000', 'English', NULL, NULL, 1, 'email', 'general_user', 'free', 'resetToken123', NULL, NULL, '0', 0, '2023-01-01 00:00:00', '2023-11-26 10:30:39', '2023-11-26 10:30:39'),
+(10, NULL, 'dala', 'kalu', 'reza', 28, 1, 'user_photo.jpg', NULL, 2, '2023-12-15 00:00:00', 'ne1wuser@email.com', '000', 'English', NULL, NULL, 1, 'email', 'general_user', 'free', 'resetToken123', NULL, NULL, '0', 0, '2023-01-01 00:00:00', '2023-11-26 10:33:34', '2023-11-26 10:33:34'),
+(11, NULL, 'jala', 'kalu', 'reza', 28, 1, 'user_photo.jpg', NULL, 2, '2023-12-15 00:00:00', 'n1ewuser@email.com', '000', 'English', NULL, NULL, 1, 'email', 'general_user', 'free', 'resetToken123', NULL, NULL, '0', 0, '2023-01-01 00:00:00', '2023-11-26 10:38:54', '2023-11-26 10:38:54'),
 (12, NULL, 'shapla', 'shapla', 'jahan', 21, 1, 'user_photo.jpg', NULL, 1, '2023-12-15 00:00:00', 'shapla@email.com', '$2b$10$a.2MqcV5L1XlcROdV2dpDOvzO9in9wMCZX2rEWiAPHP9759PgWQx.', 'Bangla', NULL, NULL, 1, 'email', 'general_user', 'free', '8d216e62a0af344ecb1efb8a6a43f1101da31e2d5c78a012f94e2a0e0dbf62b3', NULL, NULL, '0', 0, '2023-01-01 00:00:00', '2023-11-26 10:41:15', '2023-11-28 17:34:13'),
-(13, NULL, 'maria', 'maria', 'haque', 28, 1, 'user_photo.jpg', NULL, 2, '2023-12-15 00:00:00', 'newuser@email.com', '$2b$10$IXE4yE.8rdVTKsd9WjgMt.mQS6XKm2LDqwl6qCfW8xwKIKYTAVkvm', 'English', NULL, NULL, 1, 'email', 'general_user', 'free', 'resetToken123', NULL, NULL, '0', 0, '2023-01-01 00:00:00', '2023-11-26 14:11:28', '2023-11-26 14:11:28'),
-(14, NULL, 'golu', 'kalu', 'reza', 28, 1, NULL, NULL, 2, '2023-12-15 00:00:00', 'newuser@email.com', '$2b$10$otm.uhl0i4Nm1F4OrxlY7uOF2u4ZDG566JRiYHLHV.gp1aKSznvFm', 'English', NULL, NULL, 1, 'email', 'general_user', 'free', 'resetToken123', NULL, '337bf1c5d6636747cceb47dd1293ac0959f6e7bcddc93f1855b49ce334fe15df', '0', 0, '2023-01-01 00:00:00', '2023-11-26 16:51:42', '2023-11-26 16:51:42'),
-(15, NULL, 'takla', 'kalu', 'reza', 28, 1, NULL, NULL, 2, '2023-12-15 00:00:00', 'newuser@email.com', '$2b$10$cEaRkVxh1VcybTnI9bJAuullxB7ziH3kqLNao.N63hrtQWxM1/Yvi', 'English', NULL, NULL, 1, 'email', 'general_user', 'free', 'resetToken123', NULL, 'ac5f9f66b8659a180615b5935622497d8f8b8f890e04ccc749ec0e26aca5e762', '0', 0, '2023-01-01 00:00:00', '2023-11-26 17:21:47', '2023-11-26 17:21:47'),
-(16, NULL, 'takla', 'kalu', 'reza', 28, 1, NULL, NULL, 2, '2023-12-15 00:00:00', 'newuser@email.com', '$2b$10$BGaxUfXfFSbR3okQHQuZUe59uEzfjHHSyCZ39KN/6dKpOzRsO0ame', 'English', NULL, NULL, 1, 'email', 'general_user', 'free', 'resetToken123', NULL, '8f0d928115f31c474fa17fd04cc2c5edd0678221bf0e3faac4a253a0b4e12f18', '0', 0, '2023-01-01 00:00:00', '2023-11-26 17:21:56', '2023-11-26 17:21:56'),
-(17, NULL, 'takla', 'kalu', 'reza', NULL, 1, NULL, NULL, 2, '2023-12-15 00:00:00', 'newuser@email.com', '$2b$10$GJbk6atwhOEkjeFsrniS/.V/pqdjjzVyjITuIHLlc25OJIlwwsoHe', 'English', NULL, NULL, 1, 'email', 'general_user', 'free', 'resetToken123', NULL, 'cdea7eb11a7e3ce9a55dd5cf31667260ded52e91a46070b3db8ae890aca2715d', '0', 0, '2023-01-01 00:00:00', '2023-11-26 17:22:59', '2023-11-26 17:22:59'),
-(18, NULL, 'golu', 'kalu', 'reza', NULL, NULL, NULL, NULL, NULL, NULL, 'newuser@email.com', '$2b$10$enz9wM3VEupTpJsc3rtMueHYO/mJx20vSMS9Vxs4e7vMY6OCfJdeO', NULL, NULL, NULL, 0, '', 'general_user', 'Free', NULL, NULL, NULL, '0', 0, '0000-00-00 00:00:00', '2023-11-28 17:57:35', '2023-11-28 17:57:35'),
-(19, NULL, 'golu', 'kalu', 'reza', NULL, NULL, NULL, NULL, NULL, NULL, 'newuser@email.com', '$2b$10$05Ij2zaoHx4oTbFJAUKu8uI8YFMvPewiL0D9wI9BPu720cVnmXmOi', NULL, NULL, NULL, 0, '', 'general_user', 'Free', NULL, NULL, '888c96b07df8f54fb2e38c4e26ccf98e754a2c66bde0ca7393e79c699db2e9a2', '0', 0, '0000-00-00 00:00:00', '2023-11-28 17:58:20', '2023-11-28 17:58:20'),
-(20, NULL, 'arman', 'arman', 'akt', NULL, NULL, NULL, NULL, NULL, NULL, 'newuser@email.com', '$2b$10$SUks2UpGEX5X9n3543kKqeA4MjyDQlID94A2nW4VSLDkOxqBw0rqa', NULL, NULL, NULL, 0, '', 'general_user', 'Free', '$2b$10$HM7sJOwaW3H22wUh8158I.SpWrdGyxUwLXbnOmplr2aNQ4BNvQ.EK', 'Tue Nov 28 2023 23:22:28 GMT+0600 (Bangladesh Standard Time)600000', NULL, '1', 0, '0000-00-00 00:00:00', '2023-11-28 17:22:27', '2023-11-28 17:28:56'),
-(21, NULL, 'nasim', 'nasim', 'akt', NULL, NULL, NULL, NULL, NULL, NULL, 'newuser@email.com', '$2b$10$SiCSJNyNkDHhLCrHbkNSnOYj3XtT9rKP.sxHRVRI6k5hYSH5XBq8O', NULL, NULL, NULL, 0, '', 'general_user', 'Free', '$2b$10$rQD/hYiRAz..BR/7zMUHnOB8Ga/Dq36Z8Zj1pGw8rPtBLMnZXQwJy', 'Tue Nov 28 2023 23:31:22 GMT+0600 (Bangladesh Standard Time)600000', NULL, '1', 0, '0000-00-00 00:00:00', '2023-11-28 17:31:22', '2023-11-28 17:32:04'),
+(13, NULL, 'maria', 'maria', 'haque', 28, 1, 'user_photo.jpg', NULL, 2, '2023-12-15 00:00:00', 'new2user@email.com', '$2b$10$IXE4yE.8rdVTKsd9WjgMt.mQS6XKm2LDqwl6qCfW8xwKIKYTAVkvm', 'English', NULL, NULL, 1, 'email', 'general_user', 'free', 'resetToken123', NULL, NULL, '0', 0, '2023-01-01 00:00:00', '2023-11-26 14:11:28', '2023-11-26 14:11:28'),
+(14, NULL, 'golu', 'kalu', 'reza', 28, 1, NULL, NULL, 2, '2023-12-15 00:00:00', 'newus2er@email.com', '$2b$10$otm.uhl0i4Nm1F4OrxlY7uOF2u4ZDG566JRiYHLHV.gp1aKSznvFm', 'English', NULL, NULL, 1, 'email', 'general_user', 'free', 'resetToken123', NULL, '337bf1c5d6636747cceb47dd1293ac0959f6e7bcddc93f1855b49ce334fe15df', '0', 0, '2023-01-01 00:00:00', '2023-11-26 16:51:42', '2023-11-26 16:51:42'),
+(15, NULL, 'takla', 'kalu', 'reza', 28, 1, NULL, NULL, 2, '2023-12-15 00:00:00', 'newuser@email.com2', '$2b$10$cEaRkVxh1VcybTnI9bJAuullxB7ziH3kqLNao.N63hrtQWxM1/Yvi', 'English', NULL, NULL, 1, 'email', 'general_user', 'free', 'resetToken123', NULL, 'ac5f9f66b8659a180615b5935622497d8f8b8f890e04ccc749ec0e26aca5e762', '0', 0, '2023-01-01 00:00:00', '2023-11-26 17:21:47', '2023-11-26 17:21:47'),
+(20, NULL, 'arman', 'arman', 'akt', NULL, NULL, NULL, NULL, NULL, NULL, 'ne2wuser@email.com', '$2b$10$SUks2UpGEX5X9n3543kKqeA4MjyDQlID94A2nW4VSLDkOxqBw0rqa', NULL, NULL, NULL, 0, '', 'general_user', 'Free', '$2b$10$HM7sJOwaW3H22wUh8158I.SpWrdGyxUwLXbnOmplr2aNQ4BNvQ.EK', 'Tue Nov 28 2023 23:22:28 GMT+0600 (Bangladesh Standard Time)600000', NULL, '1', 0, '0000-00-00 00:00:00', '2023-11-28 17:22:27', '2023-11-28 17:28:56'),
+(21, NULL, 'nasim', 'nasim', 'akt', NULL, NULL, NULL, NULL, NULL, NULL, 'newu3ser@email.com', '$2b$10$SiCSJNyNkDHhLCrHbkNSnOYj3XtT9rKP.sxHRVRI6k5hYSH5XBq8O', NULL, NULL, NULL, 0, '', 'general_user', 'Free', '$2b$10$rQD/hYiRAz..BR/7zMUHnOB8Ga/Dq36Z8Zj1pGw8rPtBLMnZXQwJy', 'Tue Nov 28 2023 23:31:22 GMT+0600 (Bangladesh Standard Time)600000', NULL, '1', 0, '0000-00-00 00:00:00', '2023-11-28 17:31:22', '2023-11-28 17:32:04'),
 (30, '114657009973842993825', '114657009973842993825', 'MD ARMAN', 'KHAN', NULL, NULL, NULL, 'https://lh3.googleusercontent.com/a/ACg8ocJxjv44djn0ndB5-VJnKNwD8YQS8qhqQfi_A3SB9qXgXw=s96-c', NULL, NULL, 'arman.khan.dev@gmail.com', NULL, NULL, NULL, NULL, 0, 'google', 'general_user', 'Free', NULL, NULL, NULL, '0', 0, '0000-00-00 00:00:00', '2023-12-04 18:29:49', '2023-12-04 18:29:49'),
-(31, '114579153302679689136', '114579153302679689136', 'Md Rumman', 'Khan', NULL, NULL, NULL, 'https://lh3.googleusercontent.com/a/ACg8ocIaZuf9JaL4l-y0WBvm_9Yc5MW_s2RzumOb1ZmqjT9-bQ=s96-c', NULL, NULL, 'rummankh0@gmail.com', NULL, NULL, NULL, NULL, 0, 'google', 'general_user', 'Free', NULL, NULL, NULL, '0', 0, '0000-00-00 00:00:00', '2023-12-04 18:35:49', '2023-12-04 18:35:49');
+(31, '114579153302679689136', '114579153302679689136', 'Md Rumman', 'Khan', NULL, NULL, NULL, 'https://lh3.googleusercontent.com/a/ACg8ocIaZuf9JaL4l-y0WBvm_9Yc5MW_s2RzumOb1ZmqjT9-bQ=s96-c', NULL, NULL, 'rummankh0@gmail.com', NULL, NULL, NULL, NULL, 0, 'google', 'general_user', 'Free', NULL, NULL, NULL, '0', 0, '0000-00-00 00:00:00', '2023-12-04 18:35:49', '2023-12-04 18:35:49'),
+(35, NULL, 'nasuim', 'nasim', 'akt', NULL, NULL, NULL, NULL, NULL, NULL, 'NASI@email.com', '$2b$10$xgNG5Xusu6dH7.QeGCPucOUUw/X.g2N6gYYiIGG1IdlTsOBKmZS9C', NULL, NULL, NULL, 0, 'email', 'user', 'Free', '$2b$10$.O.URlmVsuu9syKB3OjukOI2gE0wNK2VsI5EoZmbg0MdIt9FWEZ8a', 'Mon Dec 25 2023 13:49:30 GMT+0600 (Bangladesh Standard Time)600000', NULL, '0', 0, '0000-00-00 00:00:00', '2023-12-25 07:49:30', '2023-12-25 07:49:30'),
+(39, NULL, 'nasussdfsdim', 'nasim', 'akt', NULL, NULL, NULL, NULL, NULL, NULL, 'NASIs@email.com', '$2b$10$JGE0IRsVZp/NVn0FBq4x/OLH3nzcBffUsTz2e6ODGkA5VWrHMVCny', NULL, NULL, NULL, 0, 'email', 'user', 'Free', '$2b$10$uOYCYoQLTPhpMdx6BfqqGOz255I1ItT3PXgjyrYvt2Mf4Qd/j4p2W', 'Mon Dec 25 2023 16:23:02 GMT+0600 (Bangladesh Standard Time)600000', NULL, '0', 0, '0000-00-00 00:00:00', '2023-12-25 10:23:02', '2023-12-25 10:23:02'),
+(40, NULL, 'jinia', 'jinia', 'banu', NULL, NULL, NULL, NULL, NULL, NULL, 'jinia@email.com', '$2b$10$9haLO05ClYHrtZa9BKGYoOb.DHncgsDqdCug1RSzgTkXUtL5EBq/m', NULL, NULL, NULL, 0, 'email', 'user', 'Free', '$2b$10$RZRVxwooajNtkU6uE2uJ7OlpnD9dWhxlGapyAQsz6EbUHb1yET5QO', 'Wed Jan 03 2024 10:45:16 GMT+0600 (Bangladesh Standard Time)600000', NULL, '0', 0, '0000-00-00 00:00:00', '2024-01-03 04:45:15', '2024-01-03 04:45:16');
 
 -- --------------------------------------------------------
 
@@ -808,14 +960,29 @@ CREATE TABLE `weight_logs` (
   `id` int(11) NOT NULL,
   `user_id` int(10) UNSIGNED NOT NULL,
   `date` datetime DEFAULT NULL,
-  `weight` double DEFAULT NULL,
+  `weight_kg` double DEFAULT NULL,
+  `weight_lbs` int(11) NOT NULL,
   `createdAt` datetime DEFAULT NULL,
   `updatedAt` datetime DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
+-- Dumping data for table `weight_logs`
+--
+
+INSERT INTO `weight_logs` (`id`, `user_id`, `date`, `weight_kg`, `weight_lbs`, `createdAt`, `updatedAt`) VALUES
+(0, 39, NULL, NULL, 0, '2023-12-25 10:45:23', '2023-12-25 10:45:23');
+
+--
 -- Indexes for dumped tables
 --
+
+--
+-- Indexes for table `antenatal_visit`
+--
+ALTER TABLE `antenatal_visit`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `antenatal_visit_ibfk_1` (`user_id`);
 
 --
 -- Indexes for table `baby_breast_pumping`
@@ -939,6 +1106,13 @@ ALTER TABLE `drug_reminder`
   ADD KEY `FK_1` (`user_id`);
 
 --
+-- Indexes for table `drug_slider`
+--
+ALTER TABLE `drug_slider`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `drug_slider_ibfk_1` (`media`);
+
+--
 -- Indexes for table `exercises`
 --
 ALTER TABLE `exercises`
@@ -957,6 +1131,20 @@ ALTER TABLE `media`
   ADD PRIMARY KEY (`id`);
 
 --
+-- Indexes for table `mother_activity`
+--
+ALTER TABLE `mother_activity`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `user_id` (`user_id`);
+
+--
+-- Indexes for table `mother_mood_trackers`
+--
+ALTER TABLE `mother_mood_trackers`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `user_id` (`user_id`);
+
+--
 -- Indexes for table `mother_progress_timeline`
 --
 ALTER TABLE `mother_progress_timeline`
@@ -970,11 +1158,25 @@ ALTER TABLE `mother_vaccine_reminders`
   ADD KEY `FK_1` (`user_id`);
 
 --
+-- Indexes for table `notes`
+--
+ALTER TABLE `notes`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `user_id` (`user_id`);
+
+--
 -- Indexes for table `postmedia`
 --
 ALTER TABLE `postmedia`
   ADD PRIMARY KEY (`post_id`,`media_id`),
   ADD KEY `media_id` (`media_id`);
+
+--
+-- Indexes for table `postnatal_visit`
+--
+ALTER TABLE `postnatal_visit`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `postnatal_visit_ibfk_1` (`user_id`);
 
 --
 -- Indexes for table `posts`
@@ -1022,7 +1224,10 @@ ALTER TABLE `tool_mother_symptoms`
 -- Indexes for table `users`
 --
 ALTER TABLE `users`
-  ADD PRIMARY KEY (`id`);
+  ADD PRIMARY KEY (`id`),
+  ADD UNIQUE KEY `username` (`username`),
+  ADD UNIQUE KEY `email` (`email`),
+  ADD UNIQUE KEY `social_id` (`social_id`);
 
 --
 -- Indexes for table `warning_signs`
@@ -1040,6 +1245,12 @@ ALTER TABLE `weight_logs`
 --
 -- AUTO_INCREMENT for dumped tables
 --
+
+--
+-- AUTO_INCREMENT for table `antenatal_visit`
+--
+ALTER TABLE `antenatal_visit`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- AUTO_INCREMENT for table `baby_breast_pumping`
@@ -1063,13 +1274,13 @@ ALTER TABLE `baby_feed`
 -- AUTO_INCREMENT for table `baby_gallery`
 --
 ALTER TABLE `baby_gallery`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
 
 --
 -- AUTO_INCREMENT for table `baby_list`
 --
 ALTER TABLE `baby_list`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=28;
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=32;
 
 --
 -- AUTO_INCREMENT for table `baby_sleep`
@@ -1108,6 +1319,12 @@ ALTER TABLE `drug_reminder`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
+-- AUTO_INCREMENT for table `drug_slider`
+--
+ALTER TABLE `drug_slider`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+
+--
 -- AUTO_INCREMENT for table `languages`
 --
 ALTER TABLE `languages`
@@ -1117,13 +1334,37 @@ ALTER TABLE `languages`
 -- AUTO_INCREMENT for table `media`
 --
 ALTER TABLE `media`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+
+--
+-- AUTO_INCREMENT for table `mother_activity`
+--
+ALTER TABLE `mother_activity`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=19;
+
+--
+-- AUTO_INCREMENT for table `mother_mood_trackers`
+--
+ALTER TABLE `mother_mood_trackers`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
 
 --
 -- AUTO_INCREMENT for table `mother_vaccine_reminders`
 --
 ALTER TABLE `mother_vaccine_reminders`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+
+--
+-- AUTO_INCREMENT for table `notes`
+--
+ALTER TABLE `notes`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+
+--
+-- AUTO_INCREMENT for table `postnatal_visit`
+--
+ALTER TABLE `postnatal_visit`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
 
 --
 -- AUTO_INCREMENT for table `posts`
@@ -1171,11 +1412,17 @@ ALTER TABLE `tool_mother_symptoms`
 -- AUTO_INCREMENT for table `users`
 --
 ALTER TABLE `users`
-  MODIFY `id` int(11) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=32;
+  MODIFY `id` int(11) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=41;
 
 --
 -- Constraints for dumped tables
 --
+
+--
+-- Constraints for table `antenatal_visit`
+--
+ALTER TABLE `antenatal_visit`
+  ADD CONSTRAINT `antenatal_visit_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE CASCADE;
 
 --
 -- Constraints for table `baby_breast_pumping`
@@ -1256,10 +1503,34 @@ ALTER TABLE `drug_reminder`
   ADD CONSTRAINT `FK_22_1` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`);
 
 --
+-- Constraints for table `drug_slider`
+--
+ALTER TABLE `drug_slider`
+  ADD CONSTRAINT `drug_slider_ibfk_1` FOREIGN KEY (`media`) REFERENCES `media` (`id`) ON DELETE CASCADE;
+
+--
+-- Constraints for table `mother_activity`
+--
+ALTER TABLE `mother_activity`
+  ADD CONSTRAINT `mother_activity_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE CASCADE;
+
+--
+-- Constraints for table `mother_mood_trackers`
+--
+ALTER TABLE `mother_mood_trackers`
+  ADD CONSTRAINT `mother_mood_trackers_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE CASCADE;
+
+--
 -- Constraints for table `mother_vaccine_reminders`
 --
 ALTER TABLE `mother_vaccine_reminders`
   ADD CONSTRAINT `FK_20` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`);
+
+--
+-- Constraints for table `notes`
+--
+ALTER TABLE `notes`
+  ADD CONSTRAINT `notes_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE CASCADE;
 
 --
 -- Constraints for table `postmedia`
@@ -1267,6 +1538,12 @@ ALTER TABLE `mother_vaccine_reminders`
 ALTER TABLE `postmedia`
   ADD CONSTRAINT `postmedia_ibfk_1` FOREIGN KEY (`post_id`) REFERENCES `posts` (`id`) ON DELETE CASCADE,
   ADD CONSTRAINT `postmedia_ibfk_2` FOREIGN KEY (`media_id`) REFERENCES `media` (`id`) ON DELETE CASCADE;
+
+--
+-- Constraints for table `postnatal_visit`
+--
+ALTER TABLE `postnatal_visit`
+  ADD CONSTRAINT `postnatal_visit_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE CASCADE;
 
 --
 -- Constraints for table `weight_logs`

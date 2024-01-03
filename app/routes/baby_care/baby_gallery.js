@@ -55,14 +55,14 @@ router.post(
   "/:babyId",
   protect,
   checkBabyOwner,
-  upload.any(),
+  upload.single('baby_Image_file'),
   createBabyGallery
 );
 router.put(
   "/:babyId/:modelPk",
   protect,
   checkBabyOwner,
-  upload.any(),
+  upload.single('baby_Image_file'),
   updateBabyGallery
 );
 router.get("/:babyId", protect, checkBabyOwner, getAll);

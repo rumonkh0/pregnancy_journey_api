@@ -73,11 +73,11 @@ exports.getOne = asyncHandler(async (req, res, next) => {
 // @route     POST /api/v1/babygallery
 // @access    Private
 exports.createBabyGallery = asyncHandler(async (req, res, next) => {
-  if (!req.files.length)
+  if (!req.file)
     res.status(200).json({ success: true, message: "please insert an image" });
-  const { mimetype, filename, path: file_path } = req.files[0];
+  const { mimetype, filename, path: file_path } = req.file;
 
-  req.body.image = req.files[0].path;
+  req.body.image = req.file.path;
 
   req.media = {
     uploaded_by: req.user.username,
@@ -90,8 +90,8 @@ exports.createBabyGallery = asyncHandler(async (req, res, next) => {
   try {
     media = await Media.create(req.media);
   } catch (err) {
-    if (req.files && req.files[0] && req.files[0].path) {
-      const filePath = req.files[0].path;
+    if (req.file && req.file && req.file.path) {
+      const filePath = req.file.path;
       await unlinkAsync(filePath);
       console.log("File removed:", filePath);
     }
@@ -206,7 +206,7 @@ exports.deleteBabygallery = asyncHandler(async (req, res) => {
 
   // Get the feed history for the specified baby
   const deleted = await BabyGallery.destroy({ where: { id: modelPk } });
-  if (!gallery.media) {
+  if (gallery.media) {
     await Media.destroy({ where: { id: file_id } });
     await unlinkAsync(file_path);
   }
