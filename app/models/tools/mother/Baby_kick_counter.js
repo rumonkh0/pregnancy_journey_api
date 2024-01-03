@@ -10,6 +10,14 @@ const BabyKickCounter = sequelize.define(
       primaryKey: true,
       autoIncrement: true,
     },
+    user_id: {
+      type: DataTypes.INTEGER.UNSIGNED,
+      allowNull: false,
+    },
+    baby_serial: {
+      type: DataTypes.INTEGER,
+      allowNull: true,
+    },
     duration: {
       type: DataTypes.STRING(255),
       allowNull: true,
