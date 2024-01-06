@@ -8,16 +8,18 @@ const { where } = require("sequelize");
 exports.getHistory = (Model) => {
   return asyncHandler(async (req, res, next) => {
     // Get the feed history for the specified baby
-    const History = await Model.fundAll({
+    const history = await Model.findAll({
       where: {
-        id: req.params.id,
         user_id: req.user.id,
       },
     });
 
-    res
-      .status(200)
-      .json({ success: true, message: "Data found", data: History });
+    if (history)
+      return res
+        .status(200)
+        .json({ success: true, message: "Data found", data: history });
+
+    res.status(200).json({ success: false, message: "Data not found" });
   });
 };
 
@@ -31,9 +33,12 @@ exports.getOne = (Model) => {
       where: { id: req.params.pk, user_id: req.user.id },
     });
 
-    res
-      .status(200)
-      .json({ success: true, message: "Data found", data: result });
+    if (result)
+      return res
+        .status(200)
+        .json({ success: true, message: "Data found", data: result });
+
+    res.status(200).json({ success: false, message: "No Data found" });
   });
 };
 
@@ -80,10 +85,13 @@ exports.deleteOne = (Model) => {
   return asyncHandler(async (req, res, next) => {
     // Get the feed history for the specified baby
     const deleted = await Model.destroy({
-      where: { id: req.params.pk, user_id: req.user.user_id },
+      where: { id: req.params.pk, user_id: req.user.id },
     });
 
-    res.status(200).json({ success: true, message: "Data deleted" });
+    if(deleted)
+    return res.status(200).json({ success: true, message: "Data deleted" });
+
+    res.status(200).json({ success: false, message: "Data not found" });
   });
 };
 
@@ -94,9 +102,9 @@ exports.deleteAll = (Model) => {
   return asyncHandler(async (req, res) => {
     // Get the feed history for the specified baby
     const deleted = await Model.destroy({
-      where: { id: req.params.pk, user_id: req.user.id },
+      where: { user_id: req.user.id },
     });
 
-    res.status(200).json({ success: true, message: "All data deleted" });
+   res.status(200).json({ success: true, message: "All data deleted" });
   });
 };

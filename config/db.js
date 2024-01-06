@@ -13,6 +13,7 @@ sequelize = new Sequelize(
     host: process.env.HOST,
     post: 3306,
     dialect: "mysql",
+    logging: false,
   }
 );
 // } else {
