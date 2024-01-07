@@ -10,6 +10,7 @@ exports.getHistory = (Model) => {
     // Check if the requesting mother owns the specified baby
     const data = await Model.findAll({
       where: { user_id: req.user.id },
+      order: [["createdAt", "DESC"]],
     });
     if (!data) {
       return res.status(403).json({

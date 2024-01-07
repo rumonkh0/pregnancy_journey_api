@@ -42,8 +42,6 @@ filtered = (type) => {
       default:
         break;
     }
-
-    console.log(startDate, " ", endDate);
     const data = await Activity.findAll({
       where: {
         user_id: req.user.id,
@@ -65,7 +63,7 @@ filtered = (type) => {
 router.use(protect);
 
 router.get("/", getHistory(Activity));
-router.get("/day", filtered("day"));
+router.get("/today", filtered("day"));
 router.get("/lastweek", filtered("week"));
 router.get("/lastmonth", filtered("month"));
 router.get("/month/:month/:year", filtered("specmonth"));
