@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Jan 03, 2024 at 06:15 AM
+-- Generation Time: Jan 09, 2024 at 08:02 PM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.0.30
 
@@ -171,7 +171,21 @@ INSERT INTO `baby_gallery` (`id`, `file_id`, `baby_id`, `image`, `image_title`, 
 (4, 1, 27, 'public\\uploads\\baby\\file-1701281619081.jpg', 'first photo', '2023-11-29 18:13:39', '2023-11-29 18:13:39'),
 (5, 5, 27, 'public\\uploads\\baby\\file-1701428051879.png', 'first photo', '2023-12-01 10:54:11', '2023-12-01 10:54:11'),
 (6, 0, 27, 'public\\uploads\\baby\\file-1701715188194.png', 'first photo', '2023-12-04 18:39:48', '2023-12-04 18:39:48'),
-(8, 3, 30, 'public\\uploads\\baby\\file-jinia-1704258886978.jpg', 'awew', '2024-01-03 05:14:47', '2024-01-03 05:14:47');
+(8, 3, 30, 'public\\uploads\\baby\\file-jinia-1704258886978.jpg', 'awew', '2024-01-03 05:14:47', '2024-01-03 05:14:47'),
+(9, 4, 30, 'public\\uploads\\baby\\file-jinia-1704259079187.jpg', 'awew', '2024-01-03 05:17:59', '2024-01-03 05:17:59'),
+(10, 5, 30, 'public\\uploads\\baby\\file-jinia-1704259520777.jpg', 'upload from vs code ', '2024-01-03 05:25:20', '2024-01-03 05:25:20'),
+(11, 6, 30, 'public\\uploads\\baby\\file-jinia-1704261011626.jpg', 'with core and multipart', '2024-01-03 05:50:11', '2024-01-03 05:50:11'),
+(12, 7, 30, 'public\\uploads\\baby\\file-jinia-1704261599570.jpg', 'with core and multipart', '2024-01-03 05:59:59', '2024-01-03 05:59:59'),
+(13, 8, 30, 'public\\uploads\\baby\\file-jinia-1704261610054.jpg', 'with core and multipart', '2024-01-03 06:00:10', '2024-01-03 06:00:10'),
+(14, 9, 30, 'public\\uploads\\baby\\file-jinia-1704262294542.jpg', 'with core and multipart', '2024-01-03 06:11:34', '2024-01-03 06:11:34'),
+(15, 10, 30, 'public\\uploads\\baby\\Image_file_name-jinia-1704262786612.jpg', 'with core and multipart', '2024-01-03 06:19:46', '2024-01-03 06:19:46'),
+(16, 11, 30, 'public\\uploads\\baby\\baby_Image_file-jinia-1704262930242.jpg', 'with core and multipart', '2024-01-03 06:22:10', '2024-01-03 06:22:10'),
+(17, 12, 30, 'public\\uploads\\baby\\baby_Image_file-jinia-1704263026742.jpg', 'upload from vs code ', '2024-01-03 06:23:46', '2024-01-03 06:23:46'),
+(18, 13, 30, 'public\\uploads\\baby\\baby_Image_file-jinia-1704263803360.jpg', 'upload from vs code ', '2024-01-03 06:36:43', '2024-01-03 06:36:43'),
+(19, 14, 30, 'public\\uploads\\baby\\baby_Image_file-jinia-1704263824189.jpg', 'upload from vs code ', '2024-01-03 06:37:04', '2024-01-03 06:37:04'),
+(20, 15, 27, 'public\\uploads\\baby\\baby_Image_file-shapla-1704273230102.jpg', 'with core and multipart', '2024-01-03 09:13:50', '2024-01-03 09:13:50'),
+(21, 16, 27, 'public\\uploads\\baby\\baby_Image_file-shapla-1704303883116.jpg', 'with core and multipart', '2024-01-03 17:44:43', '2024-01-03 17:44:43'),
+(22, 17, 23, 'public\\uploads\\baby\\baby_Image_file-shapla-1704305675654.jpg', 'with core and multipart', '2024-01-03 18:14:35', '2024-01-03 18:14:35');
 
 -- --------------------------------------------------------
 
@@ -248,7 +262,9 @@ CREATE TABLE `baby_progress_timeline` (
   `week` int(11) NOT NULL,
   `title` varchar(255) NOT NULL,
   `description` longtext NOT NULL,
-  `image` varchar(255) NOT NULL
+  `image` varchar(255) NOT NULL,
+  `createdAt` datetime NOT NULL,
+  `updatedAt` datetime DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
@@ -366,6 +382,40 @@ CREATE TABLE `blog_categories` (
   `createdAt` datetime DEFAULT NULL,
   `updatedAt` datetime DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `blog_categories`
+--
+
+INSERT INTO `blog_categories` (`id`, `order`, `name`, `image`, `createdAt`, `updatedAt`) VALUES
+(1, 1, 'pregnancy', NULL, NULL, NULL),
+(2, 1, 'health', NULL, '2024-01-09 18:41:44', '2024-01-09 18:41:44'),
+(3, 2, 'baby', NULL, '2024-01-09 18:42:07', NULL),
+(4, 3, 'food', NULL, '2024-01-09 18:42:38', NULL);
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `bp_trackers`
+--
+
+CREATE TABLE `bp_trackers` (
+  `id` int(11) NOT NULL,
+  `arm` enum('right','left') DEFAULT NULL,
+  `systolic` int(11) DEFAULT NULL,
+  `diastolic` int(11) DEFAULT NULL,
+  `createdAt` datetime DEFAULT NULL,
+  `updatedAt` datetime DEFAULT NULL,
+  `user_id` int(10) UNSIGNED NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `bp_trackers`
+--
+
+INSERT INTO `bp_trackers` (`id`, `arm`, `systolic`, `diastolic`, `createdAt`, `updatedAt`, `user_id`) VALUES
+(1, 'right', 100, 80, '2024-01-09 16:42:02', '2024-01-09 16:43:53', 12),
+(2, 'left', 120, 80, '2024-01-09 16:42:15', '2024-01-09 16:42:15', 12);
 
 -- --------------------------------------------------------
 
@@ -549,7 +599,21 @@ CREATE TABLE `media` (
 INSERT INTO `media` (`id`, `uploaded_by`, `file_name`, `file_path`, `file_type`, `mime_type`, `createdAt`, `updatedAt`) VALUES
 (1, 'user', 'asdfas.jpg', 'public/upload/baby/path/image', 'image', 'image/jpg', '2023-12-01 03:28:36', '2023-12-01 12:28:36'),
 (2, 'jinia', 'file-jinia-1704258616845.jpg', 'public\\uploads\\baby\\file-jinia-1704258616845.jpg', 'jpg', 'image/jpeg', '2024-01-03 05:10:16', '2024-01-03 05:10:16'),
-(3, 'jinia', 'file-jinia-1704258886978.jpg', 'public\\uploads\\baby\\file-jinia-1704258886978.jpg', 'jpg', 'image/jpeg', '2024-01-03 05:14:46', '2024-01-03 05:14:46');
+(3, 'jinia', 'file-jinia-1704258886978.jpg', 'public\\uploads\\baby\\file-jinia-1704258886978.jpg', 'jpg', 'image/jpeg', '2024-01-03 05:14:46', '2024-01-03 05:14:46'),
+(4, 'jinia', 'file-jinia-1704259079187.jpg', 'public\\uploads\\baby\\file-jinia-1704259079187.jpg', 'jpg', 'image/jpeg', '2024-01-03 05:17:59', '2024-01-03 05:17:59'),
+(5, 'jinia', 'file-jinia-1704259520777.jpg', 'public\\uploads\\baby\\file-jinia-1704259520777.jpg', 'jpg', 'image/jpeg', '2024-01-03 05:25:20', '2024-01-03 05:25:20'),
+(6, 'jinia', 'file-jinia-1704261011626.jpg', 'public\\uploads\\baby\\file-jinia-1704261011626.jpg', 'jpg', 'image/jpeg', '2024-01-03 05:50:11', '2024-01-03 05:50:11'),
+(7, 'jinia', 'file-jinia-1704261599570.jpg', 'public\\uploads\\baby\\file-jinia-1704261599570.jpg', 'jpg', 'image/jpeg', '2024-01-03 05:59:59', '2024-01-03 05:59:59'),
+(8, 'jinia', 'file-jinia-1704261610054.jpg', 'public\\uploads\\baby\\file-jinia-1704261610054.jpg', 'jpg', 'image/jpeg', '2024-01-03 06:00:10', '2024-01-03 06:00:10'),
+(9, 'jinia', 'file-jinia-1704262294542.jpg', 'public\\uploads\\baby\\file-jinia-1704262294542.jpg', 'jpg', 'image/jpeg', '2024-01-03 06:11:34', '2024-01-03 06:11:34'),
+(10, 'jinia', 'Image_file_name-jinia-1704262786612.jpg', 'public\\uploads\\baby\\Image_file_name-jinia-1704262786612.jpg', 'jpg', 'image/jpeg', '2024-01-03 06:19:46', '2024-01-03 06:19:46'),
+(11, 'jinia', 'baby_Image_file-jinia-1704262930242.jpg', 'public\\uploads\\baby\\baby_Image_file-jinia-1704262930242.jpg', 'jpg', 'image/jpeg', '2024-01-03 06:22:10', '2024-01-03 06:22:10'),
+(12, 'jinia', 'baby_Image_file-jinia-1704263026742.jpg', 'public\\uploads\\baby\\baby_Image_file-jinia-1704263026742.jpg', 'jpg', 'image/jpeg', '2024-01-03 06:23:46', '2024-01-03 06:23:46'),
+(13, 'jinia', 'baby_Image_file-jinia-1704263803360.jpg', 'public\\uploads\\baby\\baby_Image_file-jinia-1704263803360.jpg', 'jpg', 'image/jpeg', '2024-01-03 06:36:43', '2024-01-03 06:36:43'),
+(14, 'jinia', 'baby_Image_file-jinia-1704263824189.jpg', 'public\\uploads\\baby\\baby_Image_file-jinia-1704263824189.jpg', 'jpg', 'image/jpeg', '2024-01-03 06:37:04', '2024-01-03 06:37:04'),
+(15, 'shapla', 'baby_Image_file-shapla-1704273230102.jpg', 'public\\uploads\\baby\\baby_Image_file-shapla-1704273230102.jpg', 'jpg', 'image/jpeg', '2024-01-03 09:13:50', '2024-01-03 09:13:50'),
+(16, 'shapla', 'baby_Image_file-shapla-1704303883116.jpg', 'public\\uploads\\baby\\baby_Image_file-shapla-1704303883116.jpg', 'jpg', 'image/jpeg', '2024-01-03 17:44:43', '2024-01-03 17:44:43'),
+(17, 'shapla', 'baby_Image_file-shapla-1704305675654.jpg', 'public\\uploads\\baby\\baby_Image_file-shapla-1704305675654.jpg', 'jpg', 'image/jpeg', '2024-01-03 18:14:35', '2024-01-03 18:14:35');
 
 -- --------------------------------------------------------
 
@@ -585,7 +649,12 @@ INSERT INTO `mother_activity` (`id`, `user_id`, `activity`, `createdAt`, `update
 (15, 12, 'invest', '2023-02-21 08:00:00', '2023-12-25 11:43:36'),
 (16, 12, 'invest', '2023-05-21 08:00:00', '2023-12-25 11:43:59'),
 (17, 12, 'invest', '2023-06-21 08:00:00', '2023-12-25 11:44:12'),
-(18, 12, 'invest', '2023-06-21 08:00:00', '2023-12-25 11:44:23');
+(18, 12, 'invest', '2023-06-21 08:00:00', '2023-12-25 11:44:23'),
+(19, 12, 'invest', '2024-01-07 10:47:57', '2024-01-07 10:47:57'),
+(20, 12, 'reading', '2024-01-07 10:48:02', '2024-01-07 10:48:02'),
+(21, 12, 'tv', '2024-01-07 10:48:09', '2024-01-07 10:48:09'),
+(22, 12, 'cooking', '2024-01-07 10:48:20', '2024-01-07 10:48:20'),
+(23, 12, 'tour', '2024-01-07 10:48:25', '2024-01-07 10:48:25');
 
 -- --------------------------------------------------------
 
@@ -615,7 +684,13 @@ INSERT INTO `mother_mood_trackers` (`id`, `user_id`, `mood_time`, `current_mood`
 (6, 39, '2023-12-21 08:00:00', 'vallage', '2023-12-25 11:15:27', '2023-12-25 11:15:27'),
 (7, 39, '2023-12-21 08:00:00', 'chill', '2023-12-25 11:15:30', '2023-12-25 11:15:30'),
 (8, 39, '2023-12-21 08:00:00', 'urtechi', '2023-12-25 11:15:35', '2023-12-25 11:15:35'),
-(9, 12, '2023-12-21 08:00:00', 'urtechi', '2023-12-25 11:20:00', '2023-12-25 11:20:00');
+(9, 12, '2023-12-21 08:00:00', 'urtechi', '2023-12-25 11:20:00', '2023-12-25 11:20:00'),
+(10, 12, '2023-12-21 08:00:00', 'vallage', '2024-01-07 11:44:45', '2024-01-07 11:44:45'),
+(11, 12, '2023-12-21 08:00:00', 'ura dhura', '2024-01-07 11:44:58', '2024-01-07 11:44:58'),
+(12, 12, '2023-12-21 08:00:00', 'lalala', '2024-01-07 12:10:58', '2024-01-07 12:10:58'),
+(13, 12, '2023-12-21 08:00:00', 'vallage', '2024-01-07 12:16:02', '2024-01-07 12:16:02'),
+(14, 12, '2023-12-21 08:00:00', 'vallage', '2024-01-07 12:16:16', '2024-01-07 12:16:16'),
+(15, 12, '2024-01-21 08:00:00', 'vallage', '2024-01-07 12:24:01', '2024-01-07 12:24:01');
 
 -- --------------------------------------------------------
 
@@ -628,8 +703,18 @@ CREATE TABLE `mother_progress_timeline` (
   `week` int(11) NOT NULL,
   `title` varchar(255) NOT NULL,
   `description` longtext NOT NULL,
-  `image` varchar(255) NOT NULL
+  `image` varchar(255) NOT NULL,
+  `createdAt` datetime DEFAULT NULL,
+  `updatedAt` datetime DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `mother_progress_timeline`
+--
+
+INSERT INTO `mother_progress_timeline` (`id`, `week`, `title`, `description`, `image`, `createdAt`, `updatedAt`) VALUES
+(1, 1, 'baby develop', 'baby developing long lext\r\n', '', NULL, NULL),
+(2, 2, 'baby more develop', 'baby more develop description', '', NULL, NULL);
 
 -- --------------------------------------------------------
 
@@ -811,12 +896,24 @@ CREATE TABLE `replies` (
 
 CREATE TABLE `tool_mother_baby_kick_counters` (
   `id` int(11) NOT NULL,
+  `user_id` int(11) UNSIGNED NOT NULL,
+  `baby_serial` int(11) DEFAULT NULL,
   `duration` varchar(255) DEFAULT NULL,
   `kicks` int(11) DEFAULT NULL,
   `start_time` datetime DEFAULT NULL,
   `createdAt` datetime DEFAULT NULL,
   `updatedAt` datetime DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `tool_mother_baby_kick_counters`
+--
+
+INSERT INTO `tool_mother_baby_kick_counters` (`id`, `user_id`, `baby_serial`, `duration`, `kicks`, `start_time`, `createdAt`, `updatedAt`) VALUES
+(6, 12, NULL, '5', 15, '2023-08-01 09:30:00', '2024-01-06 13:11:41', '2024-01-06 13:11:41'),
+(7, 12, NULL, '5', 15, '2023-12-01 09:30:00', '2024-01-06 13:11:50', '2024-01-06 13:11:50'),
+(8, 12, NULL, '3', 5, '2022-12-01 09:30:00', '2024-01-06 13:12:00', '2024-01-06 13:12:00'),
+(9, 12, NULL, '13', 12, '2022-12-01 08:30:00', '2024-01-06 13:12:14', '2024-01-06 13:12:14');
 
 -- --------------------------------------------------------
 
@@ -847,7 +944,8 @@ INSERT INTO `tool_mother_contraction_timers` (`id`, `user_id`, `start`, `duratio
 (5, 12, '2023-12-01 08:00:00', '30 minutes', 'Irregular', 'high', '2023-12-04 15:00:23', '2023-12-04 15:00:23'),
 (6, 12, '2023-12-01 08:00:00', '30 minutes', 'Irregular', 'high', '2023-12-04 15:00:24', '2023-12-04 15:00:24'),
 (7, 12, '2023-12-01 08:00:00', '30 minutes', 'Irregular', 'high', '2023-12-04 15:01:51', '2023-12-04 15:01:51'),
-(8, 12, '2023-12-01 08:00:00', '30 minutes', 'Irregular', 'high', '2023-12-04 15:01:52', '2023-12-04 15:01:52');
+(8, 12, '2023-12-01 08:00:00', '30 minutes', 'Irregular', 'high', '2023-12-04 15:01:52', '2023-12-04 15:01:52'),
+(9, 12, '2023-12-01 08:00:00', '30 minutes', 'Irregular', 'high', '2024-01-09 16:40:56', '2024-01-09 16:40:56');
 
 -- --------------------------------------------------------
 
@@ -872,7 +970,8 @@ CREATE TABLE `tool_mother_symptoms` (
 INSERT INTO `tool_mother_symptoms` (`id`, `user_id`, `symptom`, `intensity`, `remarks`, `createdAt`, `updatedAt`) VALUES
 (1, 12, 'Headache', 'Mild', 'Had a headache for an hour.', '2023-12-04 15:13:06', '2023-12-04 15:13:06'),
 (3, 12, 'Headache', 'so high', 'Had a headache for an hour.', '2023-12-04 15:13:34', '2023-12-04 15:13:34'),
-(4, 12, 'Headache', 'so low', 'Had a headache for an hour.', '2023-12-04 15:13:40', '2023-12-04 15:13:40');
+(4, 12, 'Headache', 'so low', 'Had a headache for an hour.', '2023-12-04 15:13:40', '2023-12-04 15:13:40'),
+(5, 12, 'jor', 'so low', 'Had a headache for an hour.', '2024-01-09 16:31:28', '2024-01-09 16:44:18');
 
 -- --------------------------------------------------------
 
@@ -938,6 +1037,31 @@ INSERT INTO `users` (`id`, `social_id`, `username`, `first_name`, `last_name`, `
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `video`
+--
+
+CREATE TABLE `video` (
+  `id` int(11) NOT NULL,
+  `title` varchar(255) NOT NULL,
+  `description` varchar(255) DEFAULT NULL,
+  `type` varchar(255) NOT NULL,
+  `duration` varchar(255) NOT NULL,
+  `file_id` int(11) NOT NULL,
+  `updatedAt` datetime DEFAULT NULL,
+  `createdAt` datetime NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `video`
+--
+
+INSERT INTO `video` (`id`, `title`, `description`, `type`, `duration`, `file_id`, `updatedAt`, `createdAt`) VALUES
+(1, 'prenatal vitamins', NULL, '', '05:30', 14, '2024-01-09 16:52:38', '0000-00-00 00:00:00'),
+(2, 'exercise during pregnancy', NULL, '', '10:55', 16, '2024-01-09 16:52:38', '0000-00-00 00:00:00');
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `warning_signs`
 --
 
@@ -949,6 +1073,14 @@ CREATE TABLE `warning_signs` (
   `createdAt` datetime DEFAULT NULL,
   `updatedAt` datetime DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `warning_signs`
+--
+
+INSERT INTO `warning_signs` (`id`, `order`, `title`, `description`, `createdAt`, `updatedAt`) VALUES
+(1, NULL, 'unusual symptom', 'bla bla', '2024-01-09 19:28:51', NULL),
+(2, NULL, 'severe headache', 'bla bla', '2024-01-09 19:28:51', NULL);
 
 -- --------------------------------------------------------
 
@@ -1072,6 +1204,13 @@ ALTER TABLE `blogs`
 --
 ALTER TABLE `blog_categories`
   ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `bp_trackers`
+--
+ALTER TABLE `bp_trackers`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `FK_1` (`user_id`);
 
 --
 -- Indexes for table `child_vaccine_remiinders`
@@ -1206,7 +1345,8 @@ ALTER TABLE `replies`
 -- Indexes for table `tool_mother_baby_kick_counters`
 --
 ALTER TABLE `tool_mother_baby_kick_counters`
-  ADD PRIMARY KEY (`id`);
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `user_id` (`user_id`);
 
 --
 -- Indexes for table `tool_mother_contraction_timers`
@@ -1228,6 +1368,13 @@ ALTER TABLE `users`
   ADD UNIQUE KEY `username` (`username`),
   ADD UNIQUE KEY `email` (`email`),
   ADD UNIQUE KEY `social_id` (`social_id`);
+
+--
+-- Indexes for table `video`
+--
+ALTER TABLE `video`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `media` (`file_id`);
 
 --
 -- Indexes for table `warning_signs`
@@ -1274,7 +1421,7 @@ ALTER TABLE `baby_feed`
 -- AUTO_INCREMENT for table `baby_gallery`
 --
 ALTER TABLE `baby_gallery`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=23;
 
 --
 -- AUTO_INCREMENT for table `baby_list`
@@ -1299,6 +1446,18 @@ ALTER TABLE `baby_symptoms`
 --
 ALTER TABLE `blogs`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+
+--
+-- AUTO_INCREMENT for table `blog_categories`
+--
+ALTER TABLE `blog_categories`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+
+--
+-- AUTO_INCREMENT for table `bp_trackers`
+--
+ALTER TABLE `bp_trackers`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- AUTO_INCREMENT for table `child_vaccine_remiinders`
@@ -1334,19 +1493,19 @@ ALTER TABLE `languages`
 -- AUTO_INCREMENT for table `media`
 --
 ALTER TABLE `media`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=18;
 
 --
 -- AUTO_INCREMENT for table `mother_activity`
 --
 ALTER TABLE `mother_activity`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=19;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=24;
 
 --
 -- AUTO_INCREMENT for table `mother_mood_trackers`
 --
 ALTER TABLE `mother_mood_trackers`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=16;
 
 --
 -- AUTO_INCREMENT for table `mother_vaccine_reminders`
@@ -1394,25 +1553,37 @@ ALTER TABLE `replies`
 -- AUTO_INCREMENT for table `tool_mother_baby_kick_counters`
 --
 ALTER TABLE `tool_mother_baby_kick_counters`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
 
 --
 -- AUTO_INCREMENT for table `tool_mother_contraction_timers`
 --
 ALTER TABLE `tool_mother_contraction_timers`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
 
 --
 -- AUTO_INCREMENT for table `tool_mother_symptoms`
 --
 ALTER TABLE `tool_mother_symptoms`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 
 --
 -- AUTO_INCREMENT for table `users`
 --
 ALTER TABLE `users`
   MODIFY `id` int(11) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=41;
+
+--
+-- AUTO_INCREMENT for table `video`
+--
+ALTER TABLE `video`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+
+--
+-- AUTO_INCREMENT for table `warning_signs`
+--
+ALTER TABLE `warning_signs`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- Constraints for dumped tables
@@ -1491,6 +1662,12 @@ ALTER TABLE `blogs`
   ADD CONSTRAINT `FK_15` FOREIGN KEY (`category`) REFERENCES `blog_categories` (`id`);
 
 --
+-- Constraints for table `bp_trackers`
+--
+ALTER TABLE `bp_trackers`
+  ADD CONSTRAINT `FK_25` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`);
+
+--
 -- Constraints for table `child_vaccine_remiinders`
 --
 ALTER TABLE `child_vaccine_remiinders`
@@ -1544,6 +1721,18 @@ ALTER TABLE `postmedia`
 --
 ALTER TABLE `postnatal_visit`
   ADD CONSTRAINT `postnatal_visit_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE CASCADE;
+
+--
+-- Constraints for table `tool_mother_baby_kick_counters`
+--
+ALTER TABLE `tool_mother_baby_kick_counters`
+  ADD CONSTRAINT `tool_mother_baby_kick_counters_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE CASCADE;
+
+--
+-- Constraints for table `video`
+--
+ALTER TABLE `video`
+  ADD CONSTRAINT `video_ibfk_1` FOREIGN KEY (`file_id`) REFERENCES `media` (`id`);
 
 --
 -- Constraints for table `weight_logs`
