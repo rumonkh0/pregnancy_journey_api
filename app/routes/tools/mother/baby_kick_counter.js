@@ -15,9 +15,9 @@ const { protect } = require("../../../middleware/auth");
 router.use(protect);
 
 router.get("/", getHistory(BabyKickCounter));
-router.get("/:pk", getOne(BabyKickCounter));
+router.get("/:modelPk", getOne(BabyKickCounter));
 router.post("/", create(BabyKickCounter));
-router.put("/:pk", update(BabyKickCounter));
-router.delete("/:pk", deleteOne(BabyKickCounter));
+router.put("/:modelPk", update(BabyKickCounter));
+router.delete("/:modelPk", deleteOne(BabyKickCounter));
 router.delete("/", deleteAll(BabyKickCounter));
 module.exports = router;

@@ -1,7 +1,8 @@
 const { sequelize } = require("../../../config/db");
 const { DataTypes } = require("sequelize");
+const BlogCategories = require("./Blog_category")
 
-const Blogs = sequelize.define(
+const Blog = sequelize.define(
   "blogs",
   {
     id: {
@@ -49,4 +50,4 @@ const Blogs = sequelize.define(
   }
 );
 
-module.exports = DailyReads;
+module.exports = Blog;

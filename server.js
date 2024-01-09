@@ -42,6 +42,8 @@ const reactionType = require("./app/routes/community/reactionType");
 const post = require("./app/routes/community/post");
 const comment = require("./app/routes/community/comment");
 const reaction = require("./app/routes/community/reaction");
+const general = require("./app/routes/general")
+const bpTracker = require("./app/routes/tools/mother/bpTracker")
 
 const app = express();
 
@@ -80,6 +82,7 @@ app.use("/api/v1/childvaccination", cvaccination);
 app.use("/api/v1/mother/vaccination", mvaccination);
 app.use("/api/v1/mother/contraction", mcontraction);
 app.use("/api/v1/mother/symptom", msymptom);
+app.use("/api/v1/mother/bptracker", bpTracker);
 app.use("/api/v1/mother/drugreminder", drugReminder);
 app.use("/api/v1/tools/mother/babykick", kickCounter);
 app.use("/api/v1/mother/weight", mweight);
@@ -92,6 +95,8 @@ app.use("/api/v1/reactiontype", reactionType);
 app.use("/api/v1/post", post);
 app.use("/api/v1/comment", comment);
 app.use("/api/v1/reaction", reaction);
+app.use("/api/v1/general", general);
+
 // app.use("/api/v1/reaction", reaction);
 
 app.get("/", (req, res) => {

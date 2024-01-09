@@ -37,4 +37,4 @@ const BlogCategories = sequelize.define(
   }
 );
 
-module.exports = DailyReads;
+module.exports = BlogCategories;

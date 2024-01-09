@@ -1,15 +1,12 @@
 const asyncHandler = require("../middleware/async");
-const User = require("../models/User");
 const { where } = require("sequelize");
 
 // @desc      Get  Baby get all as history
 // @route     GET /api/v1/route/history
 // @access    Private
-exports.getHistory = (Model) => {
+exports.getAll = (Model) => {
   return asyncHandler(async (req, res, next) => {
-    // Check if the requesting mother owns the specified baby
     const data = await Model.findAll({
-      where: { user_id: req.user.id },
       order: [["createdAt", "DESC"]],
     });
     if (!data) {
@@ -33,10 +30,7 @@ exports.getOne = (Model) => {
 
     // Get the feed history for the specified baby
     const data = await Model.findOne({
-      where: {
-        id: modelPk,
-        user_id: req.user.id,
-      },
+      where: { id: modelPk },
     });
 
     if (!data) {
@@ -54,13 +48,7 @@ exports.getOne = (Model) => {
 // @access    Private
 exports.create = (Model) => {
   return asyncHandler(async (req, res, next) => {
-    // Extract baby ID from the request params or body
-    const { babyId } = req.params;
-
-    // Get the feed history for the specified baby
-    req.body.user_id = req.user.id;
     const babyFeed = await Model.create(req.body);
-
     res.status(200).json({ success: true, message: "Created", data: babyFeed });
   });
 };
@@ -74,10 +62,7 @@ exports.update = (Model) => {
     const { modelPk } = req.params;
     // Get the feed history for the specified baby
     const updated = await Model.update(req.body, {
-      where: {
-        id: modelPk,
-        user_id: req.user.id,
-      },
+      where: { id: modelPk },
     });
 
     if (!updated[0]) {
@@ -100,7 +85,7 @@ exports.deleteOne = (Model) => {
 
     // Get the feed history for the specified baby
     const deleted = await Model.destroy({
-      where: { id: modelPk, user_id: req.user.id },
+      where: { id: modelPk },
     });
 
     res.status(200).json({ success: true, message: "deleted" });
@@ -110,11 +95,11 @@ exports.deleteOne = (Model) => {
 // @desc      Delete all
 // @route     DELETE /api/v1/babyfeed/:babyId
 // @access    Private/Admin
-exports.deleteAll = (Model) => {
-  return asyncHandler(async (req, res) => {
-    // Get the feed history for the specified baby
-    const deleted = await Model.destroy({ where: { user_id: req.user.id } });
+// exports.deleteAll = (Model) => {
+//   return asyncHandler(async (req, res) => {
+//     // Get the feed history for the specified baby
+//     const deleted = await Model.destroy({ where: { user_id: req.user.id } });
 
-    res.status(200).json({ success: true, message: "All data deleted" });
-  });
-};
+//     res.status(200).json({ success: true, message: "All data deleted" });
+//   });
+// };

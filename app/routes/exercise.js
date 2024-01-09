@@ -7,7 +7,7 @@ const {
   update,
   deleteOne,
   deleteAll,
-} = require("../controllers/crudCrontroller");
+} = require("../controllers/tools/mother/crudController");
 
 const router = express.Router();
 const { protect } = require("../middleware/auth");
