@@ -1,4 +1,4 @@
-const { sequelize } = require("../../config/db");
+const { sequelize } = require("../../../config/db");
 const { DataTypes } = require("sequelize");
 
 const MotherProgressTimeline = sequelize.define(
@@ -26,9 +26,18 @@ const MotherProgressTimeline = sequelize.define(
       type: DataTypes.STRING(255),
       allowNull: false,
     },
+    createdAt: {
+      type: DataTypes.DATE,
+      allowNull: false,
+    },
+    updatedAt: {
+      type: DataTypes.DATE,
+      allowNull: true,
+      defaultValue: null,
+    },
   },
   {
-    tableName: "mother_vaccine_reminders",
+    tableName: "mother_progress_timeline",
     timestamps: true,
   }
 );

@@ -1,4 +1,4 @@
-const { sequelize } = require("../../config/db");
+const { sequelize } = require("../../../config/db");
 const { DataTypes } = require("sequelize");
 
 const BabyProgressTimeline = sequelize.define(
@@ -24,11 +24,20 @@ const BabyProgressTimeline = sequelize.define(
     },
     image: {
       type: DataTypes.STRING(255),
+      allowNull: true,
+    },
+    createdAt: {
+      type: DataTypes.DATE,
       allowNull: false,
+    },
+    updatedAt: {
+      type: DataTypes.DATE,
+      allowNull: true,
+      defaultValue: null,
     },
   },
   {
-    tableName: "mother_vaccine_reminders",
+    tableName: "baby_progress_timeline",
     timestamps: true,
   }
 );
