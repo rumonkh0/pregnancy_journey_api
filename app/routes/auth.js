@@ -11,6 +11,7 @@ const {
   updatePassword,
   forgotPassword,
   resetPassword,
+  resendOTP,
   confirmEmail,
   oAuth,
 } = require("../controllers/auth");
@@ -57,12 +58,13 @@ const upload = multer({
 
 router.post("/register", register);
 router.post("/login", login);
-router.get("/logout", logout);
+router.get("/logout", protect, logout);
 router.get("/me", protect, getMe);
 router.put("/updatedetails", protect, upload.single('user_image_field'), updateDetails);
 router.put("/updatepassword", protect, updatePassword);
 router.post("/forgotpassword", forgotPassword);
 router.put("/resetpassword/", resetPassword);
+router.post("/sendotp", protect, resendOTP);
 router.post("/confirmemail", confirmEmail);
 router.post("/social-auth", oAuth);
 

@@ -57,7 +57,7 @@ exports.register = asyncHandler(async (req, res, next) => {
 // @desc      Login user
 // @route     POST /api/v1/auth/login
 // @access    Public
-exports.login = async (req, res, next) => {
+exports.login = asyncHandler(async (req, res, next) => {
   const { username, password } = req.body;
 
   // Validate emil & password
@@ -91,7 +91,7 @@ exports.login = async (req, res, next) => {
   user.password = null;
 
   sendTokenResponse(user, 200, res);
-};
+});
 
 // @desc      Log user out / clear cookie
 // @route     GET /api/v1/auth/logout
@@ -105,7 +105,6 @@ exports.logout = asyncHandler(async (req, res, next) => {
   res.status(200).json({
     success: true,
     message: "logged out",
-    data: {},
   });
 });
 
@@ -335,6 +334,38 @@ exports.resetPassword = asyncHandler(async (req, res, next) => {
   await user.save();
 
   sendTokenResponse(user, 200, res);
+});
+
+/**
+ * @desc    Confirm Email
+ * @route   GET /api/v1/auth/confirmemail
+ * @access  Public
+ */
+exports.resendOTP = asyncHandler(async (req, res, next) => {
+  // grab token from email
+  const { username } = req.user;
+
+  let user = await User.findOne({ where: { username } });
+
+  if (!user)
+    return res
+      .status(200)
+      .json({ success: false, message: "username of email not found" });
+
+  // grab token and send to email
+  const OTP = await user.getOTP();
+
+  const message = `You are receiving this email because you need to confirm your email address. Heres your OTP: \n\n ${OTP}`;
+
+  user.save();
+
+  const sendResult = await sendEmail({
+    email: user.email,
+    subject: "Email confirmation OTP",
+    message,
+  });
+
+  res.status(200).json({ success: true, messsage: "OTP send" });
 });
 
 /**
