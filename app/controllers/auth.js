@@ -408,7 +408,9 @@ exports.confirmEmail = asyncHandler(async (req, res, next) => {
   user.save();
 
   // return token
-  sendTokenResponse(user, 200, res);
+  res
+    .status(200)
+    .json({ success: true, message: "Email verification successfull" });
 });
 
 /**
