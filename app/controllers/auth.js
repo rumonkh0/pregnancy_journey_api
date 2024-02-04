@@ -2,7 +2,6 @@ const path = require("path");
 const fs = require("fs");
 const { promisify } = require("util");
 const unlinkAsync = promisify(fs.unlink);
-const crypto = require("crypto");
 const { Op } = require("sequelize");
 const ErrorResponse = require("../resource/utils/errorResponse");
 const asyncHandler = require("../middleware/async");

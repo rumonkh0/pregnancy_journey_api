@@ -16,7 +16,7 @@ exports.getAllPost = asyncHandler(async (req, res, next) => {
     where: { user_id: req.user.id },
     include: [{ model: Media, attributes: ["id", "file_name", "file_path"] }],
   });
-  if (!posts)
+  if (!post)
     return res.status(404).json({ success: false, message: "Post not found" });
   res.json({ success: true, message: "Found posts", data: posts });
 });

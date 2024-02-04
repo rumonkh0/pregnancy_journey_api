@@ -4,7 +4,7 @@ const crypto = require("crypto");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 const { DataTypes } = require("sequelize");
-const Media = require('./Media')
+const Media = require("./Media");
 
 const User = sequelize.define(
   "User",
@@ -22,6 +22,16 @@ const User = sequelize.define(
       type: DataTypes.STRING(255),
       allowNull: false,
       unique: true,
+      validate: {
+        notContains: {
+          args: " ",
+          msg: "Username cannot contain spaces.",
+        },
+        is: {
+          args: /^[a-zA-Z0-9_]+$/, // Only allow letters, numbers, and underscores
+          msg: "Username must only contain letters, numbers, and underscores.",
+        },
+      },
     },
     first_name: {
       type: DataTypes.STRING(255),
@@ -65,8 +75,8 @@ const User = sequelize.define(
       allowNull: true,
       validate: {
         len: {
-          args: [7],
-          msg: "The password length should be between at least 7 characters.",
+          args: [6, 32],
+          msg: "The password length should be between 6 and 32 characters.",
         },
       },
     },
@@ -85,6 +95,7 @@ const User = sequelize.define(
     baby_already_born: {
       type: DataTypes.INTEGER,
       allowNull: true,
+      defaultValue: 0,
     },
     login_type: {
       type: DataTypes.STRING(255),
@@ -126,6 +137,7 @@ const User = sequelize.define(
     lmp_date: {
       type: DataTypes.DATE,
       allowNull: true,
+      defaultValue: null,
     },
     createdAt: {
       type: DataTypes.DATE,
