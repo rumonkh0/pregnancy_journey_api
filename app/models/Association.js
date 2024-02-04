@@ -1,12 +1,12 @@
-const Post = require('./models/post');
-const Media = require('./models/media');
-const PostMedia = require('./models/postMedia');
+const Post = require("./community/Post");
+const Media = require("./Media");
+const PostMedia = require("./community/PostMedia");
 
 // Define associations
-Post.belongsToMany(Media, { through: PostMedia });
-Media.belongsToMany(Post, { through: PostMedia });
 
-PostMedia.belongsTo(Post, { foreignKey: 'post_id' });
-PostMedia.belongsTo(Media, { foreignKey: 'media_id' });
+Post.belongsToMany(Media, { through: PostMedia, foreignKey: "post_id" });
+Media.belongsToMany(Post, { through: PostMedia, foreignKey: "media_id" });
 
+// PostMedia.belongsTo(Post, { foreignKey: "post_id" });
+// PostMedia.belongsTo(Media, { foreignKey: "media_id" });
 module.exports = { Post, Media, PostMedia };

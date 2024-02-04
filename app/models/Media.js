@@ -48,6 +48,6 @@ const Media = sequelize.define(
 );
 
 // Media.belongsToMany(Post, { through: PostMedia, foreignKey: 'id' });
-
+// Media.belongsToMany(Post, { through: 'PostMedia', foreignKey: 'mediaId' });
 
 module.exports = Media;
