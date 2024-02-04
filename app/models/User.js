@@ -127,12 +127,12 @@ const User = sequelize.define(
     is_email_confirmed: {
       type: DataTypes.STRING(45),
       allowNull: false,
-      defaultValue: false,
+      defaultValue: "0",
     },
     is_profile_complete: {
-      type: DataTypes.STRING(45),
+      type: DataTypes.STRING(225),
       allowNull: false,
-      defaultValue: false,
+      defaultValue: "0",
     },
     lmp_date: {
       type: DataTypes.DATE,
@@ -149,8 +149,8 @@ const User = sequelize.define(
     },
   },
   {
-    tableName: "users", // Make sure to set the table name if it differs
-    timestamps: true, // Set to true if timestamps are managed by Sequelize (createdAt, updatedAt)
+    tableName: "users",
+    timestamps: true,
 
     hooks: {
       // Before creating a new user, hash the password

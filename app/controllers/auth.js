@@ -13,10 +13,40 @@ const sendEmail = require("../resource/utils/sendEmail");
 // @route     POST /api/v1/auth/register
 // @access    Public
 exports.register = asyncHandler(async (req, res, next) => {
-  // const {username, first_name, last_name,age,gender,photo, child_number, edd_date,email, password, language, pregnency_loss, baby_already_born,
-  //   login_type, user_type, subscription, password_reset_token, confirm_email_token, lmp_date,
-  // Other fields from req.body
-  // } = req.body;
+  const {
+    username,
+    first_name,
+    last_name,
+    age,
+    gender,
+    child_number,
+    edd_date,
+    email,
+    password,
+    language,
+    country,
+    pregnency_loss,
+    baby_already_born,
+    lmp_date,
+  } = req.body;
+
+  const userData = {
+    username,
+    first_name,
+    last_name,
+    age,
+    gender,
+    child_number,
+    edd_date,
+    email,
+    password,
+    language,
+    country,
+    pregnency_loss,
+    baby_already_born,
+    lmp_date,
+  };
+
   let prev = await User.findOne({ where: { email: req.body.email } });
   if (prev) {
     return res.status(404).json({
@@ -35,7 +65,7 @@ exports.register = asyncHandler(async (req, res, next) => {
 
   req.body.user_type = "user";
   // Create a new user with the data from req.body
-  const user = await User.create(req.body);
+  const user = await User.create(userData);
 
   // grab token and send to email
   const OTP = await user.getOTP();
@@ -49,7 +79,7 @@ exports.register = asyncHandler(async (req, res, next) => {
     subject: "Email confirmation OTP",
     message,
   });
-  user.password = null;
+  // user.password = null;
   sendTokenResponse(user, 200, res);
 });
 
@@ -67,7 +97,7 @@ exports.login = asyncHandler(async (req, res, next) => {
     });
   }
   //Find user from database
-  const user = await User.scope("withPassword").findOne({
+  let user = await User.scope("withPassword").findOne({
     where: { username },
   });
   if (!user) {
@@ -86,8 +116,6 @@ exports.login = asyncHandler(async (req, res, next) => {
       message: "Invalid credential",
     });
   }
-
-  user.password = null;
 
   sendTokenResponse(user, 200, res);
 });
@@ -124,8 +152,36 @@ exports.getMe = asyncHandler(async (req, res, next) => {
 // @desc      Update user details
 // @route     PUT /api/v1/auth/updatedetails
 // @access    Private
-exports.updateDetails = async (req, res, next) => {
-  const userDetailsToUpdate = req.body; // Contains the updated details
+exports.updateDetails = asyncHandler(async (req, res, next) => {
+  const {
+    username,
+    first_name,
+    last_name,
+    age,
+    gender,
+    child_number,
+    edd_date,
+    language,
+    country,
+    pregnency_loss,
+    baby_already_born,
+    lmp_date,
+  } = req.body;
+
+  const userDetailsToUpdate = {
+    username,
+    first_name,
+    last_name,
+    age,
+    gender,
+    child_number,
+    edd_date,
+    language,
+    country,
+    pregnency_loss,
+    baby_already_born,
+    lmp_date,
+  };
 
   // Find the user by username
   const user = await User.findOne({ where: { id: req.user.id } });
@@ -137,7 +193,7 @@ exports.updateDetails = async (req, res, next) => {
       error: "User not found",
     });
   }
-  const userData = await User.findByPk(req.user.id);
+  let userData = await User.findByPk(req.user.id);
 
   if (!req.files) {
     updated = await User.update(userDetailsToUpdate, {
@@ -151,6 +207,8 @@ exports.updateDetails = async (req, res, next) => {
         .status(304)
         .json({ success: false, message: "Recond no modified" });
     }
+
+    userData = await User.findByPk(req.user.id);
 
     return res.status(200).json({
       success: true,
@@ -214,12 +272,12 @@ exports.updateDetails = async (req, res, next) => {
     success: true,
     message: "Data updated",
   });
-};
+});
 
 // @desc      Update password
 // @route     PUT /api/v1/auth/updatepassword
 // @access    Private
-exports.updatePassword = async (req, res, next) => {
+exports.updatePassword = asyncHandler(async (req, res, next) => {
   try {
     const { oldPassword, newPassword } = req.body; // Contains old and new passwords
 
@@ -263,17 +321,26 @@ exports.updatePassword = async (req, res, next) => {
       error: error.message,
     });
   }
-};
+});
 /**
  *@desc      Forgot password
  *@route     POST /api/v1/auth/forgotpassword
  *@access    Public
  */
 exports.forgotPassword = asyncHandler(async (req, res, next) => {
-  const user = await User.findOne({ where: { username: req.body.username } });
+  let user = await User.findOne({
+    where: { username: req.body.usernameORemail },
+  });
 
   if (!user) {
-    return next(new ErrorResponse("There is no user with that email", 404));
+    user = await User.findOne({
+      where: { email: req.body.usernameORemail },
+    });
+
+    if (!user)
+      return next(
+        new ErrorResponse("There is no user with that username or email", 404)
+      );
   }
   // Get reset token
   const OTP = await user.getOTP();
@@ -281,8 +348,6 @@ exports.forgotPassword = asyncHandler(async (req, res, next) => {
   await user.save();
 
   const message = `You are receiving this email because you (or someone else) has requested the reset of a password. your OTP is : \n\n ${OTP}\n\n Make sure to reset the password within 10 minits`;
-
-  res.status(200).json({ success: true, message: "Email sent" });
 
   try {
     await sendEmail({
@@ -293,7 +358,7 @@ exports.forgotPassword = asyncHandler(async (req, res, next) => {
 
     res.status(200).json({ success: true, message: "Email sent" });
   } catch (err) {
-    user.password_reset_token = undefined;
+    user.password_reset_token = null;
 
     await user.save();
 
@@ -498,6 +563,9 @@ const sendTokenResponse = (user, statusCode, res) => {
   if (process.env.NODE_ENV === "production") {
     options.secure = true;
   }
+
+  user = user.get({ plain: true });
+  delete user.password;
 
   res.status(statusCode).cookie("token", token, options).json({
     success: true,
