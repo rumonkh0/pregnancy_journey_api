@@ -13,9 +13,9 @@ exports.protect = asyncHandler(async (req, res, next) => {
   ) {
     // Set token from Bearer token in header
     token = req.headers.authorization.split(" ")[1];
-    // console.log("go with bearer");
-    // Set token from cookie
+    // console.log("------------go with bearer-----------");
   } else if (req.cookies.token) {
+    // Set token from cookie
     token = req.cookies.token;
   }
 
@@ -34,16 +34,22 @@ exports.protect = asyncHandler(async (req, res, next) => {
     const user = await User.findOne({
       where: { id: decoded.id },
     });
-
     req.user = user;
-
-    // console.log(user);
-
+    console.log(user.is_email_confirmed);
+    if ((user.is_email_comfirmed == "0") && (req.originalUrl != "/api/v1/auth/sendotp")) {
+      return res.status(200).json({
+        remark: "NOT_VERIFIED",
+        success: false,
+        message: "Email not verified",
+      });
+    }
     next();
   } catch (err) {
-    res
-      .status(401)
-      .json({ success: false, message: "unauthorized for this route" });
+    res.status(401).json({
+      remark: "UNAUTHORIZED",
+      success: false,
+      message: "unauthorized for this route",
+    });
     return next(new ErrorResponse("Not authorized to access this route", 401));
   }
 });
