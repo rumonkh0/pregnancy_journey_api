@@ -77,7 +77,7 @@ exports.register = asyncHandler(async (req, res, next) => {
   const sendResult = await sendEmail({
     email: user.email,
     subject: "Email confirmation OTP",
-    message,
+    otp: OTP,
   });
   // user.password = null;
   sendTokenResponse(user, 200, res);
@@ -353,7 +353,7 @@ exports.forgotPassword = asyncHandler(async (req, res, next) => {
     await sendEmail({
       email: user.email,
       subject: "Password reset OTP",
-      message,
+      otp: OTP,
     });
 
     res.status(200).json({ success: true, message: "Email sent" });
@@ -426,7 +426,7 @@ exports.resendOTP = asyncHandler(async (req, res, next) => {
   const sendResult = await sendEmail({
     email: user.email,
     subject: "Email confirmation OTP",
-    message,
+    otp: OTP,
   });
 
   res.status(200).json({ success: true, messsage: "OTP send" });
