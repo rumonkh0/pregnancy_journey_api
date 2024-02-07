@@ -51,7 +51,7 @@ router.use("/:postId/reaction", reactionRouter);
 router.use(protect);
 router.get("/", getAllPost);
 router.get("/:id", getPost);
-router.post("/", upload.any('post_images'), createPost);
+router.post("/", upload.any('2'), createPost);
 router.put("/:id", updatePost);
 router.delete("/:id", deletePost);
 

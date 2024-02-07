@@ -4,7 +4,7 @@ const path = require("path");
 const morgan = require("morgan");
 const cookieParser = require("cookie-parser");
 const bodyParser = require("body-parser");
-const cors = require('cors');
+const cors = require("cors");
 
 dotenv.config({ path: "./config/config.env" });
 
@@ -42,8 +42,11 @@ const reactionType = require("./app/routes/community/reactionType");
 const post = require("./app/routes/community/post");
 const comment = require("./app/routes/community/comment");
 const reaction = require("./app/routes/community/reaction");
-const general = require("./app/routes/general")
-const bpTracker = require("./app/routes/tools/mother/bpTracker")
+const general = require("./app/routes/general");
+const bpTracker = require("./app/routes/tools/mother/bpTracker");
+
+//admin section
+const adminLogin = require("./app/routes/admin/adminAuth");
 
 const app = express();
 
@@ -96,6 +99,8 @@ app.use("/api/v1/post", post);
 app.use("/api/v1/comment", comment);
 app.use("/api/v1/reaction", reaction);
 app.use("/api/v1/general", general);
+
+app.use("/admin/api/v1/users", users);
 
 // app.use("/api/v1/reaction", reaction);
 

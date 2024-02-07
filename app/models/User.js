@@ -196,7 +196,7 @@ User.prototype.verifyOTP = function (OTP) {
 
 //Method for sign in with jwt token
 User.prototype.getSignedJwtToken = function () {
-  return jwt.sign({ id: this.id }, process.env.JWT_SECRET, {
+  return jwt.sign({ id: this.id, type: "user" }, process.env.JWT_SECRET, {
     expiresIn: process.env.JWT_EXPIRE,
   });
 };

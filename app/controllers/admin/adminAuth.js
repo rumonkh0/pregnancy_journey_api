@@ -3,11 +3,11 @@ const fs = require("fs");
 const { promisify } = require("util");
 const unlinkAsync = promisify(fs.unlink);
 const { Op } = require("sequelize");
-const ErrorResponse = require("../resource/utils/errorResponse");
-const asyncHandler = require("../middleware/async");
-const User = require("../models/User");
-const Media = require("../models/Media");
-const sendEmail = require("../resource/utils/sendEmail");
+const ErrorResponse = require("../../resource/utils/errorResponse");
+const asyncHandler = require("../../middleware/async");
+const Admin = require("../../models/Admin");
+const Media = require("../../models/Media");
+const sendEmail = require("../../resource/utils/sendEmail");
 
 // @desc      Register user
 // @route     POST /api/v1/auth/register
@@ -47,7 +47,7 @@ exports.register = asyncHandler(async (req, res, next) => {
     lmp_date,
   };
 
-  let prev = await User.findOne({ where: { email: req.body.email } });
+  let prev = await Admin.findOne({ where: { email: req.body.email } });
   if (prev) {
     return res.status(404).json({
       success: false,
@@ -55,7 +55,7 @@ exports.register = asyncHandler(async (req, res, next) => {
     });
   }
 
-  prev = await User.findOne({ where: { username: req.body.username } });
+  prev = await Admin.findOne({ where: { username: req.body.username } });
   if (prev) {
     return res.status(404).json({
       success: false,
@@ -65,7 +65,7 @@ exports.register = asyncHandler(async (req, res, next) => {
 
   req.body.user_type = "user";
   // Create a new user with the data from req.body
-  const user = await User.create(userData);
+  const user = await Admin.create(userData);
 
   // grab token and send to email
   const OTP = await user.getOTP();
@@ -98,13 +98,13 @@ exports.login = asyncHandler(async (req, res, next) => {
     });
   }
   //Find user from database
-  let user = await User.scope("withPassword").findOne({
+  let user = await Admin.scope("withPassword").findOne({
     where: { username },
   });
   if (!user) {
     return res.status(404).json({
       success: false,
-      message: "User not found",
+      message: "Admin not found",
     });
   }
 
@@ -145,7 +145,7 @@ exports.getMe = asyncHandler(async (req, res, next) => {
 
   res.status(200).json({
     success: true,
-    message: "User data found",
+    message: "Admin data found",
     data: user,
   });
 });
@@ -185,19 +185,19 @@ exports.updateDetails = asyncHandler(async (req, res, next) => {
   };
 
   // Find the user by username
-  const user = await User.findOne({ where: { id: req.user.id } });
+  const user = await Admin.findOne({ where: { id: req.user.id } });
 
   if (!user) {
     return res.status(404).json({
       success: false,
-      message: "User not found",
-      error: "User not found",
+      message: "Admin not found",
+      error: "Admin not found",
     });
   }
-  let userData = await User.findByPk(req.user.id);
+  let userData = await Admin.findByPk(req.user.id);
 
   if (!req.files) {
-    updated = await User.update(userDetailsToUpdate, {
+    updated = await Admin.update(userDetailsToUpdate, {
       where: {
         id: req.user.id,
       },
@@ -209,11 +209,11 @@ exports.updateDetails = asyncHandler(async (req, res, next) => {
         .json({ success: false, message: "Recond no modified" });
     }
 
-    userData = await User.findByPk(req.user.id);
+    userData = await Admin.findByPk(req.user.id);
 
     return res.status(200).json({
       success: true,
-      message: "User information updated successfully",
+      message: "Admin information updated successfully",
       data: { user: userData },
     });
   }
@@ -229,7 +229,7 @@ exports.updateDetails = asyncHandler(async (req, res, next) => {
 
   let media, prevMedia;
   try {
-    userWithMedia = await User.findByPk(req.user.id, {
+    userWithMedia = await Admin.findByPk(req.user.id, {
       include: [
         {
           model: Media,
@@ -257,7 +257,7 @@ exports.updateDetails = asyncHandler(async (req, res, next) => {
       .json({ success: false, message: "data upload failed", error: err });
   }
 
-  updated = await User.update(userDetailsToUpdate, {
+  updated = await Admin.update(userDetailsToUpdate, {
     where: {
       id: req.user.id,
     },
@@ -283,16 +283,16 @@ exports.updatePassword = asyncHandler(async (req, res, next) => {
     const { oldPassword, newPassword } = req.body; // Contains old and new passwords
 
     // Find the user by username
-    // const user = await User.findByUsername(username);
-    const user = await User.scope("withPassword").findOne({
+    // const user = await Admin.findByAdminname(username);
+    const user = await Admin.scope("withPassword").findOne({
       where: { id: req.user.id },
     });
 
     if (!user) {
       return res.status(404).json({
         success: false,
-        message: "User not found",
-        error: "User not found",
+        message: "Admin not found",
+        error: "Admin not found",
       });
     }
 
@@ -329,12 +329,12 @@ exports.updatePassword = asyncHandler(async (req, res, next) => {
  *@access    Public
  */
 exports.forgotPassword = asyncHandler(async (req, res, next) => {
-  let user = await User.findOne({
+  let user = await Admin.findOne({
     where: { username: req.body.usernameORemail },
   });
 
   if (!user) {
-    user = await User.findOne({
+    user = await Admin.findOne({
       where: { email: req.body.usernameORemail },
     });
 
@@ -376,7 +376,7 @@ exports.forgotPassword = asyncHandler(async (req, res, next) => {
 exports.resetPassword = asyncHandler(async (req, res, next) => {
   const { username, OTP, newPassword } = req.body;
 
-  const user = await User.scope("withPassword").findOne({
+  const user = await Admin.scope("withPassword").findOne({
     where: {
       username,
       reset_password_expire: { [Op.gt]: new Date() },
@@ -411,7 +411,7 @@ exports.resendOTP = asyncHandler(async (req, res, next) => {
   // grab token from email
   const { username } = req.user;
 
-  let user = await User.findOne({ where: { username } });
+  let user = await Admin.findOne({ where: { username } });
 
   if (!user)
     return res
@@ -449,7 +449,7 @@ exports.confirmEmail = asyncHandler(async (req, res, next) => {
   }
 
   // get user by OTP
-  const user = await User.findOne({
+  const user = await Admin.findOne({
     where: {
       username,
       is_email_confirmed: false,
@@ -518,7 +518,7 @@ exports.oAuth = asyncHandler(async (req, res, next) => {
         picture: social_photo,
       } = userInfo;
 
-      const user = await User.findOne({
+      const user = await Admin.findOne({
         where: {
           email,
           social_id,
@@ -535,7 +535,7 @@ exports.oAuth = asyncHandler(async (req, res, next) => {
           last_name,
           login_type: "google",
         };
-        const user = await User.create(userdata);
+        const user = await Admin.create(userdata);
         sendTokenResponse(user, 200, res);
       } else {
         sendTokenResponse(user, 200, res);
@@ -548,7 +548,7 @@ exports.oAuth = asyncHandler(async (req, res, next) => {
     default:
     // code block
   }
-  const data = await User.findOne({ where: {} });
+  const data = await Admin.findOne({ where: {} });
 });
 
 // Get token from model, create cookie and send response

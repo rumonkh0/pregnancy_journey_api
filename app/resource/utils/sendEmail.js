@@ -5,14 +5,20 @@ const path = require("path");
 
 const sendEmail = async (options) => {
   const __dirname = path.resolve();
-  const filePath = path.join(
-    __dirname,
-    "./app/resource/utils/emailtemplate.html"
-  );
+  const filePath = path.join(__dirname, "./app/resource/utils/email2.html");
   const source = fs.readFileSync(filePath, "utf-8").toString();
   const template = handlebars.compile(source);
+  const currentDate = new Date();
+  const formattedDate = currentDate.toLocaleDateString("en-US", {
+    day: "numeric",
+    month: "short",
+    year: "numeric",
+  });
+
   const replacements = {
     otp: options.otp,
+    username: options.username,
+    date: formattedDate,
   };
   const htmlToSend = template(replacements);
 

@@ -2,6 +2,7 @@ const jwt = require("jsonwebtoken");
 const asyncHandler = require("./async");
 const ErrorResponse = require("../resource/utils/errorResponse");
 const User = require("../models/User");
+const Admin = require("../models/Admin");
 
 // Protect routes
 exports.protect = asyncHandler(async (req, res, next) => {
@@ -31,18 +32,41 @@ exports.protect = asyncHandler(async (req, res, next) => {
     // Verify token
     const decoded = jwt.verify(token, process.env.JWT_SECRET);
 
-    const user = await User.findOne({
-      where: { id: decoded.id },
-    });
-    req.user = user;
-    console.log(user.is_email_confirmed);
-    if ((user.is_email_comfirmed == "0") && (req.originalUrl != "/api/v1/auth/sendotp")) {
-      return res.status(200).json({
-        remark: "NOT_VERIFIED",
-        success: false,
-        message: "Email not verified",
-      });
+    switch (decoded.type) {
+      case "admin":
+        const admin = await Admin.findOne({
+          where: { id: decoded.id },
+        });
+        req.admin = admin;
+        break;
+      case "user":
+        const user = await User.findOne({
+          where: { id: decoded.id },
+        });
+        req.user = user;
+        if (
+          user.is_email_confirmed == "0" &&
+          !(
+            req.originalUrl == "/api/v1/auth/sendotp" ||
+            req.originalUrl == "/api/v1/auth/logout"
+          )
+        ) {
+          return res.status(200).json({
+            remark: "NOT_VERIFIED",
+            success: false,
+            message: "Email not verified",
+          });
+        }
+        break;
+      default:
+        res.status(401).json({
+          remark: "UNAUTHORIZED",
+          success: false,
+          message: "unauthorized for this route",
+        });
+        break;
     }
+
     next();
   } catch (err) {
     res.status(401).json({
