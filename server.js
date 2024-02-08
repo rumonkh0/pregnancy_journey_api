@@ -100,6 +100,8 @@ app.use("/api/v1/comment", comment);
 app.use("/api/v1/reaction", reaction);
 app.use("/api/v1/general", general);
 
+//admin section
+app.use("/admin/api/v1/auth", adminLogin);
 app.use("/admin/api/v1/users", users);
 
 // app.use("/api/v1/reaction", reaction);

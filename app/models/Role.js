@@ -1,6 +1,8 @@
 // Import Sequelize and define a model
 const { sequelize } = require("../../config/db");
 const { DataTypes } = require("sequelize");
+const Admin = require("./Admin");
+const AdminRole = require("./AdminRole");
 
 const Role = sequelize.define(
   "Role",
@@ -32,5 +34,6 @@ const Role = sequelize.define(
     timestamps: true, // Enable timestamps (createdAt and updatedAt)
   }
 );
+
 
 module.exports = Role;

@@ -89,5 +89,17 @@ Admin.prototype.getSignedJwtToken = function () {
 };
 
 Admin.belongsToMany(Role, { through: AdminRole, foreignKey: "admin_id" });
+Role.belongsToMany(Admin, { through: AdminRole, foreignKey: "role_id" });
+
+Admin.prototype.toJSON = function () {
+  const values = { ...this.get() };
+
+  if (values.Roles) {
+    values.roles = values.Roles.map(role => role.role);
+    delete values.Roles;
+  }
+
+  return values;
+};
 
 module.exports = Admin;

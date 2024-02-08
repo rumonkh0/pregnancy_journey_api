@@ -3,6 +3,8 @@ const asyncHandler = require("./async");
 const ErrorResponse = require("../resource/utils/errorResponse");
 const User = require("../models/User");
 const Admin = require("../models/Admin");
+const Role = require("../models/Role");
+const Media = require("../models/Media");
 
 // Protect routes
 exports.protect = asyncHandler(async (req, res, next) => {
@@ -36,7 +38,19 @@ exports.protect = asyncHandler(async (req, res, next) => {
       case "admin":
         const admin = await Admin.findOne({
           where: { id: decoded.id },
+          include: [
+            {
+              model: Role,
+              attributes: ["role"],
+            },
+            {
+              model: Media,
+              as: "media",
+              attributes: ["file_name", "file_path"],
+            },
+          ],
         });
+        // admin = admin.toJSON();
         req.admin = admin;
         break;
       case "user":

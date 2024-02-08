@@ -8,8 +8,9 @@ const asyncHandler = require("../../middleware/async");
 const Admin = require("../../models/Admin");
 const Media = require("../../models/Media");
 const sendEmail = require("../../resource/utils/sendEmail");
+const Role = require("../../models/Role");
 
-// @desc      Register user
+// @desc      Register admin
 // @route     POST /api/v1/auth/register
 // @access    Public
 exports.register = asyncHandler(async (req, res, next) => {
@@ -30,7 +31,7 @@ exports.register = asyncHandler(async (req, res, next) => {
     lmp_date,
   } = req.body;
 
-  const userData = {
+  const adminData = {
     username,
     first_name,
     last_name,
@@ -63,28 +64,28 @@ exports.register = asyncHandler(async (req, res, next) => {
     });
   }
 
-  req.body.user_type = "user";
-  // Create a new user with the data from req.body
-  const user = await Admin.create(userData);
+  req.body.admin_type = "admin";
+  // Create a new admin with the data from req.body
+  const admin = await Admin.create(adminData);
 
   // grab token and send to email
-  const OTP = await user.getOTP();
+  const OTP = await admin.getOTP();
 
   const message = `You are receiving this email because you need to confirm your email address. Heres your OTP: \n\n ${OTP}`;
 
-  user.save();
+  admin.save();
 
   const sendResult = await sendEmail({
-    email: user.email,
+    email: admin.email,
     subject: "Email confirmation OTP",
     otp: OTP,
     username,
   });
-  // user.password = null;
-  sendTokenResponse(user, 200, res);
+  // admin.password = null;
+  sendTokenResponse(admin, 200, res);
 });
 
-// @desc      Login user
+// @desc      Login admin
 // @route     POST /api/v1/auth/login
 // @access    Public
 exports.login = asyncHandler(async (req, res, next) => {
@@ -97,11 +98,22 @@ exports.login = asyncHandler(async (req, res, next) => {
       message: "Please enter username and password",
     });
   }
-  //Find user from database
-  let user = await Admin.scope("withPassword").findOne({
+  //Find admin from database
+  let admin = await Admin.scope("withPassword").findOne({
     where: { username },
+    include: [
+      {
+        model: Role,
+        attributes: ["role"],
+      },
+      {
+        model: Media,
+        as: "media",
+        attributes: ["file_name", "file_path"],
+      },
+    ],
   });
-  if (!user) {
+  if (!admin) {
     return res.status(404).json({
       success: false,
       message: "Admin not found",
@@ -109,7 +121,7 @@ exports.login = asyncHandler(async (req, res, next) => {
   }
 
   //Match hash password
-  const isMatch = await user.verifyPassword(password);
+  const isMatch = await admin.verifyPassword(password);
 
   if (!isMatch) {
     return res.status(404).json({
@@ -117,11 +129,10 @@ exports.login = asyncHandler(async (req, res, next) => {
       message: "Invalid credential",
     });
   }
-
-  sendTokenResponse(user, 200, res);
+  sendTokenResponse(admin, 200, res);
 });
 
-// @desc      Log user out / clear cookie
+// @desc      Log admin out / clear cookie
 // @route     GET /api/v1/auth/logout
 // @access    Public
 exports.logout = asyncHandler(async (req, res, next) => {
@@ -136,21 +147,21 @@ exports.logout = asyncHandler(async (req, res, next) => {
   });
 });
 
-// @desc      Get current logged in user
+// @desc      Get current logged in admin
 // @route     GET /api/v1/auth/me
 // @access    Private
 exports.getMe = asyncHandler(async (req, res, next) => {
-  // user is already available in req due to the protect middleware
-  const user = req.user;
+  // admin is already available in req due to the protect middleware
+  const admin = req.admin;
 
   res.status(200).json({
     success: true,
     message: "Admin data found",
-    data: user,
+    data: admin,
   });
 });
 
-// @desc      Update user details
+// @desc      Update admin details
 // @route     PUT /api/v1/auth/updatedetails
 // @access    Private
 exports.updateDetails = asyncHandler(async (req, res, next) => {
@@ -169,7 +180,7 @@ exports.updateDetails = asyncHandler(async (req, res, next) => {
     lmp_date,
   } = req.body;
 
-  const userDetailsToUpdate = {
+  const adminDetailsToUpdate = {
     username,
     first_name,
     last_name,
@@ -184,22 +195,21 @@ exports.updateDetails = asyncHandler(async (req, res, next) => {
     lmp_date,
   };
 
-  // Find the user by username
-  const user = await Admin.findOne({ where: { id: req.user.id } });
+  // Find the admin by username
+  const admin = await Admin.findOne({ where: { id: req.admin.id } });
 
-  if (!user) {
+  if (!admin) {
     return res.status(404).json({
       success: false,
       message: "Admin not found",
       error: "Admin not found",
     });
   }
-  let userData = await Admin.findByPk(req.user.id);
-
-  if (!req.files) {
-    updated = await Admin.update(userDetailsToUpdate, {
+  let adminData = await Admin.findByPk(req.admin.id);
+  if (!req.file) {
+    updated = await Admin.update(adminDetailsToUpdate, {
       where: {
-        id: req.user.id,
+        id: req.admin.id,
       },
     });
 
@@ -209,18 +219,18 @@ exports.updateDetails = asyncHandler(async (req, res, next) => {
         .json({ success: false, message: "Recond no modified" });
     }
 
-    userData = await Admin.findByPk(req.user.id);
+    adminData = await Admin.findByPk(req.admin.id);
 
     return res.status(200).json({
       success: true,
       message: "Admin information updated successfully",
-      data: { user: userData },
+      data: { admin: adminData },
     });
   }
 
   const { mimetype, filename, path: file_path } = req.file;
   req.media = {
-    uploaded_by: req.user.username,
+    uploaded_by: req.admin.username,
     file_path,
     mime_type: mimetype,
     file_name: filename,
@@ -229,7 +239,7 @@ exports.updateDetails = asyncHandler(async (req, res, next) => {
 
   let media, prevMedia;
   try {
-    userWithMedia = await Admin.findByPk(req.user.id, {
+    adminWithMedia = await Admin.findByPk(req.admin.id, {
       include: [
         {
           model: Media,
@@ -240,11 +250,13 @@ exports.updateDetails = asyncHandler(async (req, res, next) => {
     });
 
     media = await Media.create(req.media);
-    req.body.photo = media.id;
+    adminDetailsToUpdate.photo = media.id;
+    console.log(req.body);
+
     //delete previous photo
-    if (userWithMedia.media) {
-      await unlinkAsync(userWithMedia.media.file_path);
-      await Media.destroy({ where: { id: user.photo } });
+    if (adminWithMedia.media) {
+      await unlinkAsync(adminWithMedia.media.file_path);
+      await Media.destroy({ where: { id: admin.photo } });
     }
   } catch (err) {
     if (req.file && req.file && req.file.path) {
@@ -257,9 +269,9 @@ exports.updateDetails = asyncHandler(async (req, res, next) => {
       .json({ success: false, message: "data upload failed", error: err });
   }
 
-  updated = await Admin.update(userDetailsToUpdate, {
+  updated = await Admin.update(adminDetailsToUpdate, {
     where: {
-      id: req.user.id,
+      id: req.admin.id,
     },
   });
 
@@ -282,13 +294,13 @@ exports.updatePassword = asyncHandler(async (req, res, next) => {
   try {
     const { oldPassword, newPassword } = req.body; // Contains old and new passwords
 
-    // Find the user by username
-    // const user = await Admin.findByAdminname(username);
-    const user = await Admin.scope("withPassword").findOne({
-      where: { id: req.user.id },
+    // Find the admin by username
+    // const admin = await Admin.findByAdminname(username);
+    const admin = await Admin.scope("withPassword").findOne({
+      where: { id: req.admin.id },
     });
 
-    if (!user) {
+    if (!admin) {
       return res.status(404).json({
         success: false,
         message: "Admin not found",
@@ -297,7 +309,7 @@ exports.updatePassword = asyncHandler(async (req, res, next) => {
     }
 
     // Verify the old password
-    const isPasswordValid = await user.verifyPassword(oldPassword);
+    const isPasswordValid = await admin.verifyPassword(oldPassword);
 
     if (!isPasswordValid) {
       return res.status(401).json({
@@ -307,9 +319,9 @@ exports.updatePassword = asyncHandler(async (req, res, next) => {
       });
     }
 
-    // Update the user's password
-    user.password = newPassword;
-    await user.save();
+    // Update the admin's password
+    admin.password = newPassword;
+    await admin.save();
 
     res
       .status(200)
@@ -329,40 +341,40 @@ exports.updatePassword = asyncHandler(async (req, res, next) => {
  *@access    Public
  */
 exports.forgotPassword = asyncHandler(async (req, res, next) => {
-  let user = await Admin.findOne({
-    where: { username: req.body.usernameORemail },
+  let admin = await Admin.findOne({
+    where: { username: req.body.adminnameORemail },
   });
 
-  if (!user) {
-    user = await Admin.findOne({
-      where: { email: req.body.usernameORemail },
+  if (!admin) {
+    admin = await Admin.findOne({
+      where: { email: req.body.adminnameORemail },
     });
 
-    if (!user)
+    if (!admin)
       return next(
-        new ErrorResponse("There is no user with that username or email", 404)
+        new ErrorResponse("There is no admin with that username or email", 404)
       );
   }
   // Get reset token
-  const OTP = await user.getOTP();
+  const OTP = await admin.getOTP();
 
-  await user.save();
+  await admin.save();
 
   const message = `You are receiving this email because you (or someone else) has requested the reset of a password. your OTP is : \n\n ${OTP}\n\n Make sure to reset the password within 10 minits`;
 
   try {
     await sendEmail({
-      email: user.email,
+      email: admin.email,
       subject: "Password reset OTP",
       otp: OTP,
-      username: req.user.username,
+      username: req.admin.username,
     });
 
     res.status(200).json({ success: true, message: "Email sent" });
   } catch (err) {
-    user.password_reset_token = null;
+    admin.password_reset_token = null;
 
-    await user.save();
+    await admin.save();
 
     return next(new ErrorResponse("Email could not be sent", 500));
   }
@@ -376,30 +388,30 @@ exports.forgotPassword = asyncHandler(async (req, res, next) => {
 exports.resetPassword = asyncHandler(async (req, res, next) => {
   const { username, OTP, newPassword } = req.body;
 
-  const user = await Admin.scope("withPassword").findOne({
+  const admin = await Admin.scope("withPassword").findOne({
     where: {
       username,
       reset_password_expire: { [Op.gt]: new Date() },
     },
   });
 
-  if (!user) {
-    return next(new ErrorResponse("No user found", 400));
+  if (!admin) {
+    return next(new ErrorResponse("No admin found", 400));
   }
 
   // Verify the OTP
-  const isOTPdValid = await user.verifyOTP(OTP);
+  const isOTPdValid = await admin.verifyOTP(OTP);
 
   if (!isOTPdValid)
     return res.status(200).json({ success: false, message: "Invalid OTP" });
 
   // Set new password
-  user.password = newPassword;
-  user.password_reset_token = undefined;
-  //  user.resetPasswordExpire = undefined;
-  await user.save();
+  admin.password = newPassword;
+  admin.password_reset_token = undefined;
+  //  admin.resetPasswordExpire = undefined;
+  await admin.save();
 
-  sendTokenResponse(user, 200, res);
+  sendTokenResponse(admin, 200, res);
 });
 
 /**
@@ -409,27 +421,27 @@ exports.resetPassword = asyncHandler(async (req, res, next) => {
  */
 exports.resendOTP = asyncHandler(async (req, res, next) => {
   // grab token from email
-  const { username } = req.user;
+  const { username } = req.admin;
 
-  let user = await Admin.findOne({ where: { username } });
+  let admin = await Admin.findOne({ where: { username } });
 
-  if (!user)
+  if (!admin)
     return res
       .status(200)
       .json({ success: false, message: "username of email not found" });
 
   // grab token and send to email
-  const OTP = await user.getOTP();
+  const OTP = await admin.getOTP();
 
   const message = `You are receiving this email because you need to confirm your email address. Heres your OTP: \n\n ${OTP}`;
 
-  user.save();
+  admin.save();
 
   const sendResult = await sendEmail({
-    email: user.email,
+    email: admin.email,
     subject: "Email confirmation OTP",
     otp: OTP,
-    username: req.user.username,
+    username: req.admin.username,
   });
 
   res.status(200).json({ success: true, messsage: "OTP send" });
@@ -448,31 +460,31 @@ exports.confirmEmail = asyncHandler(async (req, res, next) => {
     return next(new ErrorResponse("Invalid Token", 400));
   }
 
-  // get user by OTP
-  const user = await Admin.findOne({
+  // get admin by OTP
+  const admin = await Admin.findOne({
     where: {
       username,
       is_email_confirmed: false,
     },
   });
 
-  if (!user) {
+  if (!admin) {
     return res
       .status(200)
       .json({ success: false, message: "already verified" });
   }
   // Verify the OTP
-  const isOTPdValid = await user.verifyOTP(OTP);
+  const isOTPdValid = await admin.verifyOTP(OTP);
 
   if (!isOTPdValid)
     return res.status(200).json({ success: false, message: "Invalid OTP" });
 
   // update confirmed to true
-  user.confirm_email_token = undefined;
-  user.is_email_confirmed = true;
+  admin.confirm_email_token = undefined;
+  admin.is_email_confirmed = true;
 
   // save
-  user.save();
+  admin.save();
 
   // return token
   res
@@ -492,9 +504,9 @@ exports.oAuth = asyncHandler(async (req, res, next) => {
     case "google":
       // code block
       const oauthdata = await fetch(
-        `https://www.googleapis.com/oauth2/v1/userinfo?alt=json&access_token=${token}`
+        `https://www.googleapis.com/oauth2/v1/admininfo?alt=json&access_token=${token}`
       );
-      let userInfo;
+      let adminInfo;
       // const {
       //   id: social_id,
       //   email,
@@ -504,9 +516,9 @@ exports.oAuth = asyncHandler(async (req, res, next) => {
       //   picture: photo,
       // } = oauthdata;
       if (oauthdata.ok) {
-        userInfo = await oauthdata.json();
+        adminInfo = await oauthdata.json();
       } else {
-        throw new Error("Failed to fetch user information");
+        throw new Error("Failed to fetch admin information");
       }
 
       const {
@@ -516,17 +528,17 @@ exports.oAuth = asyncHandler(async (req, res, next) => {
         family_name: last_name,
         verified_email,
         picture: social_photo,
-      } = userInfo;
+      } = adminInfo;
 
-      const user = await Admin.findOne({
+      const admin = await Admin.findOne({
         where: {
           email,
           social_id,
         },
       });
 
-      if (!user) {
-        userdata = {
+      if (!admin) {
+        admindata = {
           username: social_id,
           social_id,
           email,
@@ -535,10 +547,10 @@ exports.oAuth = asyncHandler(async (req, res, next) => {
           last_name,
           login_type: "google",
         };
-        const user = await Admin.create(userdata);
-        sendTokenResponse(user, 200, res);
+        const admin = await Admin.create(admindata);
+        sendTokenResponse(admin, 200, res);
       } else {
-        sendTokenResponse(user, 200, res);
+        sendTokenResponse(admin, 200, res);
       }
 
       break;
@@ -552,9 +564,9 @@ exports.oAuth = asyncHandler(async (req, res, next) => {
 });
 
 // Get token from model, create cookie and send response
-const sendTokenResponse = (user, statusCode, res) => {
+const sendTokenResponse = (admin, statusCode, res) => {
   // Create token
-  const token = user.getSignedJwtToken();
+  const token = admin.getSignedJwtToken();
 
   const options = {
     expires: new Date(
@@ -566,13 +578,12 @@ const sendTokenResponse = (user, statusCode, res) => {
   if (process.env.NODE_ENV === "production") {
     options.secure = true;
   }
-
-  user = user.get({ plain: true });
-  delete user.password;
+  admin = admin.toJSON();
+  delete admin.password;
 
   res.status(statusCode).cookie("token", token, options).json({
     success: true,
     message: "Authentication successfull",
-    data: { token, user },
+    data: { token, admin },
   });
 };

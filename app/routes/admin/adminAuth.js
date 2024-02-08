@@ -32,7 +32,7 @@ const storage = multer.diskStorage({
       null,
       file.fieldname +
         "-" +
-        req.user.username +
+        req.admin.username +
         "-" +
         Date.now() +
         path.extname(file.originalname)
@@ -50,12 +50,11 @@ const upload = multer({
 router.post("/login", login);
 router.get("/logout", protect, logout);
 router.get("/me", protect, getMe);
-router.put("/updatedetails", protect, upload.single('user_image_field'), updateDetails);
+router.put("/updatedetails", protect, upload.single('admin_image_field'), updateDetails);
 router.put("/updatepassword", protect, updatePassword);
 router.post("/forgotpassword", forgotPassword);
 router.put("/resetpassword/", resetPassword);
 router.post("/sendotp", protect, resendOTP);
 router.post("/confirmemail", confirmEmail);
-router.post("/social-auth", oAuth);
 
 module.exports = router;
