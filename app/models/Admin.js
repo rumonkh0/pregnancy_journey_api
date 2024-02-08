@@ -74,7 +74,7 @@ const Admin = sequelize.define(
   }
 );
 
-Admin.belongsTo(Media, { as: "media", foreignKey: "photo" });
+Admin.belongsTo(Media, { as: "profile_photo", foreignKey: "photo" });
 
 // Method to verify password
 Admin.prototype.verifyPassword = function (password) {
@@ -95,7 +95,7 @@ Admin.prototype.toJSON = function () {
   const values = { ...this.get() };
 
   if (values.Roles) {
-    values.roles = values.Roles.map(role => role.role);
+    values.roles = values.Roles.map((role) => role.role);
     delete values.Roles;
   }
 

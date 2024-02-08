@@ -45,7 +45,7 @@ exports.protect = asyncHandler(async (req, res, next) => {
             },
             {
               model: Media,
-              as: "media",
+              as: "profile_photo",
               attributes: ["file_name", "file_path"],
             },
           ],
@@ -56,6 +56,11 @@ exports.protect = asyncHandler(async (req, res, next) => {
       case "user":
         const user = await User.findOne({
           where: { id: decoded.id },
+          include: {
+            model: Media,
+            as: "media",
+            attributes: ["file_name", "file_path"],
+          },
         });
         req.user = user;
         if (
