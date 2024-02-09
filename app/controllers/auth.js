@@ -143,6 +143,13 @@ exports.getMe = asyncHandler(async (req, res, next) => {
   // user is already available in req due to the protect middleware
   const user = req.user;
 
+  if (user == undefined)
+    return res.status(401).json({
+      remark: "UNAUTHORIZED",
+      success: false,
+      message: "unauthorized for this route",
+    });
+
   res.status(200).json({
     success: true,
     message: "User data found",

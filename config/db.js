@@ -1,10 +1,7 @@
 const { Sequelize } = require("sequelize");
 
-// Initialize Sequelize with MySQL connection parameters
-
 let sequelize;
 
-// if (process.env.NODE_ENV === "development") {
 sequelize = new Sequelize(
   process.env.DATABASE,
   process.env.USER,
@@ -16,12 +13,7 @@ sequelize = new Sequelize(
     logging: false,
   }
 );
-// } else {
-//   sequelize = new Sequelize({
-//     dialect: "sqlite",
-//     storage: "private/data.sqlite",
-//   });
-// }
+
 //Create a function to connect asynchronously
 const setupDbConnection = async () => {
   try {

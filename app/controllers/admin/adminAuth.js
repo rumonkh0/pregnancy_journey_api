@@ -108,7 +108,7 @@ exports.login = asyncHandler(async (req, res, next) => {
       },
       {
         model: Media,
-        as: "media",
+        as: "profile_photo",
         attributes: ["file_name", "file_path"],
       },
     ],
@@ -153,6 +153,12 @@ exports.logout = asyncHandler(async (req, res, next) => {
 exports.getMe = asyncHandler(async (req, res, next) => {
   // admin is already available in req due to the protect middleware
   const admin = req.admin;
+  if (admin == undefined)
+    return res.status(401).json({
+      remark: "UNAUTHORIZED",
+      success: false,
+      message: "unauthorized for this route",
+    });
 
   res.status(200).json({
     success: true,

@@ -1,3 +1,4 @@
+///this controller for users 
 const asyncHandler = require("../middleware/async");
 const User = require("../models/User");
 const { where } = require("sequelize");

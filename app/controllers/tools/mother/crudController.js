@@ -1,5 +1,4 @@
 const asyncHandler = require("../../../middleware/async");
-const Baby = require("../../../models/Baby");
 const { where } = require("sequelize");
 
 // @desc      Get  Baby get all as history
@@ -58,7 +57,6 @@ exports.create = (Model) => {
 
     // Get the feed history for the specified baby
     req.body.user_id = req.user.id;
-    console.log(req.body);
     const babyFeed = await Model.create(req.body);
 
     res.status(200).json({ success: true, message: "Created", data: babyFeed });
