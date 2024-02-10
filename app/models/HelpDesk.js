@@ -40,5 +40,6 @@ const HelpDesk = sequelize.define(
 
 HelpDesk.belongsTo(User, { foreignKey: "user_id" });
 HelpDesk.belongsTo(Admin, { foreignKey: "admin_id" });
+HelpDesk.belongsTo(HelpDesk, { foreignKey: "user_id", as: "lastMessage" });
 
 module.exports = HelpDesk;

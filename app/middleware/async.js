@@ -1,7 +1,7 @@
 const ErrorResponse = require("../resource/utils/errorResponse");
 
 let asyncHandler;
-if (process.env.NODE_ENV === "development") {
+if (process.env.NODE_ENV === "develpment") {
   asyncHandler = (fn) => (req, res, next) => {
     Promise.resolve(fn(req, res, next)).catch(
       next

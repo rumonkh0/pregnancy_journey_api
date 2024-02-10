@@ -44,10 +44,11 @@ const comment = require("./app/routes/community/comment");
 const reaction = require("./app/routes/community/reaction");
 const general = require("./app/routes/general");
 const bpTracker = require("./app/routes/tools/mother/bpTracker");
-const helpDesk = require("./app/routes/helpDesk")
+const helpDesk = require("./app/routes/helpDesk");
 
 //admin section
 const adminLogin = require("./app/routes/admin/adminAuth");
+const adminHelpDesk = require("./app/routes/admin/helpDesk");
 
 const app = express();
 
@@ -100,11 +101,12 @@ app.use("/api/v1/post", post);
 app.use("/api/v1/comment", comment);
 app.use("/api/v1/reaction", reaction);
 app.use("/api/v1/general", general);
-app.use("/api/v1/helpdesk", helpDesk)
+app.use("/api/v1/helpdesk", helpDesk);
 
 //admin section
 app.use("/admin/api/v1/auth", adminLogin);
 app.use("/admin/api/v1/users", users);
+app.use("/admin/api/v1/helpdesk", adminHelpDesk);
 
 // app.use("/api/v1/reaction", reaction);
 
