@@ -73,7 +73,6 @@ exports.getOne = asyncHandler(async (req, res, next) => {
 // @route     POST /api/v1/babygallery
 // @access    Private
 exports.createBabyGallery = asyncHandler(async (req, res, next) => {
-  console.log(req.file);
   if (!req.file)
     return res
       .status(200)
@@ -96,7 +95,6 @@ exports.createBabyGallery = asyncHandler(async (req, res, next) => {
     if (req.file && req.file && req.file.path) {
       const filePath = req.file.path;
       await unlinkAsync(filePath);
-      console.log("File removed:", filePath);
     }
     return res.status(200).json({ success: false, message: err });
   }
@@ -169,7 +167,6 @@ exports.updateBabyGallery = asyncHandler(async (req, res, next) => {
     if (req.files && req.files[0] && req.files[0].path) {
       const filePath = req.files[0].path;
       await unlinkAsync(filePath);
-      console.log("File removed:", filePath);
     }
     return res
       .status(200)

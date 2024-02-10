@@ -36,7 +36,7 @@ exports.protect = asyncHandler(async (req, res, next) => {
 
     switch (decoded.type) {
       case "admin":
-        const admin = await Admin.findOne({
+        let admin = await Admin.findOne({
           where: { id: decoded.id },
           include: [
             {
@@ -50,7 +50,7 @@ exports.protect = asyncHandler(async (req, res, next) => {
             },
           ],
         });
-        // admin = admin.toJSON();
+        admin = admin.toJSON();
         req.admin = admin;
         break;
       case "user":
@@ -100,13 +100,12 @@ exports.protect = asyncHandler(async (req, res, next) => {
 // Grant access to specific roles
 exports.authorize = (...roles) => {
   return (req, res, next) => {
-    if (!roles.includes(req.user.role)) {
-      return next(
-        new ErrorResponse(
-          `User role ${req.user.role} is not authorized to access this route`,
-          403
-        )
-      );
+    if (!roles.some((element) => req.admin.roles.includes(element))) {
+      return res.status(200).json({
+        remarks: "UNAUTHORIZED",
+        success: false,
+        message: "Not authorized to access this route",
+      });
     }
     next();
   };

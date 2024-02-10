@@ -47,6 +47,7 @@ const bpTracker = require("./app/routes/tools/mother/bpTracker");
 const helpDesk = require("./app/routes/helpDesk");
 
 //admin section
+const admins = require("./app/routes/admin/admin");
 const adminLogin = require("./app/routes/admin/adminAuth");
 const adminHelpDesk = require("./app/routes/admin/helpDesk");
 
@@ -107,6 +108,7 @@ app.use("/api/v1/helpdesk", helpDesk);
 app.use("/admin/api/v1/auth", adminLogin);
 app.use("/admin/api/v1/users", users);
 app.use("/admin/api/v1/helpdesk", adminHelpDesk);
+app.use("/admin/api/v1/admin", admins);
 
 // app.use("/api/v1/reaction", reaction);
 

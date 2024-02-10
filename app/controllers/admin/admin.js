@@ -1,12 +1,27 @@
-const Admin = require("../models/Admin");
-const asyncHandler = require("../middleware/async");
+const Admin = require("../../models/Admin");
+const asyncHandler = require("../../middleware/async");
+const Role = require("../../models/Role");
+const Media = require("../../models/Media");
+const AdminRole = require("../../models/AdminRole");
 // @desc      Get all admins
 // @route     GET /api/v1/bootcamps
 // @access    Public
 exports.getAdmins = asyncHandler(async (req, res, next) => {
-  res.status(200).json(res.advancedResults);
+  // res.status(200).json(res.advancedResults);
   // try {
-  const admins = await Admin.findAll();
+  const admins = await Admin.findAll({
+    include: [
+      {
+        model: Role,
+        attributes: ["role"],
+      },
+      {
+        model: Media,
+        as: "profile_photo",
+        attributes: ["file_name", "file_path"],
+      },
+    ],
+  });
   res.status(200).json({ success: true, data: admins });
   // } catch (error) {
   //   res.status(500).json({ error: error.message });
@@ -18,12 +33,25 @@ exports.getAdmins = asyncHandler(async (req, res, next) => {
 // @access    Private/Admin
 exports.getAdmin = asyncHandler(async (req, res, next) => {
   const id = req.params.adminId;
-  const admin = await Admin.findOne({ where: { id } });
+  const admin = await Admin.findOne({
+    where: { id },
+    include: [
+      {
+        model: Role,
+        attributes: ["role"],
+      },
+      {
+        model: Media,
+        as: "profile_photo",
+        attributes: ["file_name", "file_path"],
+      },
+    ],
+  });
   if (!admin) {
     res.status(404).json({ success: false, message: "Admin not found" });
     return;
   }
-  res.json(admin);
+  res.status(200).json({ success: true, data: admin });
 });
 
 // @desc      Create admin
@@ -52,6 +80,26 @@ exports.updateAdmin = asyncHandler(async (req, res) => {
   res
     .status(200)
     .json({ success: true, message: "Admin updated", data: { admin } });
+});
+
+// @desc      Update admin
+// @route     PUT /api/v1/admins/:id
+// @access    Private/Admin
+exports.updateAdminRole = asyncHandler(async (req, res) => {
+  const adminId = req.params.adminId;
+  const roleId = req.params.roleId;
+
+  const prev = await AdminRole.findOne({
+    where: { admin_id: adminId, role_id: roleId },
+  });
+
+  if (prev) {
+    await AdminRole.destroy({ where: { admin_id: adminId, role_id: roleId } });
+  } else {
+    await AdminRole.create({ admin_id: adminId, role_id: roleId });
+  }
+
+  res.status(200).json({ success: true, message: "Role updated" });
 });
 
 // @desc      Delete admin

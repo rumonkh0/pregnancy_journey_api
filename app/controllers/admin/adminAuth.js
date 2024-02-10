@@ -159,7 +159,6 @@ exports.getMe = asyncHandler(async (req, res, next) => {
       success: false,
       message: "unauthorized for this route",
     });
-
   res.status(200).json({
     success: true,
     message: "Admin data found",
@@ -257,7 +256,7 @@ exports.updateDetails = asyncHandler(async (req, res, next) => {
 
     media = await Media.create(req.media);
     adminDetailsToUpdate.photo = media.id;
-    console.log(req.body);
+    // console.log(req.body);
 
     //delete previous photo
     if (adminWithMedia.media) {

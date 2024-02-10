@@ -86,7 +86,6 @@ exports.createReaction = asyncHandler(async (req, res, next) => {
     }
   }
 
-  console.log(req.body);
   const reaction = await Reaction.create(reactionData);
   res
     .status(201)

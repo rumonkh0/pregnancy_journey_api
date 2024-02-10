@@ -55,6 +55,6 @@ router.put("/updatepassword", protect, updatePassword);
 router.post("/forgotpassword", forgotPassword);
 router.put("/resetpassword/", resetPassword);
 router.post("/sendotp", protect, resendOTP);
-router.post("/confirmemail", confirmEmail);
+// router.post("/confirmemail", confirmEmail);
 
 module.exports = router;
