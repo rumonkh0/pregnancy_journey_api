@@ -435,9 +435,9 @@ exports.resetPassword = asyncHandler(async (req, res, next) => {
     return res.status(200).json({ success: false, message: "Invalid OTP" });
 
   // Set new password
-  // user.password = newPassword;
+  user.password = newPassword;
   user.password_reset_token = undefined;
-  user.resetPasswordExpire = undefined;
+  user.reset_password_expire  = undefined;
   console.log(user);
   await user.save();
 
