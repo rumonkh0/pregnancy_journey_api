@@ -67,7 +67,8 @@ exports.protect = asyncHandler(async (req, res, next) => {
           user.is_email_confirmed == "0" &&
           !(
             req.originalUrl == "/api/v1/auth/sendotp" ||
-            req.originalUrl == "/api/v1/auth/logout"
+            req.originalUrl == "/api/v1/auth/logout" ||
+            req.originalUrl == "/api/v1/auth/getme"
           )
         ) {
           return res.status(200).json({

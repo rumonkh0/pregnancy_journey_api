@@ -346,9 +346,11 @@ exports.forgotPassword = asyncHandler(async (req, res, next) => {
     });
 
     if (!user)
-      return next(
-        new ErrorResponse("There is no user with that username or email", 404)
-      );
+      return res.status(404).json({
+        remark: "UNSUCCESSFUL",
+        success: false,
+        message: "No user found",
+      });
   }
   // Get reset token
   const OTP = await user.getOTP();
@@ -356,13 +358,18 @@ exports.forgotPassword = asyncHandler(async (req, res, next) => {
   await user.save();
 
   const message = `You are receiving this email because you (or someone else) has requested the reset of a password. your OTP is : \n\n ${OTP}\n\n Make sure to reset the password within 10 minits`;
-
+  console.log({
+    email: user.email,
+    subject: "Password reset OTP",
+    otp: OTP,
+    username: user.username,
+  });
   try {
     await sendEmail({
       email: user.email,
       subject: "Password reset OTP",
       otp: OTP,
-      username: req.user.username,
+      username: user.username,
     });
 
     res.status(200).json({ success: true, message: "Email sent" });
@@ -371,7 +378,11 @@ exports.forgotPassword = asyncHandler(async (req, res, next) => {
 
     await user.save();
 
-    return next(new ErrorResponse("Email could not be sent", 500));
+    return res.status(400).json({
+      remark: "UNSUCCESSFUL",
+      success: false,
+      message: "Email could not be sent",
+    });
   }
 });
 
@@ -381,17 +392,40 @@ exports.forgotPassword = asyncHandler(async (req, res, next) => {
  *@access    Public
  */
 exports.resetPassword = asyncHandler(async (req, res, next) => {
-  const { username, OTP, newPassword } = req.body;
+  const { usernameORemail, OTP, newPassword } = req.body;
+
+  let prev = await User.findOne({
+    where: { username: usernameORemail },
+  });
+
+  if (!prev) {
+    prev = await User.findOne({
+      where: { email: usernameORemail },
+    });
+  }
+
+  if (!prev)
+    return res.status(404).json({
+      remark: "UNSUCCESSFUL",
+      success: false,
+      message: "No user found",
+    });
+
+  ///////////////////////////////////
 
   const user = await User.scope("withPassword").findOne({
     where: {
-      username,
+      username: prev.username,
       reset_password_expire: { [Op.gt]: new Date() },
     },
   });
 
   if (!user) {
-    return next(new ErrorResponse("No user found", 400));
+    return res.status(404).json({
+      remark: "UNSUCCESSFUL",
+      success: false,
+      message: "OTP expired",
+    });
   }
 
   // Verify the OTP
@@ -401,9 +435,10 @@ exports.resetPassword = asyncHandler(async (req, res, next) => {
     return res.status(200).json({ success: false, message: "Invalid OTP" });
 
   // Set new password
-  user.password = newPassword;
+  // user.password = newPassword;
   user.password_reset_token = undefined;
-  //  user.resetPasswordExpire = undefined;
+  user.resetPasswordExpire = undefined;
+  console.log(user);
   await user.save();
 
   sendTokenResponse(user, 200, res);
@@ -449,10 +484,13 @@ exports.resendOTP = asyncHandler(async (req, res, next) => {
  */
 exports.confirmEmail = asyncHandler(async (req, res, next) => {
   // grab token from email
-  const { username, OTP } = req.body;
+  const { OTP } = req.body;
 
   if (!OTP) {
-    return next(new ErrorResponse("Invalid Token", 400));
+    return res.status(404).json({
+      success: false,
+      message: "invalid token",
+    });
   }
 
   // get user by OTP
