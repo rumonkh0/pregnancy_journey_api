@@ -10,6 +10,7 @@ sequelize = new Sequelize(
     host: process.env.HOST,
     post: 3306,
     dialect: "mysql",
+    dialectModule: require('mysql2'),
     logging: false,
   }
 );
