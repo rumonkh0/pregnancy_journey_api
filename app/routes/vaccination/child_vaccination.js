@@ -7,6 +7,7 @@ const {
   update,
   deleteOne,
   deleteAll,
+  checkBabyOwner,
 } = require("../../controllers/baby_care/baby_care_controller");
 
 const router = express.Router();
@@ -14,10 +15,10 @@ const { protect } = require("../../middleware/auth");
 
 router.use(protect);
 
-router.get("/:babyId", getHistory(Cvaccination));
-router.get("/:babyId/:modelPk", getOne(Cvaccination));
-router.post("/:babyId/", create(Cvaccination));
-router.put("/:babyId/:modelPk", update(Cvaccination));
-router.delete("/:babyId/:modelPk", deleteOne(Cvaccination));
-router.delete("/:babyId", deleteAll(Cvaccination));
+router.get("/:babyId", checkBabyOwner, getHistory(Cvaccination));
+router.get("/:babyId/:modelPk", checkBabyOwner, getOne(Cvaccination));
+router.post("/:babyId/", checkBabyOwner, create(Cvaccination));
+router.put("/:babyId/:modelPk", checkBabyOwner, update(Cvaccination));
+router.delete("/:babyId/:modelPk", checkBabyOwner, deleteOne(Cvaccination));
+router.delete("/:babyId", checkBabyOwner, deleteAll(Cvaccination));
 module.exports = router;

@@ -15,7 +15,7 @@ setupDbConnection();
 
 //Route files
 const auth = require("./app/routes/auth");
-const users = require("./app/routes/users");
+const users = require("./app/routes/admin/users");
 const babyList = require("./app/routes/baby");
 const babygallery = require("./app/routes/baby_care/baby_gallery");
 const babyFeed = require("./app/routes/baby_care/baby_feed");
@@ -50,6 +50,7 @@ const helpDesk = require("./app/routes/helpDesk");
 const admins = require("./app/routes/admin/admin");
 const adminLogin = require("./app/routes/admin/adminAuth");
 const adminHelpDesk = require("./app/routes/admin/helpDesk");
+const babyCare = require("./app/routes/admin/babyCare");
 
 const app = express();
 
@@ -81,7 +82,7 @@ app.use("/api/v1/diaper", babyDiaper);
 app.use("/api/v1/symptom", babySymptom);
 app.use("/api/v1/breastpump", breastPump);
 app.use("/api/v1/sleep", babySleep);
-app.use("/api/v1/temp", babyTemp);
+app.use("/api/v1/babytemp", babyTemp);
 app.use("/api/v1/allhistory", allHistory);
 // app.use("/api/v1/exercise", exercise);   //problem with admin functionality
 app.use("/api/v1/childvaccination", cvaccination);
@@ -109,6 +110,7 @@ app.use("/admin/api/v1/auth", adminLogin);
 app.use("/admin/api/v1/users", users);
 app.use("/admin/api/v1/helpdesk", adminHelpDesk);
 app.use("/admin/api/v1/admin", admins);
+app.use("/admin/api/v1/babycare", babyCare);
 
 // app.use("/api/v1/reaction", reaction);
 

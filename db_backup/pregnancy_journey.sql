@@ -34,7 +34,7 @@ CREATE TABLE `admin_role` (
 
 LOCK TABLES `admin_role` WRITE;
 /*!40000 ALTER TABLE `admin_role` DISABLE KEYS */;
-INSERT INTO `admin_role` VALUES (1,1),(2,1),(1,2),(1,5),(7,4),(7,3);
+INSERT INTO `admin_role` VALUES (1,1),(2,1),(1,2),(1,5),(7,4),(7,3),(7,10);
 /*!40000 ALTER TABLE `admin_role` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -259,7 +259,7 @@ CREATE TABLE `baby_list` (
   PRIMARY KEY (`id`),
   KEY `FK_1` (`mother_id`),
   CONSTRAINT `FK_1` FOREIGN KEY (`mother_id`) REFERENCES `users` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=32 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=33 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -268,7 +268,7 @@ CREATE TABLE `baby_list` (
 
 LOCK TABLES `baby_list` WRITE;
 /*!40000 ALTER TABLE `baby_list` DISABLE KEYS */;
-INSERT INTO `baby_list` VALUES (21,1,'Baby1','baby1.jpg',1,'male','2023-01-10 00:00:00','2023-01-20 00:00:00','2023-02-01 00:00:00','2023-02-01 00:00:00',NULL),(22,1,'Baby2','baby2.jpg',2,'female','2023-03-15 00:00:00','2023-03-25 00:00:00','2023-04-05 00:00:00','2023-02-01 00:00:00',NULL),(23,12,'Baby3','baby3.jpg',1,'male','2023-05-20 00:00:00','2023-06-01 00:00:00','2023-06-15 00:00:00','2023-02-01 00:00:00',NULL),(24,12,'Baby4','baby4.jpg',2,'female','2023-07-25 00:00:00','2023-08-05 00:00:00','2023-08-20 00:00:00','2023-02-01 00:00:00',NULL),(25,13,'Baby5','baby5.jpg',1,'male','2023-09-30 00:00:00','2023-10-15 00:00:00','2023-10-30 00:00:00','2023-02-01 00:00:00',NULL),(27,12,'arman baby','baby1.jpg',1,'male','2023-01-10 00:00:00','2023-01-20 00:00:00','2023-02-01 00:00:00','2023-11-29 11:44:06','2023-11-29 11:44:06'),(30,40,'arman baby 1',NULL,1,'male','2023-01-10 00:00:00',NULL,NULL,'2024-01-03 05:08:30','2024-01-03 05:08:30'),(31,40,'arman baby 2',NULL,1,'male','2023-01-10 00:00:00',NULL,NULL,'2024-01-03 05:08:40','2024-01-03 05:08:40');
+INSERT INTO `baby_list` VALUES (21,1,'Baby1','baby1.jpg',1,'male','2023-01-10 00:00:00','2023-01-20 00:00:00','2023-02-01 00:00:00','2023-02-01 00:00:00',NULL),(22,1,'Baby2','baby2.jpg',2,'female','2023-03-15 00:00:00','2023-03-25 00:00:00','2023-04-05 00:00:00','2023-02-01 00:00:00',NULL),(23,12,'Baby3','baby3.jpg',1,'male','2023-05-20 00:00:00','2023-06-01 00:00:00','2023-06-15 00:00:00','2023-02-01 00:00:00',NULL),(24,12,'Baby4','baby4.jpg',2,'female','2023-07-25 00:00:00','2023-08-05 00:00:00','2023-08-20 00:00:00','2023-02-01 00:00:00',NULL),(25,13,'Baby5','baby5.jpg',1,'male','2023-09-30 00:00:00','2023-10-15 00:00:00','2023-10-30 00:00:00','2023-02-01 00:00:00',NULL),(27,12,'arman baby','baby1.jpg',1,'male','2023-01-10 00:00:00','2023-01-20 00:00:00','2023-02-01 00:00:00','2023-11-29 11:44:06','2023-11-29 11:44:06'),(30,40,'arman baby 1',NULL,1,'male','2023-01-10 00:00:00',NULL,NULL,'2024-01-03 05:08:30','2024-01-03 05:08:30'),(31,40,'arman baby 2',NULL,1,'male','2023-01-10 00:00:00',NULL,NULL,'2024-01-03 05:08:40','2024-01-03 05:08:40'),(32,52,'arman baby 2',NULL,1,'male','2023-01-10 00:00:00',NULL,NULL,'2024-02-11 13:43:04','2024-02-11 13:43:04');
 /*!40000 ALTER TABLE `baby_list` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -426,7 +426,7 @@ DROP TABLE IF EXISTS `baby_temperature`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `baby_temperature` (
-  `id` int(11) NOT NULL,
+  `id` int(11) NOT NULL AUTO_INCREMENT,
   `baby_id` int(10) unsigned DEFAULT NULL,
   `temp_celsius` varchar(255) DEFAULT NULL,
   `temp_fahrenheit` varchar(255) DEFAULT NULL,
@@ -435,7 +435,7 @@ CREATE TABLE `baby_temperature` (
   PRIMARY KEY (`id`),
   KEY `FK_1` (`baby_id`),
   CONSTRAINT `FK_12` FOREIGN KEY (`baby_id`) REFERENCES `baby_list` (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -444,6 +444,7 @@ CREATE TABLE `baby_temperature` (
 
 LOCK TABLES `baby_temperature` WRITE;
 /*!40000 ALTER TABLE `baby_temperature` DISABLE KEYS */;
+INSERT INTO `baby_temperature` VALUES (1,32,'37.5','99.5','2024-02-10 08:00:00','2024-02-11 15:06:30'),(2,32,'37.5','50.5','2024-02-11 15:06:57','2024-02-11 15:06:57');
 /*!40000 ALTER TABLE `baby_temperature` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -548,7 +549,7 @@ DROP TABLE IF EXISTS `child_vaccine_remiinders`;
 CREATE TABLE `child_vaccine_remiinders` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `baby_id` int(10) unsigned NOT NULL,
-  `name` varbinary(255) NOT NULL,
+  `name` varchar(255) NOT NULL,
   `vaccine_date` datetime NOT NULL,
   `status` varchar(255) DEFAULT 'null',
   `createdAt` datetime NOT NULL,
@@ -556,7 +557,7 @@ CREATE TABLE `child_vaccine_remiinders` (
   PRIMARY KEY (`id`),
   KEY `FK_1` (`baby_id`),
   CONSTRAINT `FK_21` FOREIGN KEY (`baby_id`) REFERENCES `baby_list` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -565,7 +566,7 @@ CREATE TABLE `child_vaccine_remiinders` (
 
 LOCK TABLES `child_vaccine_remiinders` WRITE;
 /*!40000 ALTER TABLE `child_vaccine_remiinders` DISABLE KEYS */;
-INSERT INTO `child_vaccine_remiinders` VALUES (1,27,'polio','2023-12-31 00:00:00','Pending','2023-11-30 12:00:00','2023-12-04 13:33:46'),(2,27,'pneumonia','2023-12-31 00:00:00','Pending','2023-12-04 13:40:12','2023-12-04 13:43:29'),(3,27,'polio','2023-12-31 00:00:00','pending','2023-12-04 13:40:30','2023-12-04 13:40:30');
+INSERT INTO `child_vaccine_remiinders` VALUES (1,27,'polio','2023-12-31 00:00:00','Pending','2023-11-30 12:00:00','2023-12-04 13:33:46'),(2,27,'pneumonia','2023-12-31 00:00:00','Pending','2023-12-04 13:40:12','2023-12-04 13:43:29'),(3,27,'polio','2023-12-31 00:00:00','pending','2023-12-04 13:40:30','2023-12-04 13:40:30'),(4,32,'polio','2023-12-31 00:00:00','pending','2024-02-11 13:43:19','2024-02-11 13:43:19'),(5,32,'haam','2023-12-31 00:00:00','pending','2024-02-11 13:57:47','2024-02-11 13:57:47');
 /*!40000 ALTER TABLE `child_vaccine_remiinders` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -760,7 +761,7 @@ CREATE TABLE `help_desk` (
   KEY `user_id` (`user_id`),
   CONSTRAINT `help_desk_ibfk_1` FOREIGN KEY (`admin_id`) REFERENCES `admins` (`id`),
   CONSTRAINT `help_desk_ibfk_2` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -769,7 +770,7 @@ CREATE TABLE `help_desk` (
 
 LOCK TABLES `help_desk` WRITE;
 /*!40000 ALTER TABLE `help_desk` DISABLE KEYS */;
-INSERT INTO `help_desk` VALUES (1,12,NULL,'hello admin! I need help','2024-02-09 17:40:43','2024-02-09 17:40:43'),(2,12,NULL,'hello admin! are u there','2024-02-09 17:41:32','2024-02-09 17:41:32'),(3,52,NULL,'hello admin! I am rumon khan','2024-02-10 14:29:01','2024-02-10 14:29:01'),(4,52,NULL,'hello admin! are you there admins!','2024-02-10 14:29:32','2024-02-10 14:29:32'),(5,52,1,'yes, how can i help you?','2024-02-10 14:52:53','2024-02-10 14:52:53'),(6,12,1,'yes, i am there hou can i help u','2024-02-10 16:17:18','2024-02-10 16:17:18');
+INSERT INTO `help_desk` VALUES (1,12,NULL,'hello admin! I need help','2024-02-09 17:40:43','2024-02-09 17:40:43'),(2,12,NULL,'hello admin! are u there','2024-02-09 17:41:32','2024-02-09 17:41:32'),(3,52,NULL,'hello admin! I am rumon khan','2024-02-10 14:29:01','2024-02-10 14:29:01'),(4,52,NULL,'hello admin! are you there admins!','2024-02-10 14:29:32','2024-02-10 14:29:32'),(7,12,7,'yes, i am there hou can i help u','2024-02-11 12:35:53','2024-02-11 12:35:53');
 /*!40000 ALTER TABLE `help_desk` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -1164,7 +1165,7 @@ CREATE TABLE `roles` (
   `createdAt` datetime NOT NULL,
   `updatedAt` datetime NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -1173,7 +1174,7 @@ CREATE TABLE `roles` (
 
 LOCK TABLES `roles` WRITE;
 /*!40000 ALTER TABLE `roles` DISABLE KEYS */;
-INSERT INTO `roles` VALUES (1,'superadmin',NULL,'2024-02-07 20:48:32','2024-02-07 20:48:32'),(2,'admin',NULL,'2024-02-07 20:48:32','2024-02-07 20:48:32'),(3,'moderator',NULL,'2024-02-07 20:48:56','2024-02-07 20:48:56'),(4,'editor',NULL,'2024-02-07 20:48:56','2024-02-07 20:48:56'),(5,'help_desk','replies and manipulate help desk messages','2024-02-10 15:07:24','2024-02-10 15:07:24');
+INSERT INTO `roles` VALUES (1,'superadmin',NULL,'2024-02-07 20:48:32','2024-02-07 20:48:32'),(2,'admin',NULL,'2024-02-07 20:48:32','2024-02-07 20:48:32'),(3,'moderator',NULL,'2024-02-07 20:48:56','2024-02-07 20:48:56'),(4,'editor',NULL,'2024-02-07 20:48:56','2024-02-07 20:48:56'),(5,'help_desk','replies and manipulate help desk messages','2024-02-10 15:07:24','2024-02-10 15:07:24'),(6,'user','manipulate users information','2024-02-11 13:22:23','2024-02-11 13:22:23'),(7,'blog','manipulate blogs','2024-02-11 13:23:20','2024-02-11 13:23:20'),(8,'baby_care','all baby care routes','2024-02-11 14:05:09','2024-02-11 14:05:09'),(9,'baby_temp','baby temp functionality','2024-02-11 14:05:09','2024-02-11 14:05:09'),(10,'baby_vaccine',NULL,'2024-02-11 15:24:54','2024-02-11 15:24:54');
 /*!40000 ALTER TABLE `roles` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -1421,4 +1422,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2024-02-11 17:03:29
+-- Dump completed on 2024-02-11 23:01:28

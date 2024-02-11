@@ -15,13 +15,7 @@ const asyncHandler = require("../../middleware/async");
 const { Sequelize } = require("sequelize");
 
 router.use(protect);
-
-router.get("/:userId", getAllOfUser(HelpDesk));
-router.get("/:userId/:modelPk", getOne(HelpDesk));
-router.post("/:userId", create(HelpDesk));
-// // router.put("/:modelPk", update(HelpDesk));
-router.delete("/userId/:modelPk", deleteOne(HelpDesk));
-router.delete("/", deleteAll(HelpDesk));
+router.use(authorize("superadmin", "help_desk"));
 router.get(
   "/unreplyed",
   asyncHandler(async (req, res, next) => {
@@ -46,6 +40,13 @@ router.get(
     res.status(200).json({ success: true, data: result });
   })
 );
+router.get("/:userId", getAllOfUser(HelpDesk));
+router.get("/:userId/:modelPk", getOne(HelpDesk));
+router.post("/:userId", create(HelpDesk));
+// // router.put("/:modelPk", update(HelpDesk));
+router.delete("/userId/:modelPk", deleteOne(HelpDesk));
+router.delete("/", deleteAll(HelpDesk));
+
 module.exports = router;
 
 // SELECT *

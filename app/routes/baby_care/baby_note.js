@@ -7,6 +7,7 @@ const {
   create,
   deleteOne,
   deleteAll,
+  checkBabyOwner,
 } = require("../../controllers/baby_care/baby_care_controller");
 
 const router = express.Router();
@@ -14,10 +15,10 @@ const { protect } = require("../../middleware/auth");
 
 router.use(protect);
 
-router.get("/:babyId", getHistory(BabyNote));
-router.get("/:babyId/:modelPk", getOne(BabyNote));
-router.post("/:babyId/", create(BabyNote));
-router.put("/:babyId/:modelPk", update(BabyNote));
-router.delete("/:babyId/:modelPk", deleteOne(BabyNote));
-router.delete("/:babyId", deleteAll(BabyNote));
+router.get("/:babyId", checkBabyOwner, getHistory(BabyNote));
+router.get("/:babyId/:modelPk", checkBabyOwner, getOne(BabyNote));
+router.post("/:babyId/", checkBabyOwner, create(BabyNote));
+router.put("/:babyId/:modelPk", checkBabyOwner, update(BabyNote));
+router.delete("/:babyId/:modelPk", checkBabyOwner, deleteOne(BabyNote));
+router.delete("/:babyId", checkBabyOwner, deleteAll(BabyNote));
 module.exports = router;

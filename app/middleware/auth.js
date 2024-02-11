@@ -100,7 +100,10 @@ exports.protect = asyncHandler(async (req, res, next) => {
 // Grant access to specific roles
 exports.authorize = (...roles) => {
   return (req, res, next) => {
-    if (!roles.some((element) => req.admin.roles.includes(element))) {
+    if (
+      !req.admin ||
+      !roles.some((element) => req.admin.roles.includes(element))
+    ) {
       return res.status(200).json({
         remarks: "UNAUTHORIZED",
         success: false,
