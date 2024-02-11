@@ -116,8 +116,12 @@ app.get("/", (req, res) => {
   res.status(200).json({
     success: true,
     message: "Hello from pregnancy journey!",
-    documentation:
+    share_link:
+      "https://www.postman.com/rumonkh/workspace/pregnancy-journey/collection/24171225-9014a46a-34b4-4730-875a-405927b0d2f6?action=share&creator=24171225&active-environment=24171225-b92ee913-3a18-407c-960d-0732518232a6",
+    User_documentation:
       "https://documenter.getpostman.com/view/24171225/2s9YeLXUWU#014b9f1f-d394-47c0-a5fd-dddc5489c67a",
+    Admin_documentation:
+      "https://documenter.getpostman.com/view/24171225/2sA2r3YkSb",
   });
 });
 
