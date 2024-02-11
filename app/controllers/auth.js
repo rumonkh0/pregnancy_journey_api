@@ -460,6 +460,13 @@ exports.resendOTP = asyncHandler(async (req, res, next) => {
       .status(200)
       .json({ success: false, message: "username of email not found" });
 
+  console.log(user);
+
+  if (user.is_email_confirmed == "1")
+    return res
+      .status(200)
+      .json({ success: false, message: "already verified" });
+
   // grab token and send to email
   const OTP = await user.getOTP();
 
@@ -496,7 +503,7 @@ exports.confirmEmail = asyncHandler(async (req, res, next) => {
   // get user by OTP
   const user = await User.findOne({
     where: {
-      username,
+      username: req.user.username,
       is_email_confirmed: false,
     },
   });

@@ -68,7 +68,8 @@ exports.protect = asyncHandler(async (req, res, next) => {
           !(
             req.originalUrl == "/api/v1/auth/sendotp" ||
             req.originalUrl == "/api/v1/auth/logout" ||
-            req.originalUrl == "/api/v1/auth/getme"
+            req.originalUrl == "/api/v1/auth/me" ||
+            req.originalUrl == "/api/v1/auth/confirmemail"
           )
         ) {
           return res.status(200).json({
