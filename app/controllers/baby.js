@@ -21,7 +21,11 @@ exports.getBaby = asyncHandler(async (req, res, next) => {
     where: { id, mother_id: req.user.id },
   });
   if (!baby.length) {
-    res.status(404).json({ success: false, message: "Baby not found" });
+    res.status(404).json({
+      remark: "UNSUCCESSFULL",
+      success: false,
+      message: "Baby not found",
+    });
     return;
   }
   res.status(200).json({ success: true, message: "Baby found", data: baby });
