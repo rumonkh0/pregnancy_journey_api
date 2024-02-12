@@ -225,7 +225,6 @@ exports.updateDetails = asyncHandler(async (req, res, next) => {
     });
   }
 
-
   const { mimetype, filename, path: file_path } = req.file;
   req.media = {
     uploaded_by: req.user.username,
@@ -258,7 +257,6 @@ exports.updateDetails = asyncHandler(async (req, res, next) => {
     if (req.file && req.file && req.file.path) {
       const filePath = req.file.path;
       await unlinkAsync(filePath);
-      console.log("File removed:", filePath);
     }
     return res
       .status(200)
@@ -362,12 +360,6 @@ exports.forgotPassword = asyncHandler(async (req, res, next) => {
   await user.save();
 
   const message = `You are receiving this email because you (or someone else) has requested the reset of a password. your OTP is : \n\n ${OTP}\n\n Make sure to reset the password within 10 minits`;
-  console.log({
-    email: user.email,
-    subject: "Password reset OTP",
-    otp: OTP,
-    username: user.username,
-  });
   try {
     await sendEmail({
       email: user.email,
@@ -440,9 +432,8 @@ exports.resetPassword = asyncHandler(async (req, res, next) => {
 
   // Set new password
   user.password = newPassword;
-  user.password_reset_token = undefined;
-  user.reset_password_expire = undefined;
-  console.log(user);
+  user.password_reset_token = null;
+  user.reset_password_expire = null;
   await user.save();
 
   sendTokenResponse(user, 200, res);
@@ -464,7 +455,6 @@ exports.resendOTP = asyncHandler(async (req, res, next) => {
       .status(200)
       .json({ success: false, message: "username of email not found" });
 
-  console.log(user);
 
   if (user.is_email_confirmed == "1")
     return res

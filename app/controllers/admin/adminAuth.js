@@ -256,7 +256,6 @@ exports.updateDetails = asyncHandler(async (req, res, next) => {
 
     media = await Media.create(req.media);
     adminDetailsToUpdate.photo = media.id;
-    // console.log(req.body);
 
     //delete previous photo
     if (adminWithMedia.media) {
@@ -267,7 +266,6 @@ exports.updateDetails = asyncHandler(async (req, res, next) => {
     if (req.file && req.file && req.file.path) {
       const filePath = req.file.path;
       await unlinkAsync(filePath);
-      console.log("File removed:", filePath);
     }
     return res
       .status(200)
