@@ -221,7 +221,7 @@ exports.updateDetails = asyncHandler(async (req, res, next) => {
     return res.status(200).json({
       success: true,
       message: "User information updated successfully",
-      data: { user: userData },
+      data: userData,
     });
   }
 
@@ -276,9 +276,12 @@ exports.updateDetails = asyncHandler(async (req, res, next) => {
       .json({ success: false, message: "Recond no modified" });
   }
 
+  userData = await User.findByPk(req.user.id);
+
   res.status(200).json({
     success: true,
     message: "Data updated",
+    data: userData,
   });
 });
 
@@ -297,9 +300,9 @@ exports.updatePassword = asyncHandler(async (req, res, next) => {
 
     if (!user) {
       return res.status(404).json({
+        remark: "UNSUCCESSFULL",
         success: false,
         message: "User not found",
-        error: "User not found",
       });
     }
 
@@ -437,7 +440,7 @@ exports.resetPassword = asyncHandler(async (req, res, next) => {
   // Set new password
   user.password = newPassword;
   user.password_reset_token = undefined;
-  user.reset_password_expire  = undefined;
+  user.reset_password_expire = undefined;
   console.log(user);
   await user.save();
 
@@ -529,7 +532,12 @@ exports.confirmEmail = asyncHandler(async (req, res, next) => {
   // return token
   res
     .status(200)
-    .json({ success: true, message: "Email verification successfull" });
+    .json({
+      remark: "SUCCESSFULL",
+      success: true,
+      message: "Email verification successfull",
+      data: user,
+    });
 });
 
 /**
