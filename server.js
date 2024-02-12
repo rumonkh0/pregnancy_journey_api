@@ -3,7 +3,7 @@ const dotenv = require("dotenv");
 const path = require("path");
 const morgan = require("morgan");
 const cookieParser = require("cookie-parser");
-const bodyParser = require("body-parser");
+// const bodyParser = require("body-parser");
 const cors = require("cors");
 
 dotenv.config({ path: "./config/config.env" });

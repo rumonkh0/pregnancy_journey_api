@@ -106,7 +106,7 @@ exports.authorize = (...roles) => {
       !roles.some((element) => req.admin.roles.includes(element))
     ) {
       return res.status(200).json({
-        remarks: "UNAUTHORIZED",
+        remark: "UNAUTHORIZED",
         success: false,
         message: "Not authorized to access this route",
       });

@@ -9,7 +9,7 @@ exports.checkBabyOwner = asyncHandler(async (req, res, next) => {
     return res
       .status(200)
       .json({
-        remarks: "UNAUTORIZED",
+        remark: "UNAUTORIZED",
         success: false,
         message: "not authorized for access this route",
       });

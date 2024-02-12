@@ -50,6 +50,7 @@ exports.register = asyncHandler(async (req, res, next) => {
   let prev = await User.findOne({ where: { email: req.body.email } });
   if (prev) {
     return res.status(404).json({
+      remark: "UNSUCCESSFULL",
       success: false,
       message: "email already exists",
     });
@@ -58,6 +59,7 @@ exports.register = asyncHandler(async (req, res, next) => {
   prev = await User.findOne({ where: { username: req.body.username } });
   if (prev) {
     return res.status(404).json({
+      remark: "UNSUCCESSFULL",
       success: false,
       message: "username already exists",
     });
@@ -93,6 +95,7 @@ exports.login = asyncHandler(async (req, res, next) => {
   // Validate emil & password
   if (!username || !password) {
     return res.status(404).json({
+      remark: "UNSUCCESSFULL",
       success: false,
       message: "Please enter username and password",
     });
@@ -258,9 +261,12 @@ exports.updateDetails = asyncHandler(async (req, res, next) => {
       const filePath = req.file.path;
       await unlinkAsync(filePath);
     }
-    return res
-      .status(200)
-      .json({ success: false, message: "data upload failed", error: err });
+    return res.status(200).json({
+      remark: "UNSUCCESSFULL",
+      success: false,
+      message: "data upload failed",
+      error: err,
+    });
   }
 
   updated = await User.update(userDetailsToUpdate, {
@@ -451,15 +457,18 @@ exports.resendOTP = asyncHandler(async (req, res, next) => {
   let user = await User.findOne({ where: { username } });
 
   if (!user)
-    return res
-      .status(200)
-      .json({ success: false, message: "username of email not found" });
-
+    return res.status(200).json({
+      remark: "UNSUCCESSFULL",
+      success: false,
+      message: "username of email not found",
+    });
 
   if (user.is_email_confirmed == "1")
-    return res
-      .status(200)
-      .json({ success: false, message: "already verified" });
+    return res.status(200).json({
+      remark: "UNSUCCESSFULL",
+      success: false,
+      message: "already verified",
+    });
 
   // grab token and send to email
   const OTP = await user.getOTP();
@@ -503,9 +512,11 @@ exports.confirmEmail = asyncHandler(async (req, res, next) => {
   });
 
   if (!user) {
-    return res
-      .status(200)
-      .json({ success: false, message: "already verified" });
+    return res.status(200).json({
+      remark: "UNSUCCESSFULL",
+      success: false,
+      message: "already verified",
+    });
   }
   // Verify the OTP
   const isOTPdValid = await user.verifyOTP(OTP);
