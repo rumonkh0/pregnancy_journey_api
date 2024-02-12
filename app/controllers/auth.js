@@ -203,7 +203,7 @@ exports.updateDetails = asyncHandler(async (req, res, next) => {
   }
   let userData = await User.findByPk(req.user.id);
 
-  if (!req.files) {
+  if (!req.file) {
     updated = await User.update(userDetailsToUpdate, {
       where: {
         id: req.user.id,
@@ -224,6 +224,7 @@ exports.updateDetails = asyncHandler(async (req, res, next) => {
       data: userData,
     });
   }
+
 
   const { mimetype, filename, path: file_path } = req.file;
   req.media = {
@@ -484,7 +485,7 @@ exports.resendOTP = asyncHandler(async (req, res, next) => {
     username: req.user.username,
   });
 
-  res.status(200).json({ success: true, messsage: "OTP send" });
+  res.status(200).json({ success: true, message: "OTP send" });
 });
 
 /**
@@ -530,14 +531,12 @@ exports.confirmEmail = asyncHandler(async (req, res, next) => {
   user.save();
 
   // return token
-  res
-    .status(200)
-    .json({
-      remark: "SUCCESSFULL",
-      success: true,
-      message: "Email verification successfull",
-      data: user,
-    });
+  res.status(200).json({
+    remark: "SUCCESSFULL",
+    success: true,
+    message: "Email verification successfull",
+    data: user,
+  });
 });
 
 /**

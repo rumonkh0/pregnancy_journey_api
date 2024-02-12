@@ -449,7 +449,7 @@ exports.resendOTP = asyncHandler(async (req, res, next) => {
     username: req.admin.username,
   });
 
-  res.status(200).json({ success: true, messsage: "OTP send" });
+  res.status(200).json({ success: true, message: "OTP send" });
 });
 
 /**

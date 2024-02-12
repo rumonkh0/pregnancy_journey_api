@@ -213,5 +213,5 @@ exports.deleteBabygallery = asyncHandler(async (req, res) => {
 
   res
     .status(200)
-    .json({ success: true, messsage: "Data deleted", data: deleted });
+    .json({ success: true, message: "Data deleted", data: deleted });
 });
