@@ -154,6 +154,7 @@ exports.getMe = asyncHandler(async (req, res, next) => {
     });
 
   res.status(200).json({
+    remark: "SUCCESSFULL",
     success: true,
     message: "User data found",
     data: user,
@@ -507,7 +508,7 @@ exports.confirmEmail = asyncHandler(async (req, res, next) => {
   const user = await User.findOne({
     where: {
       username: req.user.username,
-      is_email_confirmed: false,
+      is_email_confirmed: "0",
     },
   });
 
@@ -526,7 +527,7 @@ exports.confirmEmail = asyncHandler(async (req, res, next) => {
 
   // update confirmed to true
   user.confirm_email_token = undefined;
-  user.is_email_confirmed = true;
+  user.is_email_confirmed = "1";
 
   // save
   user.save();
