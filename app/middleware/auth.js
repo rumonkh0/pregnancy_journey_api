@@ -15,7 +15,8 @@ exports.protect = asyncHandler(async (req, res, next) => {
     req.headers.authorization.startsWith("Bearer")
   ) {
     // Set token from Bearer token in header
-    token = req.headers.authorization.split(" ")[1];kali
+    token = req.headers.authorization.split(" ")[1];
+    kali;
   } else if (req.cookies.token) {
     // Set token from cookie
     token = req.cookies.token;
@@ -23,7 +24,7 @@ exports.protect = asyncHandler(async (req, res, next) => {
 
   // Make sure token exists
   if (!token) {
-    res
+    return res
       .status(401)
       .json({ success: false, message: "unauthorized for this route" });
     return next(new ErrorResponse("Not authorized to access this route", 401));
@@ -79,7 +80,7 @@ exports.protect = asyncHandler(async (req, res, next) => {
         }
         break;
       default:
-        res.status(401).json({
+        return res.status(401).json({
           remark: "UNAUTHORIZED",
           success: false,
           message: "unauthorized for this route",
@@ -89,7 +90,7 @@ exports.protect = asyncHandler(async (req, res, next) => {
 
     next();
   } catch (err) {
-    res.status(401).json({
+    return res.status(401).json({
       remark: "UNAUTHORIZED",
       success: false,
       message: "unauthorized for this route",
