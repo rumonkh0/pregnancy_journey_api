@@ -238,6 +238,35 @@ INSERT INTO `baby_gallery` VALUES (1,5,27,'public\\uploads\\baby\\file-170128154
 UNLOCK TABLES;
 
 --
+-- Table structure for table `baby_growth_weekly`
+--
+
+DROP TABLE IF EXISTS `baby_growth_weekly`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `baby_growth_weekly` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `baby_size_image` int(11) DEFAULT NULL,
+  `week_number` int(11) NOT NULL,
+  `day` int(11) NOT NULL,
+  `weight` text NOT NULL,
+  `size` text NOT NULL,
+  `body_change` text DEFAULT NULL,
+  `baby_details` text DEFAULT NULL,
+  UNIQUE KEY `id` (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `baby_growth_weekly`
+--
+
+LOCK TABLES `baby_growth_weekly` WRITE;
+/*!40000 ALTER TABLE `baby_growth_weekly` DISABLE KEYS */;
+/*!40000 ALTER TABLE `baby_growth_weekly` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
 -- Table structure for table `baby_list`
 --
 
@@ -612,7 +641,7 @@ CREATE TABLE `daily_reads` (
   `image` varchar(255) DEFAULT NULL,
   `createdAt` datetime NOT NULL,
   `updatedAt` datetime DEFAULT NULL,
-  `order` int(11) NOT NULL,
+  `day` int(11) NOT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
@@ -652,6 +681,31 @@ CREATE TABLE `daily_tips` (
 LOCK TABLES `daily_tips` WRITE;
 /*!40000 ALTER TABLE `daily_tips` DISABLE KEYS */;
 /*!40000 ALTER TABLE `daily_tips` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `device_token`
+--
+
+DROP TABLE IF EXISTS `device_token`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `device_token` (
+  `id` int(11) NOT NULL,
+  `device_token` varchar(255) NOT NULL,
+  `user_id` int(11) NOT NULL,
+  `createdAt` datetime NOT NULL,
+  `updatedAt` datetime NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `device_token`
+--
+
+LOCK TABLES `device_token` WRITE;
+/*!40000 ALTER TABLE `device_token` DISABLE KEYS */;
+/*!40000 ALTER TABLE `device_token` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --
@@ -818,7 +872,7 @@ CREATE TABLE `media` (
   `createdAt` datetime DEFAULT NULL,
   `updatedAt` datetime NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=67 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=65 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -827,7 +881,7 @@ CREATE TABLE `media` (
 
 LOCK TABLES `media` WRITE;
 /*!40000 ALTER TABLE `media` DISABLE KEYS */;
-INSERT INTO `media` VALUES (1,'user','asdfas.jpg','public/upload/baby/path/image','image','image/jpg','2023-12-01 03:28:36','2023-12-01 12:28:36'),(2,'jinia','file-jinia-1704258616845.jpg','public\\uploads\\baby\\file-jinia-1704258616845.jpg','jpg','image/jpeg','2024-01-03 05:10:16','2024-01-03 05:10:16'),(3,'jinia','file-jinia-1704258886978.jpg','public\\uploads\\baby\\file-jinia-1704258886978.jpg','jpg','image/jpeg','2024-01-03 05:14:46','2024-01-03 05:14:46'),(4,'jinia','file-jinia-1704259079187.jpg','public\\uploads\\baby\\file-jinia-1704259079187.jpg','jpg','image/jpeg','2024-01-03 05:17:59','2024-01-03 05:17:59'),(14,'jinia','baby_Image_file-jinia-1704263824189.jpg','public\\uploads\\baby\\baby_Image_file-jinia-1704263824189.jpg','jpg','image/jpeg','2024-01-03 06:37:04','2024-01-03 06:37:04'),(15,'shapla','baby_Image_file-shapla-1704273230102.jpg','public\\uploads\\baby\\baby_Image_file-shapla-1704273230102.jpg','jpg','image/jpeg','2024-01-03 09:13:50','2024-01-03 09:13:50'),(32,'shapla','post_images-shapla-1707039363703.jpg','public/uploads/post/post_images-shapla-1707039363703.jpg','jpg','image/jpeg','2024-02-04 09:36:03','2024-02-04 09:36:03'),(33,'shapla','post_images-shapla-1707039363709.jpg','public/uploads/post/post_images-shapla-1707039363709.jpg','jpg','image/jpeg','2024-02-04 09:36:03','2024-02-04 09:36:03'),(34,'shapla','post_images-shapla-1707039363719.jpg','public/uploads/post/post_images-shapla-1707039363719.jpg','jpg','image/jpeg','2024-02-04 09:36:03','2024-02-04 09:36:03'),(35,'shapla','post_images-shapla-1707040910479.jpg','public/uploads/post/post_images-shapla-1707040910479.jpg','jpg','image/jpeg','2024-02-04 10:01:50','2024-02-04 10:01:50'),(36,'shapla','post_images-shapla-1707040910484.jpg','public/uploads/post/post_images-shapla-1707040910484.jpg','jpg','image/jpeg','2024-02-04 10:01:50','2024-02-04 10:01:50'),(37,'shapla','post_images-shapla-1707040910489.jpg','public/uploads/post/post_images-shapla-1707040910489.jpg','jpg','image/jpeg','2024-02-04 10:01:50','2024-02-04 10:01:50'),(38,'shapla','post_images-shapla-1707041157338.jpg','public/uploads/post/post_images-shapla-1707041157338.jpg','jpg','image/jpeg','2024-02-04 10:05:57','2024-02-04 10:05:57'),(39,'shapla','post_images-shapla-1707041157344.jpg','public/uploads/post/post_images-shapla-1707041157344.jpg','jpg','image/jpeg','2024-02-04 10:05:57','2024-02-04 10:05:57'),(40,'shapla','post_images-shapla-1707041157347.jpg','public/uploads/post/post_images-shapla-1707041157347.jpg','jpg','image/jpeg','2024-02-04 10:05:57','2024-02-04 10:05:57'),(41,'shapla','post_images-shapla-1707041157351.jpg','public/uploads/post/post_images-shapla-1707041157351.jpg','jpg','image/jpeg','2024-02-04 10:05:57','2024-02-04 10:05:57'),(42,'shapla','post_images-shapla-1707041232564.jpg','public/uploads/post/post_images-shapla-1707041232564.jpg','jpg','image/jpeg','2024-02-04 10:07:12','2024-02-04 10:07:12'),(43,'shapla','post_images-shapla-1707041232576.jpg','public/uploads/post/post_images-shapla-1707041232576.jpg','jpg','image/jpeg','2024-02-04 10:07:12','2024-02-04 10:07:12'),(44,'shapla','post_images-shapla-1707041232581.jpg','public/uploads/post/post_images-shapla-1707041232581.jpg','jpg','image/jpeg','2024-02-04 10:07:12','2024-02-04 10:07:12'),(45,'shapla','post_images-shapla-1707041232587.jpg','public/uploads/post/post_images-shapla-1707041232587.jpg','jpg','image/jpeg','2024-02-04 10:07:12','2024-02-04 10:07:12'),(46,'shapla','post_images-shapla-1707043721441.jpg','public/uploads/post/post_images-shapla-1707043721441.jpg','jpg','image/jpeg','2024-02-04 10:48:41','2024-02-04 10:48:41'),(47,'shapla','post_images-shapla-1707043721448.jpg','public/uploads/post/post_images-shapla-1707043721448.jpg','jpg','image/jpeg','2024-02-04 10:48:41','2024-02-04 10:48:41'),(48,'rumon0','post_images-rumon0-1707311010381.jpg','public/uploads/post/post_images-rumon0-1707311010381.jpg','jpg','image/jpeg','2024-02-07 13:03:30','2024-02-07 13:03:30'),(49,'rumon0','post_images-rumon0-1707311029552.jpg','public/uploads/post/post_images-rumon0-1707311029552.jpg','jpg','image/jpeg','2024-02-07 13:03:49','2024-02-07 13:03:49'),(50,'rumon0','post_images-rumon0-1707311029564.jpg','public/uploads/post/post_images-rumon0-1707311029564.jpg','jpg','image/jpeg','2024-02-07 13:03:49','2024-02-07 13:03:49'),(51,'rumon0','post_images-rumon0-1707311132468.jpg','public/uploads/post/post_images-rumon0-1707311132468.jpg','jpg','image/jpeg','2024-02-07 13:05:32','2024-02-07 13:05:32'),(52,'rumon0','post_images-rumon0-1707311132488.jpg','public/uploads/post/post_images-rumon0-1707311132488.jpg','jpg','image/jpeg','2024-02-07 13:05:32','2024-02-07 13:05:32'),(53,'rumon0','post_images-rumon0-1707311232121.jpg','public/uploads/post/post_images-rumon0-1707311232121.jpg','jpg','image/jpeg','2024-02-07 13:07:12','2024-02-07 13:07:12'),(54,'rumon0','post_images-rumon0-1707311232127.jpg','public/uploads/post/post_images-rumon0-1707311232127.jpg','jpg','image/jpeg','2024-02-07 13:07:12','2024-02-07 13:07:12'),(55,'rumon0','post_images-rumon0-1707311524163.jpg','public/uploads/post/post_images-rumon0-1707311524163.jpg','jpg','image/jpeg','2024-02-07 13:12:04','2024-02-07 13:12:04'),(56,'rumon0','post_images-rumon0-1707311524170.jpg','public/uploads/post/post_images-rumon0-1707311524170.jpg','jpg','image/jpeg','2024-02-07 13:12:04','2024-02-07 13:12:04'),(57,'rumon0','post_images-rumon0-1707311755073.jpg','public/uploads/post/post_images-rumon0-1707311755073.jpg','jpg','image/jpeg','2024-02-07 13:15:55','2024-02-07 13:15:55'),(58,'rumon0','post_images-rumon0-1707311755078.jpg','public/uploads/post/post_images-rumon0-1707311755078.jpg','jpg','image/jpeg','2024-02-07 13:15:55','2024-02-07 13:15:55'),(64,'rumonkh','admin_image_field-rumonkh-1707406231775.jpg','public/uploads/admin/admin_image_field-rumonkh-1707406231775.jpg','jpg','image/jpeg','2024-02-08 15:30:31','2024-02-08 15:30:31'),(66,'rumon0','user_image_field-rumon0-1707759408852.png','public/uploads/user/user_image_field-rumon0-1707759408852.png','png','image/png','2024-02-12 17:36:48','2024-02-12 17:36:48');
+INSERT INTO `media` VALUES (1,'user','asdfas.jpg','public/upload/baby/path/image','image','image/jpg','2023-12-01 03:28:36','2023-12-01 12:28:36'),(2,'jinia','file-jinia-1704258616845.jpg','public\\uploads\\baby\\file-jinia-1704258616845.jpg','jpg','image/jpeg','2024-01-03 05:10:16','2024-01-03 05:10:16'),(3,'jinia','file-jinia-1704258886978.jpg','public\\uploads\\baby\\file-jinia-1704258886978.jpg','jpg','image/jpeg','2024-01-03 05:14:46','2024-01-03 05:14:46'),(4,'jinia','file-jinia-1704259079187.jpg','public\\uploads\\baby\\file-jinia-1704259079187.jpg','jpg','image/jpeg','2024-01-03 05:17:59','2024-01-03 05:17:59'),(14,'jinia','baby_Image_file-jinia-1704263824189.jpg','public\\uploads\\baby\\baby_Image_file-jinia-1704263824189.jpg','jpg','image/jpeg','2024-01-03 06:37:04','2024-01-03 06:37:04'),(15,'shapla','baby_Image_file-shapla-1704273230102.jpg','public\\uploads\\baby\\baby_Image_file-shapla-1704273230102.jpg','jpg','image/jpeg','2024-01-03 09:13:50','2024-01-03 09:13:50'),(32,'shapla','post_images-shapla-1707039363703.jpg','public/uploads/post/post_images-shapla-1707039363703.jpg','jpg','image/jpeg','2024-02-04 09:36:03','2024-02-04 09:36:03'),(33,'shapla','post_images-shapla-1707039363709.jpg','public/uploads/post/post_images-shapla-1707039363709.jpg','jpg','image/jpeg','2024-02-04 09:36:03','2024-02-04 09:36:03'),(34,'shapla','post_images-shapla-1707039363719.jpg','public/uploads/post/post_images-shapla-1707039363719.jpg','jpg','image/jpeg','2024-02-04 09:36:03','2024-02-04 09:36:03'),(35,'shapla','post_images-shapla-1707040910479.jpg','public/uploads/post/post_images-shapla-1707040910479.jpg','jpg','image/jpeg','2024-02-04 10:01:50','2024-02-04 10:01:50'),(36,'shapla','post_images-shapla-1707040910484.jpg','public/uploads/post/post_images-shapla-1707040910484.jpg','jpg','image/jpeg','2024-02-04 10:01:50','2024-02-04 10:01:50'),(37,'shapla','post_images-shapla-1707040910489.jpg','public/uploads/post/post_images-shapla-1707040910489.jpg','jpg','image/jpeg','2024-02-04 10:01:50','2024-02-04 10:01:50'),(38,'shapla','post_images-shapla-1707041157338.jpg','public/uploads/post/post_images-shapla-1707041157338.jpg','jpg','image/jpeg','2024-02-04 10:05:57','2024-02-04 10:05:57'),(39,'shapla','post_images-shapla-1707041157344.jpg','public/uploads/post/post_images-shapla-1707041157344.jpg','jpg','image/jpeg','2024-02-04 10:05:57','2024-02-04 10:05:57'),(40,'shapla','post_images-shapla-1707041157347.jpg','public/uploads/post/post_images-shapla-1707041157347.jpg','jpg','image/jpeg','2024-02-04 10:05:57','2024-02-04 10:05:57'),(41,'shapla','post_images-shapla-1707041157351.jpg','public/uploads/post/post_images-shapla-1707041157351.jpg','jpg','image/jpeg','2024-02-04 10:05:57','2024-02-04 10:05:57'),(42,'shapla','post_images-shapla-1707041232564.jpg','public/uploads/post/post_images-shapla-1707041232564.jpg','jpg','image/jpeg','2024-02-04 10:07:12','2024-02-04 10:07:12'),(43,'shapla','post_images-shapla-1707041232576.jpg','public/uploads/post/post_images-shapla-1707041232576.jpg','jpg','image/jpeg','2024-02-04 10:07:12','2024-02-04 10:07:12'),(44,'shapla','post_images-shapla-1707041232581.jpg','public/uploads/post/post_images-shapla-1707041232581.jpg','jpg','image/jpeg','2024-02-04 10:07:12','2024-02-04 10:07:12'),(45,'shapla','post_images-shapla-1707041232587.jpg','public/uploads/post/post_images-shapla-1707041232587.jpg','jpg','image/jpeg','2024-02-04 10:07:12','2024-02-04 10:07:12'),(46,'shapla','post_images-shapla-1707043721441.jpg','public/uploads/post/post_images-shapla-1707043721441.jpg','jpg','image/jpeg','2024-02-04 10:48:41','2024-02-04 10:48:41'),(47,'shapla','post_images-shapla-1707043721448.jpg','public/uploads/post/post_images-shapla-1707043721448.jpg','jpg','image/jpeg','2024-02-04 10:48:41','2024-02-04 10:48:41'),(48,'rumon0','post_images-rumon0-1707311010381.jpg','public/uploads/post/post_images-rumon0-1707311010381.jpg','jpg','image/jpeg','2024-02-07 13:03:30','2024-02-07 13:03:30'),(49,'rumon0','post_images-rumon0-1707311029552.jpg','public/uploads/post/post_images-rumon0-1707311029552.jpg','jpg','image/jpeg','2024-02-07 13:03:49','2024-02-07 13:03:49'),(50,'rumon0','post_images-rumon0-1707311029564.jpg','public/uploads/post/post_images-rumon0-1707311029564.jpg','jpg','image/jpeg','2024-02-07 13:03:49','2024-02-07 13:03:49'),(51,'rumon0','post_images-rumon0-1707311132468.jpg','public/uploads/post/post_images-rumon0-1707311132468.jpg','jpg','image/jpeg','2024-02-07 13:05:32','2024-02-07 13:05:32'),(52,'rumon0','post_images-rumon0-1707311132488.jpg','public/uploads/post/post_images-rumon0-1707311132488.jpg','jpg','image/jpeg','2024-02-07 13:05:32','2024-02-07 13:05:32'),(53,'rumon0','post_images-rumon0-1707311232121.jpg','public/uploads/post/post_images-rumon0-1707311232121.jpg','jpg','image/jpeg','2024-02-07 13:07:12','2024-02-07 13:07:12'),(54,'rumon0','post_images-rumon0-1707311232127.jpg','public/uploads/post/post_images-rumon0-1707311232127.jpg','jpg','image/jpeg','2024-02-07 13:07:12','2024-02-07 13:07:12'),(55,'rumon0','post_images-rumon0-1707311524163.jpg','public/uploads/post/post_images-rumon0-1707311524163.jpg','jpg','image/jpeg','2024-02-07 13:12:04','2024-02-07 13:12:04'),(56,'rumon0','post_images-rumon0-1707311524170.jpg','public/uploads/post/post_images-rumon0-1707311524170.jpg','jpg','image/jpeg','2024-02-07 13:12:04','2024-02-07 13:12:04'),(57,'rumon0','post_images-rumon0-1707311755073.jpg','public/uploads/post/post_images-rumon0-1707311755073.jpg','jpg','image/jpeg','2024-02-07 13:15:55','2024-02-07 13:15:55'),(58,'rumon0','post_images-rumon0-1707311755078.jpg','public/uploads/post/post_images-rumon0-1707311755078.jpg','jpg','image/jpeg','2024-02-07 13:15:55','2024-02-07 13:15:55'),(64,'rumonkh','admin_image_field-rumonkh-1707406231775.jpg','public/uploads/admin/admin_image_field-rumonkh-1707406231775.jpg','jpg','image/jpeg','2024-02-08 15:30:31','2024-02-08 15:30:31');
 /*!40000 ALTER TABLE `media` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -992,9 +1046,7 @@ CREATE TABLE `postmedia` (
   `post_id` int(11) NOT NULL,
   `media_id` int(11) NOT NULL,
   PRIMARY KEY (`post_id`,`media_id`),
-  KEY `media_id` (`media_id`),
-  CONSTRAINT `postmedia_ibfk_1` FOREIGN KEY (`post_id`) REFERENCES `posts` (`id`) ON DELETE CASCADE,
-  CONSTRAINT `postmedia_ibfk_2` FOREIGN KEY (`media_id`) REFERENCES `media` (`id`) ON DELETE CASCADE
+  KEY `media_id` (`media_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -1195,8 +1247,7 @@ CREATE TABLE `tool_mother_baby_kick_counters` (
   `createdAt` datetime DEFAULT NULL,
   `updatedAt` datetime DEFAULT NULL,
   PRIMARY KEY (`id`),
-  KEY `user_id` (`user_id`),
-  CONSTRAINT `tool_mother_baby_kick_counters_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE CASCADE
+  KEY `user_id` (`user_id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -1288,6 +1339,7 @@ CREATE TABLE `users` (
   `social_photo` varchar(255) DEFAULT NULL,
   `child_number` int(11) DEFAULT NULL,
   `edd_date` datetime DEFAULT NULL,
+  `edd_calculation_type` varchar(255) DEFAULT NULL,
   `email` varchar(255) NOT NULL,
   `password` varchar(255) DEFAULT NULL,
   `language` varchar(255) DEFAULT NULL,
@@ -1309,7 +1361,7 @@ CREATE TABLE `users` (
   UNIQUE KEY `username` (`username`),
   UNIQUE KEY `email` (`email`),
   UNIQUE KEY `social_id` (`social_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=53 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=54 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -1318,7 +1370,7 @@ CREATE TABLE `users` (
 
 LOCK TABLES `users` WRITE;
 /*!40000 ALTER TABLE `users` DISABLE KEYS */;
-INSERT INTO `users` VALUES (1,NULL,'newUser','Sam','Johnson',28,1,'user_photo.jpg',NULL,2,'2023-12-15 00:00:00','newuser@email.com','$2b$10$wKOyz0WONapbY61aUAVfaOMgvDAj54/HxE0YElJBPv8FCH10s09YS','English',NULL,NULL,1,'email','general_user','free','88829178b29618b9947da913fde23b950bec8cef33caa86a1e641390db055ab6',NULL,NULL,'0','0','2023-01-01 00:00:00','2023-11-26 10:05:05','2023-11-26 13:27:06'),(4,NULL,'mahbub','mela','reza',28,1,'user_photo.jpg',NULL,2,'2023-12-15 00:00:00','newuser@email.com1','newPassword','English',NULL,NULL,1,'email','general_user','free','resetToken123',NULL,NULL,'0','0','2023-01-01 00:00:00','2023-11-26 10:10:11','2023-11-26 10:10:11'),(6,NULL,'hasan','hasu','reza',28,1,'user_photo.jpg',NULL,2,'2023-12-15 00:00:00','newuser@1email.com','$2b$10$g2mg/6jNBgvQQ96abgCK7OY5Q1PlETEDs..p9.hyrbSORi4PmeqEe','English',NULL,NULL,1,'email','general_user','free','$2b$10$anuZk7v.Rbx5CGyV33hMAe1iQzwZG4Nm1mWtOpoWt0pYNrdQUTMje','Tue Nov 28 2023 18:27:38 GMT+0600 (Bangladesh Standard Time)600000',NULL,'0','0','2023-01-01 00:00:00','2023-11-26 10:11:07','2023-11-28 12:29:50'),(7,NULL,'kamal','kalu','reza',28,1,'user_photo.jpg',NULL,2,'2023-12-15 00:00:00','new1user@email.com','$2b$10$M5LSsfNStlqUq/XHRL5qS.FsRwSZ3Tsgze.569oFqgum5Q2kTbq3S','English',NULL,NULL,1,'email','general_user','free','2f1cbc7873708f75f944e1c39831f55cd37e0d5d4d58f900b63c66c6cfd3b286','Sun Nov 26 2023 23:02:41 GMT+0600 (Bangladesh Standard Time)600000',NULL,'0','0','2023-01-01 00:00:00','2023-11-26 10:28:12','2023-11-26 17:03:22'),(9,NULL,'mala','kalu','reza',28,1,'user_photo.jpg',NULL,2,'2023-12-15 00:00:00','newuser@email.co1m','000','English',NULL,NULL,1,'email','general_user','free','resetToken123',NULL,NULL,'0','0','2023-01-01 00:00:00','2023-11-26 10:30:39','2023-11-26 10:30:39'),(10,NULL,'dala','kalu','reza',28,1,'user_photo.jpg',NULL,2,'2023-12-15 00:00:00','ne1wuser@email.com','000','English',NULL,NULL,1,'email','general_user','free','resetToken123',NULL,NULL,'0','0','2023-01-01 00:00:00','2023-11-26 10:33:34','2023-11-26 10:33:34'),(11,NULL,'jala','kalu','reza',28,1,'user_photo.jpg',NULL,2,'2023-12-15 00:00:00','n1ewuser@email.com','000','English',NULL,NULL,1,'email','general_user','free','resetToken123',NULL,NULL,'0','0','2023-01-01 00:00:00','2023-11-26 10:38:54','2023-11-26 10:38:54'),(12,NULL,'shapla','shapla','jahan',21,1,'user_photo.jpg',NULL,1,'2023-12-15 00:00:00','shapla@email.com','$2b$10$a.2MqcV5L1XlcROdV2dpDOvzO9in9wMCZX2rEWiAPHP9759PgWQx.','Bangla',NULL,NULL,1,'email','general_user','free','8d216e62a0af344ecb1efb8a6a43f1101da31e2d5c78a012f94e2a0e0dbf62b3',NULL,NULL,'1','0','2023-01-01 00:00:00','2023-11-26 10:41:15','2023-11-28 17:34:13'),(13,NULL,'maria','maria','haque',28,1,'user_photo.jpg',NULL,2,'2023-12-15 00:00:00','new2user@email.com','$2b$10$IXE4yE.8rdVTKsd9WjgMt.mQS6XKm2LDqwl6qCfW8xwKIKYTAVkvm','English',NULL,NULL,1,'email','general_user','free','resetToken123',NULL,NULL,'0','0','2023-01-01 00:00:00','2023-11-26 14:11:28','2023-11-26 14:11:28'),(14,NULL,'golu','kalu','reza',28,1,NULL,NULL,2,'2023-12-15 00:00:00','newus2er@email.com','$2b$10$otm.uhl0i4Nm1F4OrxlY7uOF2u4ZDG566JRiYHLHV.gp1aKSznvFm','English',NULL,NULL,1,'email','general_user','free','resetToken123',NULL,'337bf1c5d6636747cceb47dd1293ac0959f6e7bcddc93f1855b49ce334fe15df','0','0','2023-01-01 00:00:00','2023-11-26 16:51:42','2023-11-26 16:51:42'),(15,NULL,'takla','kalu','reza',28,1,NULL,NULL,2,'2023-12-15 00:00:00','newuser@email.com2','$2b$10$cEaRkVxh1VcybTnI9bJAuullxB7ziH3kqLNao.N63hrtQWxM1/Yvi','English',NULL,NULL,1,'email','general_user','free','resetToken123',NULL,'ac5f9f66b8659a180615b5935622497d8f8b8f890e04ccc749ec0e26aca5e762','0','0','2023-01-01 00:00:00','2023-11-26 17:21:47','2023-11-26 17:21:47'),(20,NULL,'arman','arman','akt',NULL,NULL,NULL,NULL,NULL,NULL,'ne2wuser@email.com','$2b$10$SUks2UpGEX5X9n3543kKqeA4MjyDQlID94A2nW4VSLDkOxqBw0rqa',NULL,NULL,NULL,0,'','general_user','Free','$2b$10$HM7sJOwaW3H22wUh8158I.SpWrdGyxUwLXbnOmplr2aNQ4BNvQ.EK','Tue Nov 28 2023 23:22:28 GMT+0600 (Bangladesh Standard Time)600000',NULL,'1','0','0000-00-00 00:00:00','2023-11-28 17:22:27','2023-11-28 17:28:56'),(21,NULL,'nasim','nasim','akt',NULL,NULL,NULL,NULL,NULL,NULL,'newu3ser@email.com','$2b$10$SiCSJNyNkDHhLCrHbkNSnOYj3XtT9rKP.sxHRVRI6k5hYSH5XBq8O',NULL,NULL,NULL,0,'','general_user','Free','$2b$10$rQD/hYiRAz..BR/7zMUHnOB8Ga/Dq36Z8Zj1pGw8rPtBLMnZXQwJy','Tue Nov 28 2023 23:31:22 GMT+0600 (Bangladesh Standard Time)600000',NULL,'1','0','0000-00-00 00:00:00','2023-11-28 17:31:22','2023-11-28 17:32:04'),(30,'114657009973842993825','114657009973842993825','MD ARMAN','KHAN',NULL,NULL,NULL,'https://lh3.googleusercontent.com/a/ACg8ocJxjv44djn0ndB5-VJnKNwD8YQS8qhqQfi_A3SB9qXgXw=s96-c',NULL,NULL,'arman.khan.dev@gmail.com',NULL,NULL,NULL,NULL,0,'google','general_user','Free',NULL,NULL,NULL,'0','0','0000-00-00 00:00:00','2023-12-04 18:29:49','2023-12-04 18:29:49'),(31,'114579153302679689136','114579153302679689136','Md Rumman','Khan',NULL,NULL,NULL,'https://lh3.googleusercontent.com/a/ACg8ocIaZuf9JaL4l-y0WBvm_9Yc5MW_s2RzumOb1ZmqjT9-bQ=s96-c',NULL,NULL,'rummankh0@gmail.com',NULL,NULL,NULL,NULL,0,'google','general_user','Free',NULL,NULL,NULL,'0','0','0000-00-00 00:00:00','2023-12-04 18:35:49','2023-12-04 18:35:49'),(35,NULL,'nasuim','nasim','akt',NULL,NULL,NULL,NULL,NULL,NULL,'NASI@email.com','$2b$10$xgNG5Xusu6dH7.QeGCPucOUUw/X.g2N6gYYiIGG1IdlTsOBKmZS9C',NULL,NULL,NULL,0,'email','user','Free','$2b$10$.O.URlmVsuu9syKB3OjukOI2gE0wNK2VsI5EoZmbg0MdIt9FWEZ8a','Mon Dec 25 2023 13:49:30 GMT+0600 (Bangladesh Standard Time)600000',NULL,'0','0','0000-00-00 00:00:00','2023-12-25 07:49:30','2023-12-25 07:49:30'),(39,NULL,'nasussdfsdim','nasim','akt',NULL,NULL,NULL,NULL,NULL,NULL,'NASIs@email.com','$2b$10$JGE0IRsVZp/NVn0FBq4x/OLH3nzcBffUsTz2e6ODGkA5VWrHMVCny',NULL,NULL,NULL,0,'email','user','Free','$2b$10$uOYCYoQLTPhpMdx6BfqqGOz255I1ItT3PXgjyrYvt2Mf4Qd/j4p2W','Mon Dec 25 2023 16:23:02 GMT+0600 (Bangladesh Standard Time)600000',NULL,'0','0','0000-00-00 00:00:00','2023-12-25 10:23:02','2023-12-25 10:23:02'),(40,NULL,'jinia','jinia','banu',NULL,NULL,NULL,NULL,NULL,NULL,'jinia@email.com','$2b$10$9haLO05ClYHrtZa9BKGYoOb.DHncgsDqdCug1RSzgTkXUtL5EBq/m',NULL,NULL,NULL,0,'email','user','Free','$2b$10$RZRVxwooajNtkU6uE2uJ7OlpnD9dWhxlGapyAQsz6EbUHb1yET5QO','Wed Jan 03 2024 10:45:16 GMT+0600 (Bangladesh Standard Time)600000',NULL,'0','0','0000-00-00 00:00:00','2024-01-03 04:45:15','2024-01-03 04:45:16'),(51,NULL,'users','naka','reza',NULL,NULL,NULL,NULL,NULL,NULL,'new@email.com','$2b$10$uDl.6PloPUX96io4FM/YN.x65RmptfWQFnVy1tYXmoAYdDEuJRVam',NULL,NULL,NULL,0,'email','general_user','Free','$2b$10$5rzy8RSd46pm0iZ9B4YZ1uEso7E1A/0mppNhUFZm.Vf6H2l5fUjMS','Sun Feb 04 2024 21:43:21 GMT+0600 (Bangladesh Standard Time)600000',NULL,'0','0',NULL,'2024-02-04 15:36:25','2024-02-04 15:43:21'),(52,NULL,'rumon0','rumon','khan',56,NULL,'66',NULL,NULL,NULL,'213002053@student.green.edu.bd','$2b$10$lZYVH/ykHNzEWPZDir1QfuKBAGLkX6Vt9ZKCCc0a6CyC4ruZki1z.',NULL,NULL,NULL,0,'email','general_user','Free',NULL,NULL,NULL,'1','0',NULL,'2024-02-06 15:30:26','2024-02-12 17:58:50');
+INSERT INTO `users` VALUES (1,NULL,'newUser','Sam','Johnson',28,1,'user_photo.jpg',NULL,2,'2023-12-15 00:00:00',NULL,'newuser@email.com','$2b$10$wKOyz0WONapbY61aUAVfaOMgvDAj54/HxE0YElJBPv8FCH10s09YS','English',NULL,NULL,1,'email','general_user','free','88829178b29618b9947da913fde23b950bec8cef33caa86a1e641390db055ab6',NULL,NULL,'0','0','2023-01-01 00:00:00','2023-11-26 10:05:05','2023-11-26 13:27:06'),(4,NULL,'mahbub','mela','reza',28,1,'user_photo.jpg',NULL,2,'2023-12-15 00:00:00',NULL,'newuser@email.com1','newPassword','English',NULL,NULL,1,'email','general_user','free','resetToken123',NULL,NULL,'0','0','2023-01-01 00:00:00','2023-11-26 10:10:11','2023-11-26 10:10:11'),(6,NULL,'hasan','hasu','reza',28,1,'user_photo.jpg',NULL,2,'2023-12-15 00:00:00',NULL,'newuser@1email.com','$2b$10$g2mg/6jNBgvQQ96abgCK7OY5Q1PlETEDs..p9.hyrbSORi4PmeqEe','English',NULL,NULL,1,'email','general_user','free','$2b$10$anuZk7v.Rbx5CGyV33hMAe1iQzwZG4Nm1mWtOpoWt0pYNrdQUTMje','Tue Nov 28 2023 18:27:38 GMT+0600 (Bangladesh Standard Time)600000',NULL,'0','0','2023-01-01 00:00:00','2023-11-26 10:11:07','2023-11-28 12:29:50'),(7,NULL,'kamal','kalu','reza',28,1,'user_photo.jpg',NULL,2,'2023-12-15 00:00:00',NULL,'new1user@email.com','$2b$10$M5LSsfNStlqUq/XHRL5qS.FsRwSZ3Tsgze.569oFqgum5Q2kTbq3S','English',NULL,NULL,1,'email','general_user','free','2f1cbc7873708f75f944e1c39831f55cd37e0d5d4d58f900b63c66c6cfd3b286','Sun Nov 26 2023 23:02:41 GMT+0600 (Bangladesh Standard Time)600000',NULL,'0','0','2023-01-01 00:00:00','2023-11-26 10:28:12','2023-11-26 17:03:22'),(9,NULL,'mala','kalu','reza',28,1,'user_photo.jpg',NULL,2,'2023-12-15 00:00:00',NULL,'newuser@email.co1m','000','English',NULL,NULL,1,'email','general_user','free','resetToken123',NULL,NULL,'0','0','2023-01-01 00:00:00','2023-11-26 10:30:39','2023-11-26 10:30:39'),(10,NULL,'dala','kalu','reza',28,1,'user_photo.jpg',NULL,2,'2023-12-15 00:00:00',NULL,'ne1wuser@email.com','000','English',NULL,NULL,1,'email','general_user','free','resetToken123',NULL,NULL,'0','0','2023-01-01 00:00:00','2023-11-26 10:33:34','2023-11-26 10:33:34'),(11,NULL,'jala','kalu','reza',28,1,'user_photo.jpg',NULL,2,'2023-12-15 00:00:00',NULL,'n1ewuser@email.com','000','English',NULL,NULL,1,'email','general_user','free','resetToken123',NULL,NULL,'0','0','2023-01-01 00:00:00','2023-11-26 10:38:54','2023-11-26 10:38:54'),(12,NULL,'shapla','shapla','jahan',21,1,'user_photo.jpg',NULL,1,'2023-12-15 00:00:00',NULL,'shapla@email.com','$2b$10$a.2MqcV5L1XlcROdV2dpDOvzO9in9wMCZX2rEWiAPHP9759PgWQx.','Bangla',NULL,NULL,1,'email','general_user','free','8d216e62a0af344ecb1efb8a6a43f1101da31e2d5c78a012f94e2a0e0dbf62b3',NULL,NULL,'1','0','2023-01-01 00:00:00','2023-11-26 10:41:15','2023-11-28 17:34:13'),(13,NULL,'maria','maria','haque',28,1,'user_photo.jpg',NULL,2,'2023-12-15 00:00:00',NULL,'new2user@email.com','$2b$10$IXE4yE.8rdVTKsd9WjgMt.mQS6XKm2LDqwl6qCfW8xwKIKYTAVkvm','English',NULL,NULL,1,'email','general_user','free','resetToken123',NULL,NULL,'0','0','2023-01-01 00:00:00','2023-11-26 14:11:28','2023-11-26 14:11:28'),(14,NULL,'golu','kalu','reza',28,1,NULL,NULL,2,'2023-12-15 00:00:00',NULL,'newus2er@email.com','$2b$10$otm.uhl0i4Nm1F4OrxlY7uOF2u4ZDG566JRiYHLHV.gp1aKSznvFm','English',NULL,NULL,1,'email','general_user','free','resetToken123',NULL,'337bf1c5d6636747cceb47dd1293ac0959f6e7bcddc93f1855b49ce334fe15df','0','0','2023-01-01 00:00:00','2023-11-26 16:51:42','2023-11-26 16:51:42'),(15,NULL,'takla','kalu','reza',28,1,NULL,NULL,2,'2023-12-15 00:00:00',NULL,'newuser@email.com2','$2b$10$cEaRkVxh1VcybTnI9bJAuullxB7ziH3kqLNao.N63hrtQWxM1/Yvi','English',NULL,NULL,1,'email','general_user','free','resetToken123',NULL,'ac5f9f66b8659a180615b5935622497d8f8b8f890e04ccc749ec0e26aca5e762','0','0','2023-01-01 00:00:00','2023-11-26 17:21:47','2023-11-26 17:21:47'),(20,NULL,'arman','arman','akt',NULL,NULL,NULL,NULL,NULL,NULL,NULL,'ne2wuser@email.com','$2b$10$SUks2UpGEX5X9n3543kKqeA4MjyDQlID94A2nW4VSLDkOxqBw0rqa',NULL,NULL,NULL,0,'','general_user','Free','$2b$10$HM7sJOwaW3H22wUh8158I.SpWrdGyxUwLXbnOmplr2aNQ4BNvQ.EK','Tue Nov 28 2023 23:22:28 GMT+0600 (Bangladesh Standard Time)600000',NULL,'1','0','0000-00-00 00:00:00','2023-11-28 17:22:27','2023-11-28 17:28:56'),(21,NULL,'nasim','nasim','akt',NULL,NULL,NULL,NULL,NULL,NULL,NULL,'newu3ser@email.com','$2b$10$SiCSJNyNkDHhLCrHbkNSnOYj3XtT9rKP.sxHRVRI6k5hYSH5XBq8O',NULL,NULL,NULL,0,'','general_user','Free','$2b$10$rQD/hYiRAz..BR/7zMUHnOB8Ga/Dq36Z8Zj1pGw8rPtBLMnZXQwJy','Tue Nov 28 2023 23:31:22 GMT+0600 (Bangladesh Standard Time)600000',NULL,'1','0','0000-00-00 00:00:00','2023-11-28 17:31:22','2023-11-28 17:32:04'),(30,'114657009973842993825','114657009973842993825','MD ARMAN','KHAN',NULL,NULL,NULL,'https://lh3.googleusercontent.com/a/ACg8ocJxjv44djn0ndB5-VJnKNwD8YQS8qhqQfi_A3SB9qXgXw=s96-c',NULL,NULL,NULL,'arman.khan.dev@gmail.com',NULL,NULL,NULL,NULL,0,'google','general_user','Free',NULL,NULL,NULL,'0','0','0000-00-00 00:00:00','2023-12-04 18:29:49','2023-12-04 18:29:49'),(31,'114579153302679689136','114579153302679689136','Md Rumman','Khan',NULL,NULL,NULL,'https://lh3.googleusercontent.com/a/ACg8ocIaZuf9JaL4l-y0WBvm_9Yc5MW_s2RzumOb1ZmqjT9-bQ=s96-c',NULL,NULL,NULL,'rummankh0@gmail.com',NULL,NULL,NULL,NULL,0,'google','general_user','Free',NULL,NULL,NULL,'0','0','0000-00-00 00:00:00','2023-12-04 18:35:49','2023-12-04 18:35:49'),(35,NULL,'nasuim','nasim','akt',NULL,NULL,NULL,NULL,NULL,NULL,NULL,'NASI@email.com','$2b$10$xgNG5Xusu6dH7.QeGCPucOUUw/X.g2N6gYYiIGG1IdlTsOBKmZS9C',NULL,NULL,NULL,0,'email','user','Free','$2b$10$.O.URlmVsuu9syKB3OjukOI2gE0wNK2VsI5EoZmbg0MdIt9FWEZ8a','Mon Dec 25 2023 13:49:30 GMT+0600 (Bangladesh Standard Time)600000',NULL,'0','0','0000-00-00 00:00:00','2023-12-25 07:49:30','2023-12-25 07:49:30'),(39,NULL,'nasussdfsdim','nasim','akt',NULL,NULL,NULL,NULL,NULL,NULL,NULL,'NASIs@email.com','$2b$10$JGE0IRsVZp/NVn0FBq4x/OLH3nzcBffUsTz2e6ODGkA5VWrHMVCny',NULL,NULL,NULL,0,'email','user','Free','$2b$10$uOYCYoQLTPhpMdx6BfqqGOz255I1ItT3PXgjyrYvt2Mf4Qd/j4p2W','Mon Dec 25 2023 16:23:02 GMT+0600 (Bangladesh Standard Time)600000',NULL,'0','0','0000-00-00 00:00:00','2023-12-25 10:23:02','2023-12-25 10:23:02'),(40,NULL,'jinia','jinia','banu',NULL,NULL,NULL,NULL,NULL,NULL,NULL,'jinia@email.com','$2b$10$9haLO05ClYHrtZa9BKGYoOb.DHncgsDqdCug1RSzgTkXUtL5EBq/m',NULL,NULL,NULL,0,'email','user','Free','$2b$10$RZRVxwooajNtkU6uE2uJ7OlpnD9dWhxlGapyAQsz6EbUHb1yET5QO','Wed Jan 03 2024 10:45:16 GMT+0600 (Bangladesh Standard Time)600000',NULL,'0','0','0000-00-00 00:00:00','2024-01-03 04:45:15','2024-01-03 04:45:16'),(51,NULL,'users','naka','reza',NULL,NULL,NULL,NULL,NULL,NULL,NULL,'new@email.com','$2b$10$uDl.6PloPUX96io4FM/YN.x65RmptfWQFnVy1tYXmoAYdDEuJRVam',NULL,NULL,NULL,0,'email','general_user','Free',NULL,'Sun Feb 11 2024 18:50:26 GMT+0600 (Bangladesh Standard Time)600000',NULL,'0','0',NULL,'2024-02-04 15:36:25','2024-02-11 12:50:26'),(52,NULL,'rumon0','rumon','khan',NULL,NULL,NULL,NULL,NULL,NULL,NULL,'213002053@student.green.edu.bd','$2b$10$8r3Jse3s42lPZMROPWig1usc94Tc0lWyk7NVU0PgkYM4OajC0OJnu',NULL,NULL,NULL,0,'email','general_user','Free','$2b$10$87X3baUTz31dZAQQiN9sB.xLI9z4C5AVtw6ZFxW/Rjo1GqdHJiCd.','Mon Feb 12 2024 01:52:27 GMT+1200 (Fiji Standard Time)600000',NULL,'1','0',NULL,'2024-02-06 15:30:26','2024-02-11 13:57:03'),(53,NULL,'rumon330','rumon','khan',NULL,NULL,NULL,NULL,NULL,NULL,NULL,'arman.khan.dev+90@gmail.com','$2b$10$JphKM97PBHlELVruJsMEDuJ7iNU45NBVLiCaKid/hNsuWShArAaGW',NULL,NULL,NULL,0,'email','general_user','Free','$2b$10$4aF18lRkIDHrdi3WqOQ5P.EnHj5M/YWpMh0.9Y85mpA.OLVLru69O','Mon Feb 12 2024 01:00:19 GMT+1200 (Fiji Standard Time)600000',NULL,'0','0',NULL,'2024-02-11 11:36:38','2024-02-11 13:00:19');
 /*!40000 ALTER TABLE `users` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -1339,8 +1391,7 @@ CREATE TABLE `video` (
   `updatedAt` datetime DEFAULT NULL,
   `createdAt` datetime NOT NULL,
   PRIMARY KEY (`id`),
-  KEY `media` (`file_id`),
-  CONSTRAINT `video_ibfk_1` FOREIGN KEY (`file_id`) REFERENCES `media` (`id`)
+  KEY `media` (`file_id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -1398,8 +1449,7 @@ CREATE TABLE `weight_logs` (
   `createdAt` datetime DEFAULT NULL,
   `updatedAt` datetime DEFAULT NULL,
   PRIMARY KEY (`id`),
-  KEY `FK_1` (`user_id`),
-  CONSTRAINT `FK_22` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`)
+  KEY `FK_1` (`user_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -1422,4 +1472,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2024-02-13  0:01:06
+-- Dump completed on 2024-02-13 14:11:22
