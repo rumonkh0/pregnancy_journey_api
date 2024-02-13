@@ -532,7 +532,7 @@ exports.confirmEmail = asyncHandler(async (req, res, next) => {
   user.save();
 
   // return token
-  res.status(200).json({
+  return res.status(200).json({
     remark: "SUCCESSFULL",
     success: true,
     message: "Email verification successfull",
