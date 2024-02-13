@@ -178,6 +178,7 @@ exports.updateDetails = asyncHandler(async (req, res, next) => {
     pregnency_loss,
     baby_already_born,
     lmp_date,
+    is_profile_complete,
   } = req.body;
 
   const userDetailsToUpdate = {
@@ -193,6 +194,7 @@ exports.updateDetails = asyncHandler(async (req, res, next) => {
     pregnency_loss,
     baby_already_born,
     lmp_date,
+    is_profile_complete,
   };
 
   // Find the user by username
@@ -526,7 +528,7 @@ exports.confirmEmail = asyncHandler(async (req, res, next) => {
     return res.status(200).json({ success: false, message: "Invalid OTP" });
 
   // update confirmed to true
-  user.confirm_email_token = undefined;
+  user.confirm_email_token = null;
   user.is_email_confirmed = "1";
 
   // save
