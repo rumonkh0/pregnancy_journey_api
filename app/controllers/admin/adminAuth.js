@@ -410,8 +410,8 @@ exports.resetPassword = asyncHandler(async (req, res, next) => {
 
   // Set new password
   admin.password = newPassword;
-  admin.password_reset_token = undefined;
-  //  admin.resetPasswordExpire = undefined;
+  admin.password_reset_token = null;
+   admin.resetPasswordExpire = null;
   await admin.save();
 
   sendTokenResponse(admin, 200, res);
@@ -483,7 +483,7 @@ exports.confirmEmail = asyncHandler(async (req, res, next) => {
     return res.status(200).json({ success: false, message: "Invalid OTP" });
 
   // update confirmed to true
-  admin.confirm_email_token = undefined;
+  admin.confirm_email_token = null;
   admin.is_email_confirmed = true;
 
   // save

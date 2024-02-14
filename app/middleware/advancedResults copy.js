@@ -41,13 +41,11 @@ const advancedResults = (model, include) => async (req, res, next) => {
 
     next();
   } catch (error) {
-    res
-      .status(500)
-      .json({
-        success: false,
-        message: error.message,
-        error: "Internal server error",
-      });
+    res.status(500).json({
+      success: false,
+      message: error.message,
+      error: "Internal server error",
+    });
   }
 };
 

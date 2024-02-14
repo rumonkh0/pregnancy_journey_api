@@ -65,6 +65,10 @@ const User = sequelize.define(
       type: DataTypes.DATE,
       allowNull: true,
     },
+    edd_calculation_type: {
+      type: DataTypes.STRING(255),
+      allowNull: true,
+    },
     email: {
       type: DataTypes.STRING(255),
       allowNull: false,
