@@ -104,14 +104,20 @@ exports.login = asyncHandler(async (req, res, next) => {
   }
   //Find user from database
   let user = await User.scope("withPassword").findOne({
-    where: { username },
+    where: { username: req.body.username },
   });
+
   if (!user) {
-    return res.status(404).json({
-      success: false,
-      message: "User not found",
+    user = await User.scope("withPassword").findOne({
+      where: { email: req.body.username },
     });
   }
+  if (!user)
+    return res.status(404).json({
+      remark: "UNSUCCESSFUL",
+      success: false,
+      message: "No user found",
+    });
 
   //Match hash password
   const isMatch = await user.verifyPassword(password);
@@ -359,14 +365,14 @@ exports.forgotPassword = asyncHandler(async (req, res, next) => {
     user = await User.findOne({
       where: { email: req.body.usernameORemail },
     });
-
-    if (!user)
-      return res.status(404).json({
-        remark: "UNSUCCESSFUL",
-        success: false,
-        message: "No user found",
-      });
   }
+  if (!user)
+    return res.status(404).json({
+      remark: "UNSUCCESSFUL",
+      success: false,
+      message: "No user found",
+    });
+
   // Get reset token
   const OTP = await user.getOTP();
 
@@ -461,13 +467,20 @@ exports.resendOTP = asyncHandler(async (req, res, next) => {
   // grab token from email
   const { username } = req.user;
 
-  let user = await User.findOne({ where: { username } });
+  let user = await User.findOne({
+    where: { username: username },
+  });
 
+  if (!user) {
+    user = await User.findOne({
+      where: { email: username },
+    });
+  }
   if (!user)
-    return res.status(200).json({
-      remark: "UNSUCCESSFULL",
+    return res.status(404).json({
+      remark: "UNSUCCESSFUL",
       success: false,
-      message: "username of email not found",
+      message: "No user found",
     });
 
   if (user.is_email_confirmed == "1")
