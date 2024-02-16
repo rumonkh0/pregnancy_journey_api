@@ -31,7 +31,7 @@ const DailyRead = sequelize.define(
       allowNull: true,
       defaultValue: null,
     },
-    order: {
+    day: {
       type: DataTypes.INTEGER,
       allowNull: false,
     },

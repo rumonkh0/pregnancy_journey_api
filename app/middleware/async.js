@@ -14,7 +14,7 @@ if (process.env.NODE_ENV === "development") {
   asyncHandler = (fn) => (req, res, next) =>
     Promise.resolve(fn(req, res, next)).catch((error) => {
       res.status(500).json({ succss: false, message: error.message });
-      // next(new ErrorResponse(error.message, 500));
+      // next(new ErrorResponse(error, 500));
       next();
     });
 }

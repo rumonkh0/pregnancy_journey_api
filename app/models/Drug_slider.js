@@ -1,5 +1,6 @@
 const { DataTypes } = require("sequelize");
 const { sequelize } = require("../../config/db");
+const Media = require("./Media");
 
 const DrugSlider = sequelize.define('drug_slider', {
   id: {

@@ -51,6 +51,7 @@ const admins = require("./app/routes/admin/admin");
 const adminLogin = require("./app/routes/admin/adminAuth");
 const adminHelpDesk = require("./app/routes/admin/helpDesk");
 const babyCare = require("./app/routes/admin/babyCare");
+const adminGeneral = require("./app/routes/admin/general");
 
 const app = express();
 
@@ -111,6 +112,7 @@ app.use("/admin/api/v1/users", users);
 app.use("/admin/api/v1/helpdesk", adminHelpDesk);
 app.use("/admin/api/v1/admin", admins);
 app.use("/admin/api/v1/babycare", babyCare);
+app.use("/admin/api/v1/general", adminGeneral);
 
 // app.use("/api/v1/reaction", reaction);
 

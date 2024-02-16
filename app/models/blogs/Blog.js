@@ -1,6 +1,6 @@
 const { sequelize } = require("../../../config/db");
 const { DataTypes } = require("sequelize");
-const BlogCategories = require("./Blog_category")
+const BlogCategories = require("./Blog_category");
 
 const Blog = sequelize.define(
   "blogs",
@@ -16,7 +16,7 @@ const Blog = sequelize.define(
       allowNull: true,
     },
     title: {
-      type: DataTypes.STRING(255),
+      type: DataTypes.TEXT,
       allowNull: true,
     },
     category: {
