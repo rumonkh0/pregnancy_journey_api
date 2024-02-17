@@ -21,14 +21,32 @@ exports.stringify = (...fields) => {
   });
 };
 
+// exports.stringify = (...fields) => {
+//   return asyncHandler(async (req, res, next) => {
+//     const news = req.body.map((obj) => {
+//       obj.title = JSON.stringify(obj.title);
+//       obj.description = JSON.stringify(obj.description);
+//       return obj;
+//     });
+//     // if (req.body)
+//     //   fields.map((field) => {
+//     //     if (req.body[field]) {
+//     //       req.body[field] = JSON.stringify(req.body[field]);
+//     //     }
+//     //   });
+//     next();
+//   });
+// };
+
 // @desc      Get  Baby get all as history
 // @route     GET /api/v1/route/history
 // @access    Private
-exports.getAll = (Model) => {
+exports.getAll = (Model, include) => {
   return asyncHandler(async (req, res, next) => {
     lan = req.query.lan;
     const data = await Model.findAll({
       order: [["createdAt", "DESC"]],
+      include: include,
     });
 
     if (!data) {
@@ -39,8 +57,18 @@ exports.getAll = (Model) => {
     }
 
     const newData = data.map((obj) => {
-      obj.setDataValue("title", JSON.parse(obj.title)[lan || "en"]);
-      obj.setDataValue("description", JSON.parse(obj.description)[lan || "en"]);
+      obj.setDataValue(
+        "title",
+        JSON.parse(obj.title)[lan]
+          ? JSON.parse(obj.title)[lan]
+          : JSON.parse(obj.title)["en"]
+      );
+      obj.setDataValue(
+        "description",
+        JSON.parse(obj.description)[lan]
+          ? JSON.parse(obj.description)[lan]
+          : JSON.parse(obj.description)["en"]
+      );
       return obj;
     });
 
@@ -52,7 +80,7 @@ exports.getAll = (Model) => {
 // @desc      Get single
 // @route     GET /api/v1/route/:modelPk
 // @access    Private
-exports.getOne = (Model) => {
+exports.getOne = (Model, include) => {
   return asyncHandler(async (req, res, next) => {
     const lan = req.query.lan;
     // Extract baby ID from the request params or body
@@ -61,6 +89,7 @@ exports.getOne = (Model) => {
     // Get the feed history for the specified baby
     const data = await Model.findOne({
       where: { id: modelPk },
+      include: include,
     });
 
     if (!data) {
@@ -69,8 +98,18 @@ exports.getOne = (Model) => {
         .json({ success: false, message: "Data not found" });
     }
 
-    data.title = JSON.parse(data.title)[lan || "en"];
-    data.description = JSON.parse(data.description)[lan || "en"];
+    data.setDataValue(
+      "title",
+      JSON.parse(data.title)[lan]
+        ? JSON.parse(data.title)[lan]
+        : JSON.parse(data.title)["en"]
+    );
+    data.setDataValue(
+      "description",
+      JSON.parse(data.description)[lan]
+        ? JSON.parse(data.description)[lan]
+        : JSON.parse(data.description)["en"]
+    );
 
     res.status(200).json({ success: true, message: "Data found", data });
   });

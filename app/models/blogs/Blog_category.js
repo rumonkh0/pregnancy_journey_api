@@ -14,8 +14,12 @@ const BlogCategories = sequelize.define(
       type: DataTypes.INTEGER,
       allowNull: true,
     },
-    name: {
-      type: DataTypes.STRING(255),
+    title: {
+      type: DataTypes.TEXT,
+      allowNull: true,
+    },
+    description: {
+      type: DataTypes.TEXT,
       allowNull: true,
     },
     image: {

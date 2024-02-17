@@ -6,8 +6,8 @@ const DailyRead = require("../models/daily/Daily_read");
 const Video = require("../models/Video");
 const BabyProgressTimeline = require("../models/progress_timeline/Baby_progress_timeline");
 const MotherProgressTimeline = require("../models/progress_timeline/Mother_progress_timeline");
-const drugSlider = require("../models/Drug_slider")
-const blogCategory = require("../models/blogs/Blog_category")
+const DrugSlider = require("../models/Drug_slider");
+const BlogCategory = require("../models/blogs/Blog_category");
 
 const {
   getAll,
@@ -17,27 +17,30 @@ const {
   deleteOne,
   deleteAll,
 } = require("../controllers/crudController");
+const Media = require("../models/Media");
 
 const router = express.Router();
 
 router.get("/blogs", getAll(Blog));
-router.get("/warningsigns", getAll(WarningSign));
+router.get("/warningsigns", getAll(WarningSign, { model: Media, as: "media" }));
 router.get("/dailytips", getAll(DailyTip));
 router.get("/dailyreads", getAll(DailyRead));
-router.get("/videos", getAll(Video));
+router.get("/videos", getAll(Video, { model: Media, as: "media" }));
 router.get("/babyprogresstimeline", getAll(BabyProgressTimeline));
 router.get("/motherprogresstimeline", getAll(MotherProgressTimeline));
-router.get("/drugslider", getAll(drugSlider));
-router.get("/blogcategories", getAll(blogCategory));
-
+router.get("/drugslider", getAll(DrugSlider));
+router.get("/blogcategories", getAll(BlogCategory));
 
 router.get("/blogs/:modelPk", getOne(Blog));
-router.get("/warningsigns/:modelPk", getOne(WarningSign));
+router.get(
+  "/warningsigns/:modelPk",
+  getOne(WarningSign, { model: Media, as: "media" })
+);
 router.get("/dailytips/:modelPk", getOne(DailyTip));
 router.get("/dailyreads/:modelPk", getOne(DailyRead));
-router.get("/videos/:modelPk", getOne(Video));
+router.get("/videos/:modelPk", getOne(Video, { model: Media, as: "media" }));
 router.get("/babyprogresstimeline/:modelPk", getOne(BabyProgressTimeline));
 router.get("/motherprogresstimeline/:modelPk", getOne(MotherProgressTimeline));
-router.get("/drugslider/:modelPk", getOne(drugSlider));
+router.get("/drugslider/:modelPk", getOne(DrugSlider));
 
 module.exports = router;
