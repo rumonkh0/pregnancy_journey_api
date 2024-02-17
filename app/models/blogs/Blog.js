@@ -21,7 +21,7 @@ const Blog = sequelize.define(
     },
     category: {
       type: DataTypes.INTEGER,
-      allowNull: true,
+      allowNull: false,
       references: {
         model: BlogCategories,
         key: "id",

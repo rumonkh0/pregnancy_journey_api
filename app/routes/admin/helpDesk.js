@@ -13,7 +13,6 @@ const router = express.Router();
 const { protect, authorize } = require("../../middleware/auth");
 const asyncHandler = require("../../middleware/async");
 const { Sequelize } = require("sequelize");
-
 router.use(protect);
 router.use(authorize("superadmin", "help_desk"));
 router.get(

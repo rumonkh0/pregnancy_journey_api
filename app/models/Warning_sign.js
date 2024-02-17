@@ -12,7 +12,8 @@ const WarningSign = sequelize.define(
     },
     order: {
       type: DataTypes.INTEGER,
-      allowNull: true,
+      allowNull: false,
+      default: 0,
     },
     title: {
       type: DataTypes.STRING,

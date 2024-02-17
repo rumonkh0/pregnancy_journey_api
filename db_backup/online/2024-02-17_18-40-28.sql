@@ -1,8 +1,8 @@
 -- MariaDB dump 10.19  Distrib 10.4.32-MariaDB, for Linux (x86_64)
 --
--- Host: localhost    Database: pregnancy_journey
+-- Host: sql.freedb.tech    Database: freedb_pregnancy_journey
 -- ------------------------------------------------------
--- Server version	10.4.32-MariaDB
+-- Server version	8.0.36-0ubuntu0.22.04.1
 
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
 /*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
@@ -23,8 +23,8 @@ DROP TABLE IF EXISTS `admin_role`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `admin_role` (
-  `admin_id` int(11) NOT NULL,
-  `role_id` int(11) NOT NULL
+  `admin_id` int NOT NULL,
+  `role_id` int NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -34,7 +34,7 @@ CREATE TABLE `admin_role` (
 
 LOCK TABLES `admin_role` WRITE;
 /*!40000 ALTER TABLE `admin_role` DISABLE KEYS */;
-INSERT INTO `admin_role` VALUES (1,1),(2,1),(1,2),(1,5),(7,4),(7,3),(7,10),(7,11),(7,7);
+INSERT INTO `admin_role` VALUES (1,1),(2,1),(1,2),(1,5),(7,4),(7,3),(7,10);
 /*!40000 ALTER TABLE `admin_role` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -46,13 +46,13 @@ DROP TABLE IF EXISTS `admins`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `admins` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `username` varchar(255) NOT NULL,
-  `email` varchar(255) NOT NULL,
-  `password` varchar(255) NOT NULL,
-  `photo` int(11) DEFAULT NULL,
-  `createdAt` timestamp NOT NULL DEFAULT current_timestamp(),
-  `updatedAt` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp(),
+  `id` int NOT NULL AUTO_INCREMENT,
+  `username` varchar(255) COLLATE utf8mb4_general_ci NOT NULL,
+  `email` varchar(255) COLLATE utf8mb4_general_ci NOT NULL,
+  `password` varchar(255) COLLATE utf8mb4_general_ci NOT NULL,
+  `photo` int DEFAULT NULL,
+  `createdAt` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `updatedAt` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`),
   UNIQUE KEY `username` (`username`),
   UNIQUE KEY `email` (`email`),
@@ -79,16 +79,16 @@ DROP TABLE IF EXISTS `antenatal_visit`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `antenatal_visit` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `user_id` int(10) unsigned NOT NULL,
-  `visit_type` varchar(255) NOT NULL,
-  `doctor_name` varchar(255) NOT NULL,
-  `visit_no` int(11) NOT NULL,
-  `hospital_address` varchar(255) NOT NULL,
-  `receptionist` varchar(255) NOT NULL,
-  `mobile` int(20) NOT NULL,
+  `id` int NOT NULL AUTO_INCREMENT,
+  `user_id` int unsigned NOT NULL,
+  `visit_type` varchar(255) COLLATE utf8mb4_general_ci NOT NULL,
+  `doctor_name` varchar(255) COLLATE utf8mb4_general_ci NOT NULL,
+  `visit_no` int NOT NULL,
+  `hospital_address` varchar(255) COLLATE utf8mb4_general_ci NOT NULL,
+  `receptionist` varchar(255) COLLATE utf8mb4_general_ci NOT NULL,
+  `mobile` int NOT NULL,
   `visit_date` datetime NOT NULL,
-  `remarks` varchar(255) NOT NULL,
+  `remarks` varchar(255) COLLATE utf8mb4_general_ci NOT NULL,
   `updatedAt` datetime NOT NULL,
   `createdAt` datetime NOT NULL,
   PRIMARY KEY (`id`),
@@ -114,14 +114,14 @@ DROP TABLE IF EXISTS `baby_breast_pumping`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `baby_breast_pumping` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `baby_id` int(10) unsigned DEFAULT NULL,
-  `right_milk_amount` int(11) DEFAULT NULL,
-  `left_milk_amount` int(11) DEFAULT NULL,
-  `total_milk` int(11) DEFAULT NULL,
-  `left_duration` varchar(255) DEFAULT NULL,
-  `right_duration` varchar(255) DEFAULT NULL,
-  `total_duration` varchar(255) DEFAULT NULL,
+  `id` int NOT NULL AUTO_INCREMENT,
+  `baby_id` int unsigned DEFAULT NULL,
+  `right_milk_amount` int DEFAULT NULL,
+  `left_milk_amount` int DEFAULT NULL,
+  `total_milk` int DEFAULT NULL,
+  `left_duration` varchar(255) COLLATE utf8mb4_general_ci DEFAULT NULL,
+  `right_duration` varchar(255) COLLATE utf8mb4_general_ci DEFAULT NULL,
+  `total_duration` varchar(255) COLLATE utf8mb4_general_ci DEFAULT NULL,
   `createdAt` datetime DEFAULT NULL,
   `updatedAt` datetime NOT NULL,
   PRIMARY KEY (`id`),
@@ -148,12 +148,12 @@ DROP TABLE IF EXISTS `baby_diaper`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `baby_diaper` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `baby_id` int(10) unsigned NOT NULL,
-  `status` enum('clean','poo','pee','mixed') NOT NULL,
+  `id` int NOT NULL AUTO_INCREMENT,
+  `baby_id` int unsigned NOT NULL,
+  `status` enum('clean','poo','pee','mixed') COLLATE utf8mb4_general_ci NOT NULL,
   `createdAt` datetime NOT NULL,
   `updatedAt` datetime DEFAULT NULL,
-  `number` int(11) DEFAULT 1,
+  `number` int DEFAULT '1',
   PRIMARY KEY (`id`),
   KEY `FK_1` (`baby_id`),
   CONSTRAINT `FK_6` FOREIGN KEY (`baby_id`) REFERENCES `baby_list` (`id`)
@@ -178,14 +178,14 @@ DROP TABLE IF EXISTS `baby_feed`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `baby_feed` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `baby_id` int(10) unsigned NOT NULL,
-  `feed_type` enum('breast','bottle','solid') NOT NULL,
-  `let_duration` varchar(255) DEFAULT NULL,
-  `right_duration` varchar(255) DEFAULT NULL,
-  `total_duration` varchar(255) DEFAULT NULL,
+  `id` int NOT NULL AUTO_INCREMENT,
+  `baby_id` int unsigned NOT NULL,
+  `feed_type` enum('breast','bottle','solid') COLLATE utf8mb4_general_ci NOT NULL,
+  `let_duration` varchar(255) COLLATE utf8mb4_general_ci DEFAULT NULL,
+  `right_duration` varchar(255) COLLATE utf8mb4_general_ci DEFAULT NULL,
+  `total_duration` varchar(255) COLLATE utf8mb4_general_ci DEFAULT NULL,
   `bottle_amount` double DEFAULT NULL,
-  `solid_name` varchar(255) DEFAULT NULL,
+  `solid_name` varchar(255) COLLATE utf8mb4_general_ci DEFAULT NULL,
   `solid_amount` double DEFAULT NULL COMMENT 'gram',
   `feed_time` datetime DEFAULT NULL,
   `createdAt` datetime NOT NULL,
@@ -214,11 +214,11 @@ DROP TABLE IF EXISTS `baby_gallery`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `baby_gallery` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `file_id` int(11) NOT NULL,
-  `baby_id` int(10) unsigned DEFAULT NULL,
-  `image` varchar(255) DEFAULT NULL,
-  `image_title` varchar(255) DEFAULT NULL,
+  `id` int NOT NULL AUTO_INCREMENT,
+  `file_id` int NOT NULL,
+  `baby_id` int unsigned DEFAULT NULL,
+  `image` varchar(255) COLLATE utf8mb4_general_ci DEFAULT NULL,
+  `image_title` varchar(255) COLLATE utf8mb4_general_ci DEFAULT NULL,
   `updatedAt` datetime DEFAULT NULL,
   `createdAt` datetime DEFAULT NULL,
   PRIMARY KEY (`id`),
@@ -245,14 +245,14 @@ DROP TABLE IF EXISTS `baby_growth_weekly`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `baby_growth_weekly` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `baby_size_image` int(11) DEFAULT NULL,
-  `week_number` int(11) NOT NULL,
-  `day` int(11) NOT NULL,
-  `weight` text NOT NULL,
-  `size` text NOT NULL,
-  `body_change` text DEFAULT NULL,
-  `baby_details` text DEFAULT NULL,
+  `id` int NOT NULL AUTO_INCREMENT,
+  `baby_size_image` int DEFAULT NULL,
+  `week_number` int NOT NULL,
+  `day` int NOT NULL,
+  `weight` text COLLATE utf8mb4_general_ci NOT NULL,
+  `size` text COLLATE utf8mb4_general_ci NOT NULL,
+  `body_change` text COLLATE utf8mb4_general_ci,
+  `baby_details` text COLLATE utf8mb4_general_ci,
   UNIQUE KEY `id` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
@@ -274,12 +274,12 @@ DROP TABLE IF EXISTS `baby_list`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `baby_list` (
-  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
-  `mother_id` int(10) unsigned NOT NULL,
-  `name` varchar(255) DEFAULT NULL,
-  `photo` varchar(255) DEFAULT NULL,
-  `baby_serial` int(11) DEFAULT NULL,
-  `gender` varchar(45) NOT NULL COMMENT 'male=1 female=2',
+  `id` int unsigned NOT NULL AUTO_INCREMENT,
+  `mother_id` int unsigned NOT NULL,
+  `name` varchar(255) COLLATE utf8mb4_general_ci DEFAULT NULL,
+  `photo` varchar(255) COLLATE utf8mb4_general_ci DEFAULT NULL,
+  `baby_serial` int DEFAULT NULL,
+  `gender` varchar(45) COLLATE utf8mb4_general_ci NOT NULL COMMENT 'male=1 female=2',
   `birth_date` datetime DEFAULT NULL,
   `first_move` datetime DEFAULT NULL,
   `first_heartbeat` datetime DEFAULT NULL,
@@ -309,12 +309,12 @@ DROP TABLE IF EXISTS `baby_medications`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `baby_medications` (
-  `id` int(11) NOT NULL,
-  `name` varchar(255) DEFAULT NULL,
-  `dose` varchar(25) DEFAULT NULL,
+  `id` int NOT NULL,
+  `name` varchar(255) COLLATE utf8mb4_general_ci DEFAULT NULL,
+  `dose` varchar(25) COLLATE utf8mb4_general_ci DEFAULT NULL,
   `createdAt` datetime DEFAULT NULL,
   `updatedAt` datetime DEFAULT NULL,
-  `baby_id` int(10) unsigned NOT NULL,
+  `baby_id` int unsigned NOT NULL,
   PRIMARY KEY (`id`),
   KEY `FK_1` (`baby_id`),
   CONSTRAINT `FK_19` FOREIGN KEY (`baby_id`) REFERENCES `baby_list` (`id`)
@@ -338,10 +338,10 @@ DROP TABLE IF EXISTS `baby_notes`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `baby_notes` (
-  `id` int(11) NOT NULL,
-  `baby_id` int(10) unsigned NOT NULL,
-  `note_title` varchar(255) DEFAULT NULL,
-  `note_description` varchar(255) DEFAULT NULL,
+  `id` int NOT NULL,
+  `baby_id` int unsigned NOT NULL,
+  `note_title` varchar(255) COLLATE utf8mb4_general_ci DEFAULT NULL,
+  `note_description` varchar(255) COLLATE utf8mb4_general_ci DEFAULT NULL,
   `createdAt` datetime DEFAULT NULL,
   `updatedAt` datetime DEFAULT NULL,
   PRIMARY KEY (`id`),
@@ -367,11 +367,11 @@ DROP TABLE IF EXISTS `baby_progress_timeline`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `baby_progress_timeline` (
-  `id` int(11) NOT NULL,
-  `week` int(11) NOT NULL,
-  `title` varchar(255) NOT NULL,
-  `description` longtext NOT NULL,
-  `image` varchar(255) NOT NULL,
+  `id` int NOT NULL,
+  `week` int NOT NULL,
+  `title` varchar(255) COLLATE utf8mb4_general_ci NOT NULL,
+  `description` longtext COLLATE utf8mb4_general_ci NOT NULL,
+  `image` varchar(255) COLLATE utf8mb4_general_ci NOT NULL,
   `createdAt` datetime NOT NULL,
   `updatedAt` datetime DEFAULT NULL,
   PRIMARY KEY (`id`)
@@ -395,11 +395,11 @@ DROP TABLE IF EXISTS `baby_sleep`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `baby_sleep` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `baby_id` int(10) unsigned DEFAULT NULL,
-  `start_time` varchar(255) DEFAULT NULL,
-  `end_time` varchar(255) DEFAULT NULL,
-  `total_duration` varchar(255) DEFAULT NULL,
+  `id` int NOT NULL AUTO_INCREMENT,
+  `baby_id` int unsigned DEFAULT NULL,
+  `start_time` varchar(255) COLLATE utf8mb4_general_ci DEFAULT NULL,
+  `end_time` varchar(255) COLLATE utf8mb4_general_ci DEFAULT NULL,
+  `total_duration` varchar(255) COLLATE utf8mb4_general_ci DEFAULT NULL,
   `createdAt` datetime DEFAULT NULL,
   `updatedAt` datetime DEFAULT NULL,
   PRIMARY KEY (`id`),
@@ -426,11 +426,11 @@ DROP TABLE IF EXISTS `baby_symptoms`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `baby_symptoms` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `status` varchar(255) NOT NULL,
+  `id` int NOT NULL AUTO_INCREMENT,
+  `status` varchar(255) COLLATE utf8mb4_general_ci NOT NULL,
   `createdAt` datetime NOT NULL,
   `updatedAt` datetime DEFAULT NULL,
-  `baby_id` int(10) unsigned NOT NULL,
+  `baby_id` int unsigned NOT NULL,
   PRIMARY KEY (`id`),
   KEY `FK_1` (`baby_id`),
   CONSTRAINT `FK_7` FOREIGN KEY (`baby_id`) REFERENCES `baby_list` (`id`)
@@ -455,10 +455,10 @@ DROP TABLE IF EXISTS `baby_temperature`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `baby_temperature` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `baby_id` int(10) unsigned DEFAULT NULL,
-  `temp_celsius` varchar(255) DEFAULT NULL,
-  `temp_fahrenheit` varchar(255) DEFAULT NULL,
+  `id` int NOT NULL AUTO_INCREMENT,
+  `baby_id` int unsigned DEFAULT NULL,
+  `temp_celsius` varchar(255) COLLATE utf8mb4_general_ci DEFAULT NULL,
+  `temp_fahrenheit` varchar(255) COLLATE utf8mb4_general_ci DEFAULT NULL,
   `createdAt` datetime DEFAULT NULL,
   `updatedAt` datetime DEFAULT NULL,
   PRIMARY KEY (`id`),
@@ -485,10 +485,10 @@ DROP TABLE IF EXISTS `blog_categories`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `blog_categories` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `order` int(11) DEFAULT NULL,
-  `name` varchar(2555) DEFAULT NULL,
-  `image` varchar(45) DEFAULT NULL,
+  `id` int NOT NULL AUTO_INCREMENT,
+  `order` int DEFAULT NULL,
+  `name` varchar(2555) COLLATE utf8mb4_general_ci DEFAULT NULL,
+  `image` varchar(45) COLLATE utf8mb4_general_ci DEFAULT NULL,
   `createdAt` datetime DEFAULT NULL,
   `updatedAt` datetime DEFAULT NULL,
   PRIMARY KEY (`id`)
@@ -513,18 +513,18 @@ DROP TABLE IF EXISTS `blogs`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `blogs` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `order` int(11) DEFAULT 0,
-  `title` longtext DEFAULT NULL,
-  `category` int(11) DEFAULT NULL,
-  `description` longtext DEFAULT NULL,
-  `image` varchar(255) DEFAULT NULL,
+  `id` int NOT NULL AUTO_INCREMENT,
+  `order` int DEFAULT '0',
+  `title` longtext COLLATE utf8mb4_general_ci,
+  `category` int DEFAULT NULL,
+  `description` longtext COLLATE utf8mb4_general_ci,
+  `image` varchar(255) COLLATE utf8mb4_general_ci DEFAULT NULL,
   `createdAt` datetime DEFAULT NULL,
   `updatedAt` datetime DEFAULT NULL,
   PRIMARY KEY (`id`),
   KEY `FK_1` (`category`),
   CONSTRAINT `FK_15` FOREIGN KEY (`category`) REFERENCES `blog_categories` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -533,7 +533,7 @@ CREATE TABLE `blogs` (
 
 LOCK TABLES `blogs` WRITE;
 /*!40000 ALTER TABLE `blogs` DISABLE KEYS */;
-INSERT INTO `blogs` VALUES (2,1,'{\"bn\" : \"eta amar first blog\", \"en\" :\"this is my first blog\"}',2,'{\"bn\" : \"eta amar first blog\", \"en\" :\"this is my first blog\"}',NULL,NULL,NULL),(3,0,'{\"bn\":\"Lorem Ipsum\",\"en\":\"this is english\"}',2,'{\"en\":\"Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.\",\"bn\":\"eta bangladeshi blog languasge\"}','example.jpg','2024-02-17 04:47:45','2024-02-17 04:47:45'),(4,0,'{\"bn\":\"Lorem Ipsum\",\"en\":\"this is english\"}',2,'{\"en\":\"Lorem ipsum dol dolore magna aliqua.\",\"bn\":\"eta bangladeshi blog languasge\"}','example.jpg','2024-02-17 04:53:22','2024-02-17 04:53:22');
+INSERT INTO `blogs` VALUES (1,0,'hello',NULL,'this is blog','dfa',NULL,NULL),(2,1,'{\"bn\" : \"eta amar first blog\", \"en\" :\"this is my first blog\"}',2,'{\"bn\" : \"eta amar first blog\", \"en\" :\"this is my first blog\"}',NULL,NULL,NULL);
 /*!40000 ALTER TABLE `blogs` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -545,13 +545,13 @@ DROP TABLE IF EXISTS `bp_trackers`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `bp_trackers` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `arm` enum('right','left') DEFAULT NULL,
-  `systolic` int(11) DEFAULT NULL,
-  `diastolic` int(11) DEFAULT NULL,
+  `id` int NOT NULL AUTO_INCREMENT,
+  `arm` enum('right','left') COLLATE utf8mb4_general_ci DEFAULT NULL,
+  `systolic` int DEFAULT NULL,
+  `diastolic` int DEFAULT NULL,
   `createdAt` datetime DEFAULT NULL,
   `updatedAt` datetime DEFAULT NULL,
-  `user_id` int(10) unsigned NOT NULL,
+  `user_id` int unsigned NOT NULL,
   PRIMARY KEY (`id`),
   KEY `FK_1` (`user_id`),
   CONSTRAINT `FK_25` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`)
@@ -576,11 +576,11 @@ DROP TABLE IF EXISTS `child_vaccine_remiinders`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `child_vaccine_remiinders` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `baby_id` int(10) unsigned NOT NULL,
-  `name` varchar(255) NOT NULL,
+  `id` int NOT NULL AUTO_INCREMENT,
+  `baby_id` int unsigned NOT NULL,
+  `name` varchar(255) COLLATE utf8mb4_general_ci NOT NULL,
   `vaccine_date` datetime NOT NULL,
-  `status` varchar(255) DEFAULT 'null',
+  `status` varchar(255) COLLATE utf8mb4_general_ci DEFAULT 'null',
   `createdAt` datetime NOT NULL,
   `updatedAt` datetime NOT NULL,
   PRIMARY KEY (`id`),
@@ -607,10 +607,10 @@ DROP TABLE IF EXISTS `comments`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `comments` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `user_id` int(11) NOT NULL,
-  `post_id` int(11) NOT NULL,
-  `content` text DEFAULT NULL,
+  `id` int NOT NULL AUTO_INCREMENT,
+  `user_id` int NOT NULL,
+  `post_id` int NOT NULL,
+  `content` text COLLATE utf8mb4_general_ci,
   `createdAt` datetime DEFAULT NULL,
   `updatedAt` datetime DEFAULT NULL,
   PRIMARY KEY (`id`)
@@ -635,15 +635,15 @@ DROP TABLE IF EXISTS `daily_reads`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `daily_reads` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `title` varchar(255) DEFAULT NULL,
-  `description` longtext DEFAULT NULL,
-  `image` varchar(255) DEFAULT NULL,
+  `id` int NOT NULL,
+  `title` varchar(255) COLLATE utf8mb4_general_ci DEFAULT NULL,
+  `description` longtext COLLATE utf8mb4_general_ci,
+  `image` varchar(255) COLLATE utf8mb4_general_ci DEFAULT NULL,
   `createdAt` datetime NOT NULL,
   `updatedAt` datetime DEFAULT NULL,
-  `day` int(11) NOT NULL,
+  `day` int NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -652,7 +652,6 @@ CREATE TABLE `daily_reads` (
 
 LOCK TABLES `daily_reads` WRITE;
 /*!40000 ALTER TABLE `daily_reads` DISABLE KEYS */;
-INSERT INTO `daily_reads` VALUES (1,'\"Daily Read Example\"','\"This is an example daily read description.\"','example.jpg','2024-02-17 05:40:19','2024-02-17 05:40:19',4),(2,'\"Daily Read Example\"','\"This is an example daily read description.\"','example.jpg','2024-02-17 05:42:23','2024-02-17 05:42:23',4),(3,'Daily Read Example','This is an example daily read description.','example.jpg','2024-02-17 05:43:27','2024-02-17 05:43:27',4);
 /*!40000 ALTER TABLE `daily_reads` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -664,11 +663,11 @@ DROP TABLE IF EXISTS `daily_tips`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `daily_tips` (
-  `id` int(11) NOT NULL,
-  `day` int(11) DEFAULT NULL,
-  `title` varchar(255) DEFAULT NULL,
-  `description` longtext DEFAULT NULL,
-  `image` varchar(255) DEFAULT NULL,
+  `id` int NOT NULL,
+  `day` int DEFAULT NULL,
+  `title` varchar(255) COLLATE utf8mb4_general_ci DEFAULT NULL,
+  `description` longtext COLLATE utf8mb4_general_ci,
+  `image` varchar(255) COLLATE utf8mb4_general_ci DEFAULT NULL,
   `createdAt` datetime DEFAULT NULL,
   `updatedAt` datetime NOT NULL,
   PRIMARY KEY (`id`)
@@ -692,9 +691,9 @@ DROP TABLE IF EXISTS `device_token`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `device_token` (
-  `id` int(11) NOT NULL,
-  `device_token` varchar(255) NOT NULL,
-  `user_id` int(11) NOT NULL,
+  `id` int NOT NULL,
+  `device_token` varchar(255) COLLATE utf8mb4_general_ci NOT NULL,
+  `user_id` int NOT NULL,
   `createdAt` datetime NOT NULL,
   `updatedAt` datetime NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
@@ -717,13 +716,13 @@ DROP TABLE IF EXISTS `drug_reminder`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `drug_reminder` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `name` varchar(255) NOT NULL,
-  `dose` varchar(255) NOT NULL,
-  `medication_time` varchar(45) NOT NULL,
-  `reminder_info` longtext DEFAULT NULL,
+  `id` int NOT NULL AUTO_INCREMENT,
+  `name` varchar(255) COLLATE utf8mb4_general_ci NOT NULL,
+  `dose` varchar(255) COLLATE utf8mb4_general_ci NOT NULL,
+  `medication_time` varchar(45) COLLATE utf8mb4_general_ci NOT NULL,
+  `reminder_info` longtext COLLATE utf8mb4_general_ci,
   `created_at` datetime NOT NULL,
-  `user_id` int(10) unsigned NOT NULL,
+  `user_id` int unsigned NOT NULL,
   PRIMARY KEY (`id`),
   KEY `FK_1` (`user_id`),
   CONSTRAINT `FK_22_1` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`)
@@ -748,10 +747,10 @@ DROP TABLE IF EXISTS `drug_slider`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `drug_slider` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `title` varchar(255) NOT NULL,
-  `media` int(11) DEFAULT NULL,
-  `link` varchar(255) DEFAULT NULL,
+  `id` int NOT NULL AUTO_INCREMENT,
+  `title` varchar(255) COLLATE utf8mb4_general_ci NOT NULL,
+  `media` int DEFAULT NULL,
+  `link` varchar(255) COLLATE utf8mb4_general_ci DEFAULT NULL,
   `createdAt` datetime NOT NULL,
   `updatedAt` datetime NOT NULL,
   PRIMARY KEY (`id`),
@@ -778,10 +777,10 @@ DROP TABLE IF EXISTS `exercises`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `exercises` (
-  `id` int(11) NOT NULL,
-  `title` varchar(255) DEFAULT NULL,
-  `description` longtext DEFAULT NULL,
-  `image` varchar(255) DEFAULT NULL,
+  `id` int NOT NULL,
+  `title` varchar(255) COLLATE utf8mb4_general_ci DEFAULT NULL,
+  `description` longtext COLLATE utf8mb4_general_ci,
+  `image` varchar(255) COLLATE utf8mb4_general_ci DEFAULT NULL,
   `createdAt` datetime DEFAULT NULL,
   `updatedAt` datetime DEFAULT NULL,
   PRIMARY KEY (`id`)
@@ -805,22 +804,22 @@ DROP TABLE IF EXISTS `general_setting`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `general_setting` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `SMTP_HOST` varchar(255) NOT NULL,
-  `SMTP_PORT` varchar(255) NOT NULL,
-  `SMTP_EMAIL` varchar(255) NOT NULL,
-  `SMTP_PASSWORD` varchar(255) NOT NULL,
-  `FROM_EMAIL` varchar(255) NOT NULL,
-  `FROM_NAME` varchar(255) NOT NULL,
-  `native_ad` int(11) NOT NULL,
-  `banner_ad` int(11) NOT NULL,
-  `interstitial_ad` int(11) NOT NULL,
-  `rewarded_ad` int(11) NOT NULL,
-  `app_link` text NOT NULL,
-  `facebook_url` text NOT NULL,
-  `youtube_url` text NOT NULL,
-  `twitter_url` text NOT NULL,
-  `instagram_url` text NOT NULL,
+  `id` int NOT NULL AUTO_INCREMENT,
+  `SMTP_HOST` varchar(255) COLLATE utf8mb4_general_ci NOT NULL,
+  `SMTP_PORT` varchar(255) COLLATE utf8mb4_general_ci NOT NULL,
+  `SMTP_EMAIL` varchar(255) COLLATE utf8mb4_general_ci NOT NULL,
+  `SMTP_PASSWORD` varchar(255) COLLATE utf8mb4_general_ci NOT NULL,
+  `FROM_EMAIL` varchar(255) COLLATE utf8mb4_general_ci NOT NULL,
+  `FROM_NAME` varchar(255) COLLATE utf8mb4_general_ci NOT NULL,
+  `native_ad` int NOT NULL,
+  `banner_ad` int NOT NULL,
+  `interstitial_ad` int NOT NULL,
+  `rewarded_ad` int NOT NULL,
+  `app_link` text COLLATE utf8mb4_general_ci NOT NULL,
+  `facebook_url` text COLLATE utf8mb4_general_ci NOT NULL,
+  `youtube_url` text COLLATE utf8mb4_general_ci NOT NULL,
+  `twitter_url` text COLLATE utf8mb4_general_ci NOT NULL,
+  `instagram_url` text COLLATE utf8mb4_general_ci NOT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
@@ -842,10 +841,10 @@ DROP TABLE IF EXISTS `help_desk`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `help_desk` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `user_id` int(11) unsigned DEFAULT NULL,
-  `admin_id` int(11) DEFAULT NULL,
-  `message` varchar(255) NOT NULL,
+  `id` int NOT NULL AUTO_INCREMENT,
+  `user_id` int unsigned DEFAULT NULL,
+  `admin_id` int DEFAULT NULL,
+  `message` varchar(255) COLLATE utf8mb4_general_ci NOT NULL,
   `createdAt` datetime NOT NULL,
   `updatedAt` datetime NOT NULL,
   PRIMARY KEY (`id`),
@@ -874,11 +873,11 @@ DROP TABLE IF EXISTS `languages`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `languages` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `name` varchar(50) NOT NULL,
-  `lang_code` varchar(11) NOT NULL,
-  `lang_country` varchar(11) NOT NULL,
-  `flag` varchar(255) NOT NULL,
+  `id` int NOT NULL AUTO_INCREMENT,
+  `name` varchar(50) COLLATE utf8mb4_general_ci NOT NULL,
+  `lang_code` varchar(11) COLLATE utf8mb4_general_ci NOT NULL,
+  `lang_country` varchar(11) COLLATE utf8mb4_general_ci NOT NULL,
+  `flag` varchar(255) COLLATE utf8mb4_general_ci NOT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
@@ -901,12 +900,12 @@ DROP TABLE IF EXISTS `media`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `media` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `uploaded_by` varchar(255) DEFAULT NULL,
-  `file_name` varchar(255) DEFAULT NULL,
-  `file_path` varchar(255) DEFAULT NULL,
-  `file_type` varchar(255) DEFAULT NULL,
-  `mime_type` varchar(255) DEFAULT NULL,
+  `id` int NOT NULL AUTO_INCREMENT,
+  `uploaded_by` varchar(255) COLLATE utf8mb4_general_ci DEFAULT NULL,
+  `file_name` varchar(255) COLLATE utf8mb4_general_ci DEFAULT NULL,
+  `file_path` varchar(255) COLLATE utf8mb4_general_ci DEFAULT NULL,
+  `file_type` varchar(255) COLLATE utf8mb4_general_ci DEFAULT NULL,
+  `mime_type` varchar(255) COLLATE utf8mb4_general_ci DEFAULT NULL,
   `createdAt` datetime DEFAULT NULL,
   `updatedAt` datetime NOT NULL,
   PRIMARY KEY (`id`)
@@ -931,10 +930,10 @@ DROP TABLE IF EXISTS `module`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `module` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `name` varchar(255) NOT NULL,
-  `status` varchar(1) NOT NULL,
-  `slug` varchar(255) NOT NULL,
+  `id` int NOT NULL AUTO_INCREMENT,
+  `name` varchar(255) COLLATE utf8mb4_general_ci NOT NULL,
+  `status` varchar(1) COLLATE utf8mb4_general_ci NOT NULL,
+  `slug` varchar(255) COLLATE utf8mb4_general_ci NOT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
@@ -956,9 +955,9 @@ DROP TABLE IF EXISTS `mother_activity`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `mother_activity` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `user_id` int(10) unsigned NOT NULL,
-  `activity` varchar(255) NOT NULL,
+  `id` int NOT NULL AUTO_INCREMENT,
+  `user_id` int unsigned NOT NULL,
+  `activity` varchar(255) COLLATE utf8mb4_general_ci NOT NULL,
   `createdAt` datetime NOT NULL,
   `updatedAt` datetime NOT NULL,
   PRIMARY KEY (`id`),
@@ -985,10 +984,10 @@ DROP TABLE IF EXISTS `mother_mood_trackers`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `mother_mood_trackers` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `user_id` int(10) unsigned NOT NULL,
+  `id` int NOT NULL AUTO_INCREMENT,
+  `user_id` int unsigned NOT NULL,
   `mood_time` datetime NOT NULL,
-  `current_mood` varchar(255) NOT NULL,
+  `current_mood` varchar(255) COLLATE utf8mb4_general_ci NOT NULL,
   `createdAt` datetime NOT NULL,
   `updatedAt` datetime NOT NULL,
   PRIMARY KEY (`id`),
@@ -1015,11 +1014,11 @@ DROP TABLE IF EXISTS `mother_progress_timeline`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `mother_progress_timeline` (
-  `id` int(11) NOT NULL,
-  `week` int(11) NOT NULL,
-  `title` varchar(255) NOT NULL,
-  `description` longtext NOT NULL,
-  `image` varchar(255) NOT NULL,
+  `id` int NOT NULL,
+  `week` int NOT NULL,
+  `title` varchar(255) COLLATE utf8mb4_general_ci NOT NULL,
+  `description` longtext COLLATE utf8mb4_general_ci NOT NULL,
+  `image` varchar(255) COLLATE utf8mb4_general_ci NOT NULL,
   `createdAt` datetime DEFAULT NULL,
   `updatedAt` datetime DEFAULT NULL,
   PRIMARY KEY (`id`)
@@ -1044,9 +1043,9 @@ DROP TABLE IF EXISTS `mother_vaccine_reminders`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `mother_vaccine_reminders` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `user_id` int(10) unsigned NOT NULL,
-  `name` varchar(255) DEFAULT NULL,
+  `id` int NOT NULL AUTO_INCREMENT,
+  `user_id` int unsigned NOT NULL,
+  `name` varchar(255) COLLATE utf8mb4_general_ci DEFAULT NULL,
   `vaccine_date` datetime DEFAULT NULL,
   `createdAt` datetime NOT NULL,
   `updatedAt` datetime DEFAULT NULL,
@@ -1074,12 +1073,12 @@ DROP TABLE IF EXISTS `notes`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `notes` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `user_id` int(10) unsigned NOT NULL,
-  `title` varchar(255) NOT NULL,
-  `description` longtext NOT NULL,
+  `id` int NOT NULL AUTO_INCREMENT,
+  `user_id` int unsigned NOT NULL,
+  `title` varchar(255) COLLATE utf8mb4_general_ci NOT NULL,
+  `description` longtext COLLATE utf8mb4_general_ci NOT NULL,
   `deadline` datetime DEFAULT NULL,
-  `status` int(11) NOT NULL DEFAULT 0,
+  `status` int NOT NULL DEFAULT '0',
   `createdAt` datetime NOT NULL,
   `updatedAt` datetime NOT NULL,
   PRIMARY KEY (`id`),
@@ -1106,11 +1105,11 @@ DROP TABLE IF EXISTS `pages`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `pages` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `title` int(11) NOT NULL,
-  `description` text NOT NULL,
-  `image` int(11) DEFAULT NULL,
-  `status` varchar(1) DEFAULT '1',
+  `id` int NOT NULL AUTO_INCREMENT,
+  `title` int NOT NULL,
+  `description` text COLLATE utf8mb4_general_ci NOT NULL,
+  `image` int DEFAULT NULL,
+  `status` varchar(1) COLLATE utf8mb4_general_ci DEFAULT '1',
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
@@ -1132,8 +1131,8 @@ DROP TABLE IF EXISTS `postmedia`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `postmedia` (
-  `post_id` int(11) NOT NULL,
-  `media_id` int(11) NOT NULL,
+  `post_id` int NOT NULL,
+  `media_id` int NOT NULL,
   PRIMARY KEY (`post_id`,`media_id`),
   KEY `media_id` (`media_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
@@ -1157,16 +1156,16 @@ DROP TABLE IF EXISTS `postnatal_visit`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `postnatal_visit` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `user_id` int(10) unsigned NOT NULL,
-  `visit_type` varchar(255) NOT NULL,
-  `doctor_name` varchar(255) NOT NULL,
-  `visit_no` int(11) NOT NULL,
-  `hospital_address` varchar(255) NOT NULL,
-  `receptionist` varchar(255) NOT NULL,
-  `mobile` int(20) NOT NULL,
+  `id` int NOT NULL AUTO_INCREMENT,
+  `user_id` int unsigned NOT NULL,
+  `visit_type` varchar(255) COLLATE utf8mb4_general_ci NOT NULL,
+  `doctor_name` varchar(255) COLLATE utf8mb4_general_ci NOT NULL,
+  `visit_no` int NOT NULL,
+  `hospital_address` varchar(255) COLLATE utf8mb4_general_ci NOT NULL,
+  `receptionist` varchar(255) COLLATE utf8mb4_general_ci NOT NULL,
+  `mobile` int NOT NULL,
   `visit_date` datetime NOT NULL,
-  `remarks` varchar(255) NOT NULL,
+  `remarks` varchar(255) COLLATE utf8mb4_general_ci NOT NULL,
   `updatedAt` datetime NOT NULL,
   `createdAt` datetime NOT NULL,
   PRIMARY KEY (`id`),
@@ -1192,10 +1191,10 @@ DROP TABLE IF EXISTS `posts`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `posts` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `user_id` int(11) NOT NULL,
-  `title` varchar(255) DEFAULT NULL,
-  `content` text DEFAULT NULL,
+  `id` int NOT NULL AUTO_INCREMENT,
+  `user_id` int NOT NULL,
+  `title` varchar(255) COLLATE utf8mb4_general_ci DEFAULT NULL,
+  `content` text COLLATE utf8mb4_general_ci,
   `updatedAt` datetime DEFAULT NULL,
   `createdAt` datetime DEFAULT NULL,
   PRIMARY KEY (`id`)
@@ -1220,11 +1219,11 @@ DROP TABLE IF EXISTS `reactions`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `reactions` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `type` int(11) DEFAULT NULL,
-  `user_id` int(11) NOT NULL,
-  `post_id` int(11) DEFAULT NULL,
-  `comment_id` int(11) DEFAULT NULL,
+  `id` int NOT NULL AUTO_INCREMENT,
+  `type` int DEFAULT NULL,
+  `user_id` int NOT NULL,
+  `post_id` int DEFAULT NULL,
+  `comment_id` int DEFAULT NULL,
   `createdAt` datetime DEFAULT NULL,
   `updatedAt` datetime DEFAULT NULL,
   PRIMARY KEY (`id`)
@@ -1249,8 +1248,8 @@ DROP TABLE IF EXISTS `reactiontypes`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `reactiontypes` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `type_name` varchar(255) NOT NULL,
+  `id` int NOT NULL AUTO_INCREMENT,
+  `type_name` varchar(255) COLLATE utf8mb4_general_ci NOT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
@@ -1273,10 +1272,10 @@ DROP TABLE IF EXISTS `replies`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `replies` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `user_id` int(11) NOT NULL,
-  `comment_id` int(11) NOT NULL,
-  `content` text DEFAULT NULL,
+  `id` int NOT NULL AUTO_INCREMENT,
+  `user_id` int NOT NULL,
+  `comment_id` int NOT NULL,
+  `content` text COLLATE utf8mb4_general_ci,
   `createAt` datetime DEFAULT NULL,
   `updatedAt` datetime DEFAULT NULL,
   PRIMARY KEY (`id`)
@@ -1300,13 +1299,13 @@ DROP TABLE IF EXISTS `roles`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `roles` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `role` varchar(45) NOT NULL,
-  `description` varchar(255) DEFAULT NULL,
+  `id` int NOT NULL AUTO_INCREMENT,
+  `role` varchar(45) COLLATE utf8mb4_general_ci NOT NULL,
+  `description` varchar(255) COLLATE utf8mb4_general_ci DEFAULT NULL,
   `createdAt` datetime NOT NULL,
   `updatedAt` datetime NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=12 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -1315,7 +1314,7 @@ CREATE TABLE `roles` (
 
 LOCK TABLES `roles` WRITE;
 /*!40000 ALTER TABLE `roles` DISABLE KEYS */;
-INSERT INTO `roles` VALUES (1,'superadmin',NULL,'2024-02-07 20:48:32','2024-02-07 20:48:32'),(2,'admin',NULL,'2024-02-07 20:48:32','2024-02-07 20:48:32'),(3,'moderator',NULL,'2024-02-07 20:48:56','2024-02-07 20:48:56'),(4,'editor',NULL,'2024-02-07 20:48:56','2024-02-07 20:48:56'),(5,'help_desk','replies and manipulate help desk messages','2024-02-10 15:07:24','2024-02-10 15:07:24'),(6,'user','manipulate users information','2024-02-11 13:22:23','2024-02-11 13:22:23'),(7,'blog','manipulate blogs','2024-02-11 13:23:20','2024-02-11 13:23:20'),(8,'baby_care','all baby care routes','2024-02-11 14:05:09','2024-02-11 14:05:09'),(9,'baby_temp','baby temp functionality','2024-02-11 14:05:09','2024-02-11 14:05:09'),(10,'baby_vaccine',NULL,'2024-02-11 15:24:54','2024-02-11 15:24:54'),(11,'dailyread',NULL,'2024-02-17 06:44:33','2024-02-17 06:44:33');
+INSERT INTO `roles` VALUES (1,'superadmin',NULL,'2024-02-07 20:48:32','2024-02-07 20:48:32'),(2,'admin',NULL,'2024-02-07 20:48:32','2024-02-07 20:48:32'),(3,'moderator',NULL,'2024-02-07 20:48:56','2024-02-07 20:48:56'),(4,'editor',NULL,'2024-02-07 20:48:56','2024-02-07 20:48:56'),(5,'help_desk','replies and manipulate help desk messages','2024-02-10 15:07:24','2024-02-10 15:07:24'),(6,'user','manipulate users information','2024-02-11 13:22:23','2024-02-11 13:22:23'),(7,'blog','manipulate blogs','2024-02-11 13:23:20','2024-02-11 13:23:20'),(8,'baby_care','all baby care routes','2024-02-11 14:05:09','2024-02-11 14:05:09'),(9,'baby_temp','baby temp functionality','2024-02-11 14:05:09','2024-02-11 14:05:09'),(10,'baby_vaccine',NULL,'2024-02-11 15:24:54','2024-02-11 15:24:54');
 /*!40000 ALTER TABLE `roles` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -1327,11 +1326,11 @@ DROP TABLE IF EXISTS `tool_mother_baby_kick_counters`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `tool_mother_baby_kick_counters` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `user_id` int(11) unsigned NOT NULL,
-  `baby_serial` int(11) DEFAULT NULL,
-  `duration` varchar(255) DEFAULT NULL,
-  `kicks` int(11) DEFAULT NULL,
+  `id` int NOT NULL AUTO_INCREMENT,
+  `user_id` int unsigned NOT NULL,
+  `baby_serial` int DEFAULT NULL,
+  `duration` varchar(255) COLLATE utf8mb4_general_ci DEFAULT NULL,
+  `kicks` int DEFAULT NULL,
   `start_time` datetime DEFAULT NULL,
   `createdAt` datetime DEFAULT NULL,
   `updatedAt` datetime DEFAULT NULL,
@@ -1358,12 +1357,12 @@ DROP TABLE IF EXISTS `tool_mother_contraction_timers`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `tool_mother_contraction_timers` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `user_id` int(11) unsigned NOT NULL,
+  `id` int NOT NULL AUTO_INCREMENT,
+  `user_id` int unsigned NOT NULL,
   `start` datetime DEFAULT NULL,
-  `duration` varchar(255) DEFAULT NULL,
-  `frequency` varchar(255) DEFAULT NULL,
-  `intensity` varchar(255) DEFAULT NULL,
+  `duration` varchar(255) COLLATE utf8mb4_general_ci DEFAULT NULL,
+  `frequency` varchar(255) COLLATE utf8mb4_general_ci DEFAULT NULL,
+  `intensity` varchar(255) COLLATE utf8mb4_general_ci DEFAULT NULL,
   `createdAt` datetime NOT NULL,
   `updatedAt` datetime DEFAULT NULL,
   PRIMARY KEY (`id`)
@@ -1388,11 +1387,11 @@ DROP TABLE IF EXISTS `tool_mother_symptoms`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `tool_mother_symptoms` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `user_id` int(11) NOT NULL,
-  `symptom` varchar(255) DEFAULT NULL,
-  `intensity` varchar(255) DEFAULT NULL,
-  `remarks` varchar(255) DEFAULT NULL,
+  `id` int NOT NULL AUTO_INCREMENT,
+  `user_id` int NOT NULL,
+  `symptom` varchar(255) COLLATE utf8mb4_general_ci DEFAULT NULL,
+  `intensity` varchar(255) COLLATE utf8mb4_general_ci DEFAULT NULL,
+  `remarks` varchar(255) COLLATE utf8mb4_general_ci DEFAULT NULL,
   `createdAt` datetime DEFAULT NULL,
   `updatedAt` datetime DEFAULT NULL,
   PRIMARY KEY (`id`)
@@ -1417,32 +1416,32 @@ DROP TABLE IF EXISTS `users`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `users` (
-  `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
-  `social_id` varchar(255) DEFAULT NULL,
-  `username` varchar(255) NOT NULL,
-  `first_name` varchar(255) DEFAULT NULL,
-  `last_name` varchar(255) DEFAULT NULL,
-  `age` int(11) DEFAULT NULL,
-  `gender` int(11) DEFAULT NULL,
-  `photo` varchar(255) DEFAULT NULL,
-  `social_photo` varchar(255) DEFAULT NULL,
-  `child_number` int(11) DEFAULT NULL,
+  `id` int unsigned NOT NULL AUTO_INCREMENT,
+  `social_id` varchar(255) COLLATE utf8mb4_general_ci DEFAULT NULL,
+  `username` varchar(255) COLLATE utf8mb4_general_ci NOT NULL,
+  `first_name` varchar(255) COLLATE utf8mb4_general_ci DEFAULT NULL,
+  `last_name` varchar(255) COLLATE utf8mb4_general_ci DEFAULT NULL,
+  `age` int DEFAULT NULL,
+  `gender` int DEFAULT NULL,
+  `photo` varchar(255) COLLATE utf8mb4_general_ci DEFAULT NULL,
+  `social_photo` varchar(255) COLLATE utf8mb4_general_ci DEFAULT NULL,
+  `child_number` int DEFAULT NULL,
   `edd_date` datetime DEFAULT NULL,
-  `edd_calculation_type` varchar(255) DEFAULT NULL,
-  `email` varchar(255) NOT NULL,
-  `password` varchar(255) DEFAULT NULL,
-  `language` varchar(255) DEFAULT NULL,
-  `country` varchar(255) DEFAULT NULL,
-  `pregnency_loss` int(11) DEFAULT NULL,
-  `baby_already_born` int(11) DEFAULT NULL,
-  `login_type` varchar(255) NOT NULL COMMENT 'email=1 google=2 facebook=2 twitter=2',
-  `user_type` varchar(255) NOT NULL DEFAULT 'general_user',
-  `subscription` varchar(255) NOT NULL DEFAULT 'Free',
-  `password_reset_token` varchar(255) DEFAULT NULL,
-  `reset_password_expire` varchar(255) DEFAULT NULL,
-  `confirm_email_token` varchar(255) DEFAULT NULL,
-  `is_email_confirmed` varchar(45) DEFAULT '0',
-  `is_profile_complete` varchar(225) NOT NULL DEFAULT '0',
+  `edd_calculation_type` varchar(255) COLLATE utf8mb4_general_ci DEFAULT NULL,
+  `email` varchar(255) COLLATE utf8mb4_general_ci NOT NULL,
+  `password` varchar(255) COLLATE utf8mb4_general_ci DEFAULT NULL,
+  `language` varchar(255) COLLATE utf8mb4_general_ci DEFAULT NULL,
+  `country` varchar(255) COLLATE utf8mb4_general_ci DEFAULT NULL,
+  `pregnency_loss` int DEFAULT NULL,
+  `baby_already_born` int DEFAULT NULL,
+  `login_type` varchar(255) COLLATE utf8mb4_general_ci NOT NULL COMMENT 'email=1 google=2 facebook=2 twitter=2',
+  `user_type` varchar(255) COLLATE utf8mb4_general_ci NOT NULL DEFAULT 'general_user',
+  `subscription` varchar(255) COLLATE utf8mb4_general_ci NOT NULL DEFAULT 'Free',
+  `password_reset_token` varchar(255) COLLATE utf8mb4_general_ci DEFAULT NULL,
+  `reset_password_expire` varchar(255) COLLATE utf8mb4_general_ci DEFAULT NULL,
+  `confirm_email_token` varchar(255) COLLATE utf8mb4_general_ci DEFAULT NULL,
+  `is_email_confirmed` varchar(45) COLLATE utf8mb4_general_ci DEFAULT '0',
+  `is_profile_complete` varchar(225) COLLATE utf8mb4_general_ci NOT NULL DEFAULT '0',
   `lmp_date` datetime DEFAULT NULL,
   `createdAt` datetime NOT NULL,
   `updatedAt` datetime DEFAULT NULL,
@@ -1471,12 +1470,12 @@ DROP TABLE IF EXISTS `video`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `video` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `title` varchar(255) NOT NULL,
-  `description` varchar(255) DEFAULT NULL,
-  `type` varchar(255) NOT NULL,
-  `duration` varchar(255) NOT NULL,
-  `file_id` int(11) NOT NULL,
+  `id` int NOT NULL AUTO_INCREMENT,
+  `title` varchar(255) COLLATE utf8mb4_general_ci NOT NULL,
+  `description` varchar(255) COLLATE utf8mb4_general_ci DEFAULT NULL,
+  `type` varchar(255) COLLATE utf8mb4_general_ci NOT NULL,
+  `duration` varchar(255) COLLATE utf8mb4_general_ci NOT NULL,
+  `file_id` int NOT NULL,
   `updatedAt` datetime DEFAULT NULL,
   `createdAt` datetime NOT NULL,
   PRIMARY KEY (`id`),
@@ -1502,14 +1501,14 @@ DROP TABLE IF EXISTS `warning_signs`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `warning_signs` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `order` int(11) DEFAULT NULL,
-  `title` varchar(255) DEFAULT NULL,
-  `description` longtext DEFAULT NULL,
+  `id` int NOT NULL AUTO_INCREMENT,
+  `order` int DEFAULT NULL,
+  `title` varchar(255) COLLATE utf8mb4_general_ci DEFAULT NULL,
+  `description` longtext COLLATE utf8mb4_general_ci,
   `createdAt` datetime DEFAULT NULL,
   `updatedAt` datetime DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -1518,7 +1517,7 @@ CREATE TABLE `warning_signs` (
 
 LOCK TABLES `warning_signs` WRITE;
 /*!40000 ALTER TABLE `warning_signs` DISABLE KEYS */;
-INSERT INTO `warning_signs` VALUES (1,NULL,'unusual symptom','bla bla','2024-01-09 19:28:51',NULL),(2,NULL,'severe headache','bla bla','2024-01-09 19:28:51',NULL),(3,1,'\"Example Warning Sign\"','\"This is an example warning sign description.\"','2024-02-17 05:33:29','2024-02-17 05:33:29'),(4,1,'\"Example Warning Sign\"','\"This is an example warning sign description.\"','2024-02-17 05:35:35','2024-02-17 05:35:35');
+INSERT INTO `warning_signs` VALUES (1,NULL,'unusual symptom','bla bla','2024-01-09 19:28:51',NULL),(2,NULL,'severe headache','bla bla','2024-01-09 19:28:51',NULL);
 /*!40000 ALTER TABLE `warning_signs` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -1530,11 +1529,11 @@ DROP TABLE IF EXISTS `weight_logs`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `weight_logs` (
-  `id` int(11) NOT NULL,
-  `user_id` int(10) unsigned NOT NULL,
+  `id` int NOT NULL,
+  `user_id` int unsigned NOT NULL,
   `date` datetime DEFAULT NULL,
   `weight_kg` double DEFAULT NULL,
-  `weight_lbs` int(11) NOT NULL,
+  `weight_lbs` int NOT NULL,
   `createdAt` datetime DEFAULT NULL,
   `updatedAt` datetime DEFAULT NULL,
   PRIMARY KEY (`id`),
@@ -1561,4 +1560,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2024-02-17 18:40:28
+-- Dump completed on 2024-02-17 18:42:28

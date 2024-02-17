@@ -9,6 +9,7 @@ const BabySleep = require("./Baby_care_models/Baby_sleep");
 const BabySymptom = require("./Baby_care_models/Baby_symptom");
 const BabyTemperature = require("./Baby_care_models/Baby_temperature");
 const User = require("./User");
+const Media = require("./Media");
 
 const BabyList = sequelize.define(
   "BabyList",
@@ -81,5 +82,6 @@ BabyList.hasMany(BabyMedication, { foreignKey: "baby_id" });
 BabyList.hasMany(BabySymptom, { foreignKey: "baby_id" });
 BabyList.hasMany(BabyTemperature, { foreignKey: "baby_id" });
 BabyList.hasMany(BabyBreastPumping, { foreignKey: "baby_id" });
+BabyList.belongsTo(Media, { as: "media", foreignKey: "photo" });
 
 module.exports = BabyList;

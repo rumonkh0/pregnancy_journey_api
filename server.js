@@ -14,6 +14,7 @@ const { setupDbConnection } = require("./config/db");
 setupDbConnection();
 
 //Route files
+const dashboard = require("./app/routes/dashboard");
 const auth = require("./app/routes/auth");
 const users = require("./app/routes/admin/users");
 const babyList = require("./app/routes/baby");
@@ -51,7 +52,7 @@ const admins = require("./app/routes/admin/admin");
 const adminLogin = require("./app/routes/admin/adminAuth");
 const adminHelpDesk = require("./app/routes/admin/helpDesk");
 const babyCare = require("./app/routes/admin/babyCare");
-const adminGeneral = require("./app/routes/admin/general");
+const adminGeneral = require("./app/routes/admin/general/general");
 
 const app = express();
 
@@ -74,6 +75,7 @@ app.use(cors());
 app.use(express.static(path.join(__dirname, "public")));
 
 //Mount routes
+app.use("/api/v1/dashboard", dashboard);
 app.use("/api/v1/auth", auth);
 app.use("/api/v1/users", users);
 app.use("/api/v1/babylist", babyList);

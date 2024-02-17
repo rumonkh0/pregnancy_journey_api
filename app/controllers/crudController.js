@@ -1,22 +1,51 @@
 const asyncHandler = require("../middleware/async");
 const { where } = require("sequelize");
 
+/*
+|-----------------------------------------------------------------------------------------------|
+|                                                                                               |
+|  This Controller Is For General Use Which Have Multilingual Field And Users Can Get Any Data  |
+|                                                                                               |
+|-----------------------------------------------------------------------------------------------|
+*/
+
+exports.stringify = (...fields) => {
+  return asyncHandler(async (req, res, next) => {
+    if (req.body)
+      fields.map((field) => {
+        if (req.body[field]) {
+          req.body[field] = JSON.stringify(req.body[field]);
+        }
+      });
+    next();
+  });
+};
+
 // @desc      Get  Baby get all as history
 // @route     GET /api/v1/route/history
 // @access    Private
 exports.getAll = (Model) => {
   return asyncHandler(async (req, res, next) => {
+    lan = req.query.lan;
     const data = await Model.findAll({
       order: [["createdAt", "DESC"]],
     });
+
     if (!data) {
       return res.status(403).json({
         success: false,
         message: "no record found.",
       });
     }
+
+    const newData = data.map((obj) => {
+      obj.setDataValue("title", JSON.parse(obj.title)[lan || "en"]);
+      obj.setDataValue("description", JSON.parse(obj.description)[lan || "en"]);
+      return obj;
+    });
+
     // Get the feed history for the specified baby
-    res.status(200).json({ success: true, data });
+    res.status(200).json({ success: true, data: newData });
   });
 };
 
@@ -25,6 +54,7 @@ exports.getAll = (Model) => {
 // @access    Private
 exports.getOne = (Model) => {
   return asyncHandler(async (req, res, next) => {
+    const lan = req.query.lan;
     // Extract baby ID from the request params or body
     const { modelPk } = req.params;
 
@@ -38,6 +68,9 @@ exports.getOne = (Model) => {
         .status(200)
         .json({ success: false, message: "Data not found" });
     }
+
+    data.title = JSON.parse(data.title)[lan || "en"];
+    data.description = JSON.parse(data.description)[lan || "en"];
 
     res.status(200).json({ success: true, message: "Data found", data });
   });
