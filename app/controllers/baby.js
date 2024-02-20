@@ -8,6 +8,7 @@ const Media = require("../models/Media");
 exports.getBabyList = asyncHandler(async (req, res, next) => {
   const babyList = await Baby.findAll({
     where: { mother_id: req.user.id },
+    include: { model: Media, as: 'media' },
   });
   res.json({ success: true, message: "Found babies", data: babyList });
 });
@@ -19,6 +20,7 @@ exports.getBaby = asyncHandler(async (req, res, next) => {
   const id = req.params.id;
   const baby = await Baby.findAll({
     where: { id, mother_id: req.user.id },
+    include: { model: Media, as: 'media' },
   });
   if (!baby.length) {
     res.status(404).json({

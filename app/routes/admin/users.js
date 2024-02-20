@@ -12,7 +12,7 @@ const User = require("../../models/User");
 
 const router = express.Router();
 const { protect, authorize } = require("../../middleware/auth");
-router.use(authorize("superadmin", "user"));
+router.use(protect, authorize("superadmin", "admin", "user"));
 // router.use('/:motherId/babylist', babyListRouter);
 
 // Route to get all users

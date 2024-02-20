@@ -33,7 +33,7 @@ const BabyList = sequelize.define(
       allowNull: true,
     },
     photo: {
-      type: DataTypes.STRING(255),
+      type: DataTypes.INTEGER,
       allowNull: true,
     },
     baby_serial: {

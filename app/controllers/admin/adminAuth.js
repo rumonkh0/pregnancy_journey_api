@@ -411,7 +411,7 @@ exports.resetPassword = asyncHandler(async (req, res, next) => {
   // Set new password
   admin.password = newPassword;
   admin.password_reset_token = null;
-   admin.resetPasswordExpire = null;
+  admin.resetPasswordExpire = null;
   await admin.save();
 
   sendTokenResponse(admin, 200, res);
