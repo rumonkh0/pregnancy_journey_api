@@ -1,3 +1,7 @@
+const path = require("path");
+const fs = require("fs");
+const { promisify } = require("util");
+const unlinkAsync = promisify(fs.unlink);
 const Baby = require("../models/Baby");
 const asyncHandler = require("../middleware/async");
 const Media = require("../models/Media");
@@ -8,7 +12,7 @@ const Media = require("../models/Media");
 exports.getBabyList = asyncHandler(async (req, res, next) => {
   const babyList = await Baby.findAll({
     where: { mother_id: req.user.id },
-    include: { model: Media, as: 'media' },
+    include: { model: Media, as: "media" },
   });
   res.json({ success: true, message: "Found babies", data: babyList });
 });
@@ -20,7 +24,7 @@ exports.getBaby = asyncHandler(async (req, res, next) => {
   const id = req.params.id;
   const baby = await Baby.findAll({
     where: { id, mother_id: req.user.id },
-    include: { model: Media, as: 'media' },
+    include: { model: Media, as: "media" },
   });
   if (!baby.length) {
     res.status(404).json({
@@ -58,15 +62,86 @@ exports.createBaby = asyncHandler(async (req, res, next) => {
 // @access    Private
 exports.updateBaby = asyncHandler(async (req, res) => {
   const id = req.params.babyId;
-  const newData = req.body;
-  const updated = await Baby.update(newData, {
-    where: { id, mother_id: req.user.id },
-  });
-  if (!updated[0]) {
-    res.status(404).json({ success: false, message: "Baby not found" });
-    return;
+  const babyDetailsToUpdate = req.body;
+
+  let baby = await Baby.findOne({ where: { id } });
+
+  if (!req.file) {
+    const updated = await Baby.update(newData, {
+      where: { id, mother_id: req.user.id },
+    });
+    if (!updated[0]) {
+      return res
+        .status(404)
+        .json({ success: false, message: "Baby data not updated" });
+    }
+
+    baby = await Baby.findOne({ where: { id } });
+    return res
+      .status(200)
+      .json({ success: true, message: "Baby updated", data: baby });
   }
-  res.json({ message: "Baby updated" });
+
+  const { mimetype, filename, path: file_path } = req.file;
+  req.media = {
+    uploaded_by: req.user.username,
+    file_path,
+    mime_type: mimetype,
+    file_name: filename,
+    file_type: path.extname(filename).slice(1),
+  };
+
+  let media;
+  try {
+    userWithMedia = await Baby.findByPk(id, {
+      include: [
+        {
+          model: Media,
+          as: "media",
+          required: false,
+        },
+      ],
+    });
+
+    media = await Media.create(req.media);
+    console.log(media);
+    babyDetailsToUpdate.photo = media.id;
+    console.log(babyDetailsToUpdate);
+    //delete previous photo
+    if (userWithMedia.media) {
+      await unlinkAsync(userWithMedia.media.file_path);
+      // await Media.destroy({ where: { id: user.photo } });
+    }
+  } catch (err) {
+    if (req.file && req.file && req.file.path) {
+      const filePath = req.file.path;
+      await unlinkAsync(filePath);
+    }
+    return res.status(200).json({
+      remark: "UNSUCCESSFULL",
+      success: false,
+      message: "data upload failed",
+      error: err,
+    });
+  }
+
+  updated = await Baby.update(babyDetailsToUpdate, {
+    where: { id },
+  });
+
+  if (!updated[0]) {
+    return res
+      .status(304)
+      .json({ success: false, message: "Recond no modified" });
+  }
+
+  babyData = await Baby.findByPk(id);
+
+  res.status(200).json({
+    success: true,
+    message: "Data updated",
+    data: babyData,
+  });
 });
 
 // @desc      Delete baby
