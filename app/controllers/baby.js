@@ -104,9 +104,7 @@ exports.updateBaby = asyncHandler(async (req, res) => {
     });
 
     media = await Media.create(req.media);
-    console.log(media);
     babyDetailsToUpdate.photo = media.id;
-    console.log(babyDetailsToUpdate);
     //delete previous photo
     if (userWithMedia.media) {
       await unlinkAsync(userWithMedia.media.file_path);
