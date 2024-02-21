@@ -67,7 +67,7 @@ exports.updateBaby = asyncHandler(async (req, res) => {
   let baby = await Baby.findOne({ where: { id } });
 
   if (!req.file) {
-    const updated = await Baby.update(newData, {
+    const updated = await Baby.update(babyDetailsToUpdate, {
       where: { id, mother_id: req.user.id },
     });
     if (!updated[0]) {
