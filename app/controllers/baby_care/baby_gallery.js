@@ -118,7 +118,7 @@ exports.updateBabyGallery = asyncHandler(async (req, res, next) => {
   let babygallery;
   const { babyId, modelPk } = req.params;
 
-  if (!req.files.length) {
+  if (!req.file) {
     babygallery = await BabyGallery.update(req.body, {
       where: { id: modelPk, baby_id: babyId },
     });
@@ -134,8 +134,8 @@ exports.updateBabyGallery = asyncHandler(async (req, res, next) => {
       .json({ success: true, message: "Baby updated", data: babygallery });
   }
 
-  const { mimetype, filename, path: file_path } = req.files[0];
-  req.body.image = req.files[0].path;
+  const { mimetype, filename, path: file_path } = req.file;
+  req.body.image = req.file.path;
 
   req.media = {
     uploaded_by: req.user.username,
@@ -177,6 +177,8 @@ exports.updateBabyGallery = asyncHandler(async (req, res, next) => {
   babygallery = await BabyGallery.update(req.body, {
     where: { id: modelPk },
   });
+
+  babygallery = await BabyGallery.findByPk(modelPk);
 
   res
     .status(200)

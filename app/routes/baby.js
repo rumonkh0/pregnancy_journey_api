@@ -12,7 +12,7 @@ const {
 const User = require("../models/Baby");
 const router = express.Router({ mergeParams: true });
 const { protect } = require("../middleware/auth");
-const uploadDirectory = "public/uploads/user/";
+const uploadDirectory = "public/uploads/baby/";
 
 // Ensure that the upload directory exists; if not, create it
 if (!fs.existsSync(uploadDirectory)) {
@@ -38,6 +38,13 @@ const storage = multer.diskStorage({
 
 const upload = multer({
   storage: storage,
+  // fileFilter: (req, file, cb) => {
+  //   if (file.mimetype.startsWith("image")) {
+  //     cb(null, true);
+  //   } else {
+  //     cb(new Error('Invalid file type. Only octet-stream files are allowed.'));
+  //   }
+  // },
   limits: {
     fileSize: 5 * 1024 * 1024, // 5 MB size limit
   },
