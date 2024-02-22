@@ -242,6 +242,7 @@ exports.updateDetails = asyncHandler(async (req, res, next) => {
   }
 
   const { mimetype, filename, path: file_path } = req.file;
+  console.log(req.file);
   // if (!mimetype.startsWith("image")) {
   //   return res
   //     .status(401)

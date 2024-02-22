@@ -85,6 +85,7 @@ exports.updateBaby = asyncHandler(async (req, res) => {
   // if (!mimetype.startsWith("image")) {
   //   return res.status(401).json({success: false, message: "File type must be image"})
   // }
+  console.log(req.file);
   req.media = {
     uploaded_by: req.user.username,
     file_path,

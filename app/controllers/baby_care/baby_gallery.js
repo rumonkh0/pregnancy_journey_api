@@ -78,6 +78,7 @@ exports.createBabyGallery = asyncHandler(async (req, res, next) => {
       .status(200)
       .json({ success: false, message: "please insert an image" });
   const { mimetype, filename, path: file_path } = req.file;
+  console.log(req.file);
   // if (!mimetype.startsWith("image")) {
   //   return res
   //     .status(401)
@@ -140,6 +141,7 @@ exports.updateBabyGallery = asyncHandler(async (req, res, next) => {
   }
 
   const { mimetype, filename, path: file_path } = req.file;
+  console.log(req.file);
   // if (!mimetype.startsWith("image")) {
   //   return res
   //     .status(401)
