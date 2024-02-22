@@ -53,6 +53,7 @@ const adminLogin = require("./app/routes/admin/adminAuth");
 const adminHelpDesk = require("./app/routes/admin/helpDesk");
 const babyCare = require("./app/routes/admin/babyCare");
 const adminGeneral = require("./app/routes/admin/general/general");
+const errorHandler = require("./app/middleware/error");
 
 const app = express();
 
@@ -117,6 +118,7 @@ app.use("/admin/api/v1/babycare", babyCare);
 app.use("/admin/api/v1/general", adminGeneral);
 
 // app.use("/api/v1/reaction", reaction);
+app.use(errorHandler);
 
 app.get("/", (req, res) => {
   res.status(200).json({

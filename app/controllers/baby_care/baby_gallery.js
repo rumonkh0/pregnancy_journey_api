@@ -140,7 +140,7 @@ exports.updateBabyGallery = asyncHandler(async (req, res, next) => {
       .json({ success: true, message: "Baby updated", data: babygallery });
   }
 
-  const { mimetype, filename, path: file_path } = req.file;
+  const { mimetype, filename, originalname, path: file_path } = req.file;
   console.log(req.file);
   // if (!mimetype.startsWith("image")) {
   //   return res
