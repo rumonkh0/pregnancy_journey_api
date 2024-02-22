@@ -43,18 +43,57 @@ exports.getBaby = asyncHandler(async (req, res, next) => {
 exports.createBaby = asyncHandler(async (req, res, next) => {
   const babyData = req.body;
   babyData.mother_id = req.user.id;
-  try {
+  if (!req.file) {
     const baby = await Baby.create(babyData);
-    res
+    return res
       .status(201)
       .json({ success: true, message: "Baby created", data: baby });
-  } catch (error) {
-    res.status(500).json({
+  }
+
+  const { mimetype, filename, originalname, path: file_path } = req.file;
+  // if (!mimetype.startsWith("image")) {
+  //   return res.status(401).json({success: false, message: "File type must be image"})
+  // }
+  if (path.extname(originalname) == "image") {
+    console.log("its a image");
+  }
+  console.log(req.file);
+  req.media = {
+    uploaded_by: req.user.username,
+    file_path,
+    mime_type: mimetype,
+    file_name: filename,
+    file_type: path.extname(filename).slice(1),
+  };
+
+  let media;
+  try {
+    media = await Media.create(req.media);
+    babyData.photo = media.id;
+    //delete previous photo
+    // if (userWithMedia.media) {
+    //   await unlinkAsync(userWithMedia.media.file_path);
+    //   // await Media.destroy({ where: { id: user.photo } });
+    // }
+  } catch (err) {
+    if (req.file && req.file && req.file.path) {
+      const filePath = req.file.path;
+      await unlinkAsync(filePath);
+    }
+    return res.status(200).json({
+      remark: "UNSUCCESSFULL",
       success: false,
-      message: "baby not created",
-      error: "Failed to create baby",
+      message: "data upload failed",
+      error: err,
     });
   }
+
+  let baby = await Baby.create(babyData);
+  baby = await Baby.findByPk(baby.id, {
+    include: { model: Media, as: "media" },
+  });
+
+  res.status(201).json({ success: true, message: "Baby created", data: baby });
 });
 
 // @desc      Update baby
@@ -139,7 +178,9 @@ exports.updateBaby = asyncHandler(async (req, res) => {
       .json({ success: false, message: "Recond no modified" });
   }
 
-  babyData = await Baby.findByPk(id);
+  babyData = await Baby.findByPk(id, {
+    include: { model: Media, as: "media" },
+  });
 
   res.status(200).json({
     success: true,

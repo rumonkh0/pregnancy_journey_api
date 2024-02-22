@@ -52,7 +52,7 @@ const upload = multer({
 router.use(protect);
 router.get("/", getBabyList);
 router.get("/:id", getBaby);
-router.post("/", createBaby);
+router.post("/", upload.single("baby_image_field"), createBaby);
 router.put("/:babyId", upload.single("baby_image_field"), updateBaby);
 router.delete("/:babyId", deleteBaby);
 

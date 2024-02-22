@@ -49,7 +49,10 @@ exports.register = asyncHandler(async (req, res, next) => {
     lmp_date,
   };
 
-  let prev = await User.findOne({ where: { email: req.body.email } });
+  let prev = await User.findOne({
+    where: { email: req.body.email },
+    include: { model: Media, as: "media" },
+  });
   if (prev) {
     return res.status(404).json({
       remark: "UNSUCCESSFULL",
@@ -105,11 +108,13 @@ exports.login = asyncHandler(async (req, res, next) => {
   //Find user from database
   let user = await User.scope("withPassword").findOne({
     where: { username: req.body.username },
+    include: { model: Media, as: "media" },
   });
 
   if (!user) {
     user = await User.scope("withPassword").findOne({
       where: { email: req.body.username },
+      include: { model: Media, as: "media" },
     });
   }
   if (!user)
@@ -208,7 +213,10 @@ exports.updateDetails = asyncHandler(async (req, res, next) => {
   };
 
   // Find the user by username
-  const user = await User.findOne({ where: { id: req.user.id } });
+  const user = await User.findOne({
+    where: { id: req.user.id },
+    include: { model: Media, as: "media" },
+  });
 
   if (!user) {
     return res.status(404).json({
@@ -292,6 +300,7 @@ exports.updateDetails = asyncHandler(async (req, res, next) => {
     where: {
       id: req.user.id,
     },
+    include: { model: Media, as: "media" },
   });
 
   if (!updated[0]) {
@@ -320,6 +329,7 @@ exports.updatePassword = asyncHandler(async (req, res, next) => {
     // const user = await User.findByUsername(username);
     const user = await User.scope("withPassword").findOne({
       where: { id: req.user.id },
+      include: { model: Media, as: "media" },
     });
 
     if (!user) {
@@ -535,6 +545,7 @@ exports.confirmEmail = asyncHandler(async (req, res, next) => {
       username: req.user.username,
       is_email_confirmed: "0",
     },
+    include: { model: Media, as: "media" },
   });
 
   if (!user) {
@@ -609,6 +620,7 @@ exports.oAuth = asyncHandler(async (req, res, next) => {
           email,
           social_id,
         },
+        include: { model: Media, as: "media" },
       });
 
       if (!user) {
