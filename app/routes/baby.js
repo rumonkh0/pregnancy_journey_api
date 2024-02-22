@@ -9,7 +9,6 @@ const {
   updateBaby,
   deleteBaby,
 } = require("../controllers/baby");
-const User = require("../models/Baby");
 const router = express.Router({ mergeParams: true });
 const { protect } = require("../middleware/auth");
 const uploadDirectory = "public/uploads/baby/";

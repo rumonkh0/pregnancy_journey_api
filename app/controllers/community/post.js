@@ -50,11 +50,11 @@ exports.createPost = asyncHandler(async (req, res, next) => {
   let post = await Post.create(postData);
   req.files.forEach(async (element) => {
     const { mimetype, filename, path: file_path } = element;
-    if (!mimetype.startsWith("image")) {
-      return res
-        .status(401)
-        .json({ success: false, message: "File type must be image" });
-    }
+    // if (!mimetype.startsWith("image")) {
+    //   return res
+    //     .status(401)
+    //     .json({ success: false, message: "File type must be image" });
+    // }
 
     let postMedia = {
       uploaded_by: req.user.username,
