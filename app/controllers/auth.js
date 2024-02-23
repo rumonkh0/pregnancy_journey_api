@@ -2,7 +2,7 @@ const path = require("path");
 const fs = require("fs");
 const { promisify } = require("util");
 const unlinkAsync = promisify(fs.unlink);
-const { Op } = require("sequelize");
+const { Op, where } = require("sequelize");
 const ErrorResponse = require("../resource/utils/errorResponse");
 const asyncHandler = require("../middleware/async");
 const User = require("../models/User");
@@ -309,7 +309,9 @@ exports.updateDetails = asyncHandler(async (req, res, next) => {
       .json({ success: false, message: "Recond no modified" });
   }
 
-  userData = await User.findByPk(req.user.id);
+  userData = await User.findByPk(req.user.id, {
+    include: { model: Media, as: "media" },
+  });
 
   res.status(200).json({
     success: true,

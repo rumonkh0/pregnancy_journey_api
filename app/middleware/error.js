@@ -9,19 +9,19 @@ const errorHandler = (err, req, res, next) => {
   console.log(err);
   // console.log("error");
 
-  // Mongoose bad ObjectId
+  // Sequelize bad ObjectId
   if (err.name === "CastError") {
     const message = `Resource not found`;
     error = new ErrorResponse(message, 404);
   }
 
-  // Mongoose duplicate key
+  // Sequelize duplicate key
   if (err.code === 11000) {
     const message = "Duplicate field value entered";
     error = new ErrorResponse(message, 400);
   }
 
-  // Mongoose validation error
+  // Sequelize validation error
   if (err.name === "ValidationError") {
     const message = Object.values(err.errors).map((val) => val.message);
     error = new ErrorResponse(message, 400);

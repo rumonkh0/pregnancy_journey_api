@@ -201,5 +201,5 @@ exports.deleteBaby = asyncHandler(async (req, res) => {
     res.status(404).json({ success: false, message: "Baby not found" });
     return;
   }
-  res.json({ message: "Baby deleted" });
+  res.json({ success: true, message: "Baby deleted" });
 });
