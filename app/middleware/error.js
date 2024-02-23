@@ -6,8 +6,8 @@ const errorHandler = (err, req, res, next) => {
   error.message = err.message;
 
   // Log to console for dev
-  console.log(err);
-  // console.log("error");
+  // console.log(err);
+  console.log(error);
 
   // Sequelize bad ObjectId
   if (err.name === "CastError") {
@@ -16,13 +16,19 @@ const errorHandler = (err, req, res, next) => {
   }
 
   // Sequelize duplicate key
-  if (err.code === 11000) {
+  if (err.code === 1062) {
     const message = "Duplicate field value entered";
     error = new ErrorResponse(message, 400);
   }
 
   // Sequelize validation error
-  if (err.name === "ValidationError") {
+  if (err.name === "SequelizeValidationError") {
+    const message = Object.values(err.errors).map((val) => val.message);
+    error = new ErrorResponse(message, 400);
+  }
+
+  // Sequelize validation error
+  if (err.name === "SequelizeUniqueConstraintError") {
     const message = Object.values(err.errors).map((val) => val.message);
     error = new ErrorResponse(message, 400);
   }

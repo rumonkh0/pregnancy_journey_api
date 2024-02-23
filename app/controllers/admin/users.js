@@ -23,7 +23,7 @@ exports.getUser = asyncHandler(async (req, res, next) => {
     res.status(404).json({ success: false, message: "User not found" });
     return;
   }
-  res.json(user);
+  res.status(200).json({ success: true, data: user });
 });
 
 // @desc      Create user
@@ -62,5 +62,5 @@ exports.deleteUser = asyncHandler(async (req, res) => {
     res.status(404).json({ success: false, message: "User not found" });
     return;
   }
-  res.json({ success: true, message: "User deleted" });
+  res.status(200).json({ success: true, message: "User deleted" });
 });
