@@ -17,6 +17,7 @@ const uploadDirectory = "public/uploads/baby/";
 if (!fs.existsSync(uploadDirectory)) {
   fs.mkdirSync(uploadDirectory, { recursive: true });
 }
+const allowedExtensions = [".jpg", ".jpeg", ".png", ".gif"];
 
 const storage = multer.diskStorage({
   destination: function (req, file, cb) {
@@ -37,13 +38,14 @@ const storage = multer.diskStorage({
 
 const upload = multer({
   storage: storage,
-  // fileFilter: (req, file, cb) => {
-  //   if (file.mimetype.startsWith("image")) {
-  //     cb(null, true);
-  //   } else {
-  //     cb(new Error('Invalid file type. Only octet-stream files are allowed.'));
-  //   }
-  // },
+  fileFilter: (req, file, cb) => {
+    const ext = path.extname(file.originalname).toLowerCase();
+    if (allowedExtensions.includes(ext)) {
+      cb(null, true);
+    } else {
+      cb(new Error("Invalid file type. Only images are allowed."));
+    }
+  },
   limits: {
     fileSize: 5 * 1024 * 1024, // 5 MB size limit
   },

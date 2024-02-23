@@ -74,14 +74,31 @@ const BabyList = sequelize.define(
 );
 
 // Define associations
-BabyList.hasMany(BabySleep, { foreignKey: "baby_id" });
-BabyList.hasMany(BabyDiaper, { foreignKey: "baby_id" });
-BabyList.hasMany(BabyNote, { foreignKey: "baby_id" });
-BabyList.hasMany(BabyFeed, { foreignKey: "baby_id" });
-BabyList.hasMany(BabyMedication, { foreignKey: "baby_id" });
-BabyList.hasMany(BabySymptom, { foreignKey: "baby_id" });
-BabyList.hasMany(BabyTemperature, { foreignKey: "baby_id" });
-BabyList.hasMany(BabyBreastPumping, { foreignKey: "baby_id" });
-BabyList.belongsTo(Media, { as: "media", foreignKey: "photo" });
+BabyList.hasMany(BabySleep, { foreignKey: "baby_id", onDelete: "CASCADE" });
+BabyList.hasMany(BabyDiaper, { foreignKey: "baby_id", onDelete: "CASCADE" });
+BabyList.hasMany(BabyNote, { foreignKey: "baby_id", onDelete: "CASCADE" });
+BabyList.hasMany(BabyFeed, { foreignKey: "baby_id", onDelete: "CASCADE" });
+BabyFeed.belongsTo(BabyList, {
+  foreignKey: "baby_id",
+  onDelete: "CASCADE",
+});
+BabyList.hasMany(BabyMedication, {
+  foreignKey: "baby_id",
+  onDelete: "CASCADE",
+});
+BabyList.hasMany(BabySymptom, { foreignKey: "baby_id", onDelete: "CASCADE" });
+BabyList.hasMany(BabyTemperature, {
+  foreignKey: "baby_id",
+  onDelete: "CASCADE",
+});
+BabyList.hasMany(BabyBreastPumping, {
+  foreignKey: "baby_id",
+  onDelete: "CASCADE",
+});
+BabyList.belongsTo(Media, {
+  as: "media",
+  foreignKey: "photo",
+  onDelete: "CASCADE",
+});
 
 module.exports = BabyList;

@@ -92,9 +92,14 @@ const User = sequelize.define(
       type: DataTypes.STRING(255),
       allowNull: true,
     },
-    pregnency_loss: {
+    pregnancy_loss: {
       type: DataTypes.INTEGER,
       allowNull: true,
+    },
+    pregnancy_loss_date: {
+      type: DataTypes.DATE,
+      allowNull: true,
+      defaultValue: null,
     },
     baby_already_born: {
       type: DataTypes.INTEGER,

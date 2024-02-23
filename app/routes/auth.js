@@ -25,6 +25,8 @@ if (!fs.existsSync(uploadDirectory)) {
   fs.mkdirSync(uploadDirectory, { recursive: true });
 }
 
+const allowedExtensions = [".jpg", ".jpeg", ".png", ".gif"];
+
 const storage = multer.diskStorage({
   destination: function (req, file, cb) {
     cb(null, uploadDirectory);
@@ -44,6 +46,14 @@ const storage = multer.diskStorage({
 
 const upload = multer({
   storage: storage,
+  fileFilter: (req, file, cb) => {
+    const ext = path.extname(file.originalname).toLowerCase();
+    if (allowedExtensions.includes(ext)) {
+      cb(null, true);
+    } else {
+      cb(new Error("Invalid file type. Only images are allowed."));
+    }
+  },
   limits: {
     fileSize: 5 * 1024 * 1024, // 5 MB size limit
   },
@@ -53,7 +63,12 @@ router.post("/register", register);
 router.post("/login", login);
 router.get("/logout", protect, logout);
 router.get("/me", protect, getMe);
-router.put("/updatedetails", protect, upload.single('user_image_field'), updateDetails);
+router.put(
+  "/updatedetails",
+  protect,
+  upload.single("user_image_field"),
+  updateDetails
+);
 router.put("/updatepassword", protect, updatePassword);
 router.post("/forgotpassword", forgotPassword);
 router.put("/resetpassword/", resetPassword);
