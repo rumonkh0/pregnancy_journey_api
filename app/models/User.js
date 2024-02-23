@@ -5,6 +5,10 @@ const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 const { DataTypes } = require("sequelize");
 const Media = require("./Media");
+const { Post } = require("./Association");
+const Reaction = require("./community/Reaction");
+const Reply = require("./community/Reply");
+const Comment = require("./community/Comment");
 
 const User = sequelize.define(
   "User",
@@ -191,8 +195,6 @@ const User = sequelize.define(
   }
 );
 
-User.belongsTo(Media, { as: "media", foreignKey: "photo" });
-
 // Method to verify password
 User.prototype.verifyPassword = function (password) {
   return bcrypt.compare(password, this.password);
@@ -263,4 +265,13 @@ User.findByUsername = async function (username) {
   return this.findOne({ where: { username } });
 };
 
+User.belongsTo(Media, { as: "media", foreignKey: "photo" });
+User.hasMany(Post, { foreignKey: "user_id" });
+Post.belongsTo(User, { foreignKey: "user_id" });
+User.hasMany(Reaction, { foreignKey: "user_id" });
+Reaction.belongsTo(User, { foreignKey: "user_id" });
+User.hasMany(Comment, { foreignKey: "user_id" });
+Comment.belongsTo(User, { foreignKey: "user_id" });
+User.hasMany(Reply, { foreignKey: "user_id" });
+Reply.belongsTo(User, { foreignKey: "user_id" });
 module.exports = User;

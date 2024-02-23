@@ -34,7 +34,7 @@ const Reaction = sequelize.define(
     },
   },
   {
-    tableName: "Reactions", // Define table name explicitly
+    tableName: "reactions", // Define table name explicitly
     timestamps: true, // Set to true if you want timestamps
   }
 );

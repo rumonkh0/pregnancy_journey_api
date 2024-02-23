@@ -6,6 +6,8 @@ const Comment = require("../../models/community/Comment");
 const PostMedia = require("../../models/community/PostMedia");
 const path = require("path");
 const fs = require("fs");
+const User = require("../../models/User");
+const ReactionType = require("../../models/community/ReactionType");
 // const Media = require("../../models/Media");
 
 // @desc      Get  Post List Of Mother
@@ -34,7 +36,21 @@ exports.getPost = asyncHandler(async (req, res, next) => {
   const id = req.params.id;
   const post = await Post.findOne({
     where: { id },
-    include: [{ model: Media, attributes: ["id", "file_name", "file_path"] }],
+    include: [
+      { model: Media, attributes: ["id", "file_name", "file_path"] },
+      { model: User, attributes: ["id", "username"] },
+      {
+        model: Reaction,
+        include: [
+          { model: User, attributes: ["id", "username"] },
+          { model: ReactionType, attributes: ["type_name"] },
+        ],
+      },
+      {
+        model: Comment,
+        include: [{ model: User, attributes: ["id", "username"] }],
+      },
+    ],
   });
   if (!post)
     return res.status(404).json({ success: false, message: "Post not found" });
@@ -50,11 +66,6 @@ exports.createPost = asyncHandler(async (req, res, next) => {
   let post = await Post.create(postData);
   req.files.forEach(async (element) => {
     const { mimetype, filename, path: file_path } = element;
-    // if (!mimetype.startsWith("image")) {
-    //   return res
-    //     .status(401)
-    //     .json({ success: false, message: "File type must be image" });
-    // }
 
     let postMedia = {
       uploaded_by: req.user.username,

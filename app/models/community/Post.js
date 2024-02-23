@@ -4,6 +4,7 @@ const Media = require("../Media");
 const PostMedia = require("./PostMedia");
 const Comment = require("./Comment");
 const Reaction = require("./Reaction");
+const User = require("../User");
 
 const Post = sequelize.define(
   "Post",
@@ -24,6 +25,15 @@ const Post = sequelize.define(
       type: DataTypes.TEXT,
       allowNull: true,
     },
+    published: {
+      type: DataTypes.STRING(1),
+      allowNull: false,
+      defaultValue: "0",
+    },
+    published_date: {
+      type: DataTypes.DATE,
+      allowNull: true,
+    },
     updatedAt: {
       type: DataTypes.DATE,
       allowNull: true,
@@ -41,5 +51,7 @@ const Post = sequelize.define(
 
 Post.hasMany(Comment, { foreignKey: "post_id", onDelete: "CASCADE" });
 Post.hasMany(Reaction, { foreignKey: "post_id", onDelete: "CASCADE" });
+// Post.belongsTo(User, { foreignKey: "user_id" });
+// User.hasMany(Post, { foreignKey: "user_id" });
 
 module.exports = Post;

@@ -1,5 +1,6 @@
 const Reaction = require("../../models/community/Reaction");
 const asyncHandler = require("../../middleware/async");
+const { Op } = require("sequelize");
 
 // @desc      Get  Reaction List Of Mother
 // @route     GET /api/v1/babylist
@@ -7,7 +8,12 @@ const asyncHandler = require("../../middleware/async");
 exports.getAllReaction = asyncHandler(async (req, res, next) => {
   if (req.params.postId) {
     const reactions = await Reaction.findAll({
-      where: { post_id: req.params.postId },
+      where: {
+        [Op.and]: [
+          { post_id: req.params.postId },
+          { comment_id: { [Op.ne]: null } },
+        ],
+      },
     });
     return res.json({
       success: true,
@@ -18,7 +24,7 @@ exports.getAllReaction = asyncHandler(async (req, res, next) => {
 
   if (req.params.commentId) {
     const reactions = await Reaction.findAll({
-      where: { post_id: req.params.commentId },
+      where: { comment_id: req.params.commentId },
     });
     return res.json({
       success: true,

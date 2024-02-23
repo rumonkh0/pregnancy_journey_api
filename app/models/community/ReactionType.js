@@ -1,5 +1,6 @@
 const { DataTypes } = require("sequelize");
 const { sequelize } = require("../../../config/db"); // Replace with your Sequelize instance
+const Reaction = require("./Reaction");
 
 const ReactionType = sequelize.define(
   "ReactionType",
@@ -20,5 +21,8 @@ const ReactionType = sequelize.define(
     timestamps: false, // Set to true if you want timestamps
   }
 );
+
+ReactionType.hasMany(Reaction, { foreignKey: "type", onDelete: "CASCADE" });
+Reaction.belongsTo(ReactionType, { foreignKey: "type", onDelete: "CASCADE" });
 
 module.exports = ReactionType;

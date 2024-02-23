@@ -3,6 +3,7 @@ const { sequelize } = require("../../../config/db"); // Replace with your Sequel
 const Post = require("./Post");
 const Reaction = require("./Reaction");
 const Reply = require("./Reply");
+const User = require("../User");
 
 const Comment = sequelize.define(
   "Comment",
@@ -34,7 +35,7 @@ const Comment = sequelize.define(
     },
   },
   {
-    tableName: "Comments", // Define table name explicitly
+    tableName: "comments", // Define table name explicitly
     timestamps: true, // Set to true if you want timestamps
   }
 );
