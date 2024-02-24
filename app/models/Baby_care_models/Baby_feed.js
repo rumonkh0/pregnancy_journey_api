@@ -20,7 +20,7 @@ const BabyFeed = sequelize.define(
       type: DataTypes.ENUM("breast", "bottle", "solid"),
       allowNull: false,
     },
-    let_duration: {
+    left_duration: {
       type: DataTypes.STRING(255),
       allowNull: true,
     },

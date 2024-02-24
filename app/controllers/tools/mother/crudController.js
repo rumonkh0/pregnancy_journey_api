@@ -1,6 +1,33 @@
 const asyncHandler = require("../../../middleware/async");
 const { where } = require("sequelize");
 
+//check owner of the model
+exports.checkOwner = (Model) =>
+  asyncHandler(async (req, res, next) => {
+    const { modelPk } = req.params;
+
+    if (!req.user)
+      return res.status(200).json({
+        remark: "UNAUTORIZED",
+        success: false,
+        message: "not authorized for access this route",
+      });
+
+    // Check if the requesting mother owns the specified baby
+    const baby = await Baby.findOne({
+      where: { id: babyId, mother_id: req.user.id },
+    });
+
+    if (!baby) {
+      return res.status(403).json({
+        success: false,
+        message: "Access denied. You are not the owner of this baby.",
+      });
+    }
+
+    next();
+  });
+
 // @desc      Get  Baby get all as history
 // @route     GET /api/v1/route/history
 // @access    Private

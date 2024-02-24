@@ -14,21 +14,7 @@ const ReactionType = require("../../models/community/ReactionType");
 // @route     GET /api/v1/babylist
 // @access    Private
 exports.getAllPost = asyncHandler(async (req, res, next) => {
-  console.log(res.advancedResults);
   return res.status(200).json(res.advancedResults);
-  const posts = await Post.findAll({
-    where: { user_id: req.user.id },
-    include: [
-      {
-        model: Media,
-        attributes: ["id", "file_name", "file_path"],
-        require: false,
-      },
-    ],
-  });
-  if (!posts)
-    return res.status(404).json({ success: false, message: "Post not found" });
-  res.json({ success: true, message: "Found posts", data: posts });
 });
 
 // @desc      Get single post

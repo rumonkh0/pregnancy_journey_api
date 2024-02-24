@@ -5,14 +5,12 @@ const { where } = require("sequelize");
 exports.checkBabyOwner = asyncHandler(async (req, res, next) => {
   const { babyId } = req.params;
 
-  if (!req.use)
-    return res
-      .status(200)
-      .json({
-        remark: "UNAUTORIZED",
-        success: false,
-        message: "not authorized for access this route",
-      });
+  if (!req.user)
+    return res.status(200).json({
+      remark: "UNAUTORIZED",
+      success: false,
+      message: "not authorized for access this route",
+    });
 
   // Check if the requesting mother owns the specified baby
   const baby = await Baby.findOne({
