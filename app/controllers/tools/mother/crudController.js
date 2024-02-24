@@ -10,18 +10,18 @@ exports.checkOwner = (Model) =>
       return res.status(200).json({
         remark: "UNAUTORIZED",
         success: false,
-        message: "not authorized for access this route",
+        message: "Not authorized for access this route",
       });
 
     // Check if the requesting mother owns the specified baby
-    const baby = await Baby.findOne({
-      where: { id: babyId, mother_id: req.user.id },
+    const baby = await Model.findOne({
+      where: { id: modelPk, user_id: req.user.id },
     });
 
     if (!baby) {
       return res.status(403).json({
         success: false,
-        message: "Access denied. You are not the owner of this baby.",
+        message: "Access denied. You are not the owner of this data.",
       });
     }
 
@@ -108,7 +108,7 @@ exports.update = (Model) => {
     if (!updated[0]) {
       return res
         .status(200)
-        .json({ success: false, message: "Record no modified" });
+        .json({ success: false, message: "Record not modified" });
     }
 
     res.status(200).json({ success: true, message: "updated" });
