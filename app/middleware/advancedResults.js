@@ -80,6 +80,7 @@ const advancedResults = (model, include) =>
 
     // Executing query
     const results = await model.findAll(query);
+    // console.log(results);
     const startIndex = (page - 1) * limit;
     const endIndex = page * limit;
     const total = await model.count({ where });
@@ -107,6 +108,7 @@ const advancedResults = (model, include) =>
       pagination,
       data: results,
     };
+
 
     next();
   });
