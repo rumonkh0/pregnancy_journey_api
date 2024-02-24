@@ -101,4 +101,14 @@ BabyList.belongsTo(Media, {
   onDelete: "CASCADE",
 });
 
+User.hasMany(BabyList, {
+  as: "baby_lists",
+  foreignKey: "mother_id",
+  onDelete: "CASCADE",
+});
+BabyList.belongsTo(User, {
+  foreignKey: "mother_id",
+  onDelete: "CASCADE",
+});
+
 module.exports = BabyList;
