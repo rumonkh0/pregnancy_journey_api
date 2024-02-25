@@ -59,15 +59,17 @@ exports.getAll = (Model, include) => {
     const newData = data.map((obj) => {
       obj.setDataValue(
         "title",
-        JSON.parse(obj.title)[lan]
-          ? JSON.parse(obj.title)[lan]
-          : JSON.parse(obj.title)["en"]
+        obj.title &&
+          (JSON.parse(obj.title)[lan]
+            ? JSON.parse(obj.title)[lan]
+            : JSON.parse(obj.title)["en"])
       );
       obj.setDataValue(
         "description",
-        JSON.parse(obj.description)[lan]
-          ? JSON.parse(obj.description)[lan]
-          : JSON.parse(obj.description)["en"]
+        obj.description &&
+          (JSON.parse(obj.description)[lan]
+            ? JSON.parse(obj.description)[lan]
+            : JSON.parse(obj.description)["en"])
       );
       return obj;
     });

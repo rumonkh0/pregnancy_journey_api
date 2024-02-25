@@ -42,7 +42,11 @@ exports.getBabyBreastPumpsHistory = asyncHandler(async (req, res, next) => {
 
   res
     .status(200)
-    .json({ success: true, messae: "Found History", data: breastPumpsHistory });
+    .json({
+      success: true,
+      message: "Found History",
+      data: breastPumpsHistory,
+    });
 });
 
 // @desc      Get single breastpump
@@ -66,7 +70,7 @@ exports.getSingleBreastPump = asyncHandler(async (req, res, next) => {
   // Get the feed history for the specified baby
   const breastPump = await BreastPump.findByPk(breastPumpId);
 
-  res.status(200).json({ success: true, data: breastPump });
+  res.status(200).json({ success: true,message: "data found", data: breastPump });
 });
 
 // @desc      Create baby feed
@@ -93,7 +97,7 @@ exports.createBreastPump = asyncHandler(async (req, res, next) => {
 
   res
     .status(200)
-    .json({ success: true, messae: "Data found", data: breastPump });
+    .json({ success: true, message: "Data Created", data: breastPump });
 });
 
 // @desc      Update baby feed
@@ -127,7 +131,7 @@ exports.updateBreastPump = asyncHandler(async (req, res) => {
       .json({ success: false, message: "Recond no modified" });
   }
 
-  res.status(200).json({ success: true, messae: "data updated" });
+  res.status(200).json({ success: true, message: "data updated" });
 });
 
 // @desc      Delete baby feed
@@ -154,7 +158,7 @@ exports.deleteBreastPump = asyncHandler(async (req, res) => {
   if (!deleted)
     return res.status(200).json({ success: false, message: "data not found" });
 
-  res.status(200).json({ success: true, messae: "deleted" });
+  res.status(200).json({ success: true, message: "deleted" });
 });
 
 // @desc      Delete all baby feed
