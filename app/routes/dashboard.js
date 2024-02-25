@@ -60,21 +60,22 @@ const dashboard = asyncHandler(async (req, res, next) => {
     warningSigns;
 
   //Get User Data
-  user = await User.findOne({
-    // attributes: ["id", "username", "first_name", "last_name", ],
-    where: { id: req.user.id },
-    include: { model: Media, as: "media" },
-  });
+  if (req.user) {
+    user = await User.findOne({
+      // attributes: ["id", "username", "first_name", "last_name", ],
+      where: { id: req.user.id },
+      include: { model: Media, as: "media" },
+    });
 
-  //Get Baby List
-  babyList = await BabyList.findAll({
-    where: { mother_id: user.id },
-    include: { model: Media, as: "media" },
-  });
+    //Get Baby List
+    babyList = await BabyList.findAll({
+      where: { mother_id: user.id },
+      include: { model: Media, as: "media" },
+    });
 
-  //Get Weight Data
-  weightData = await WeightLog.findAll({ where: { user_id: req.user.id } });
-
+    //Get Weight Data
+    weightData = await WeightLog.findAll({ where: { user_id: req.user.id } });
+  }
   //Baby Progress Timeline
   let babyProgressTimeline = await BabyProg.findOne({
     where: { week },
