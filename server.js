@@ -3,6 +3,7 @@ const dotenv = require("dotenv");
 const path = require("path");
 const morgan = require("morgan");
 const cookieParser = require("cookie-parser");
+const errorHandler = require("./app/middleware/error");
 // const bodyParser = require("body-parser");
 const cors = require("cors");
 
@@ -25,6 +26,8 @@ const babySymptom = require("./app/routes/baby_care/baby_symptom");
 const breastPump = require("./app/routes/baby_care/baby_breast_pumping");
 const babySleep = require("./app/routes/baby_care/baby_sleep");
 const babyTemp = require("./app/routes/baby_care/baby_temperature");
+const babyMedication = require("./app/routes/baby_care/baby_medication");
+const babyNotes = require("./app/routes/baby_care/baby_note");
 const allHistory = require("./app/routes/baby_care/allHistory");
 // const exercise = require("./app/routes/exercise");
 const cvaccination = require("./app/routes/vaccination/child_vaccination");
@@ -53,7 +56,7 @@ const adminLogin = require("./app/routes/admin/adminAuth");
 const adminHelpDesk = require("./app/routes/admin/helpDesk");
 const babyCare = require("./app/routes/admin/babyCare");
 const adminGeneral = require("./app/routes/admin/general/general");
-const errorHandler = require("./app/middleware/error");
+const imageUpload = require("./app/routes/uploadMedia");
 
 const app = express();
 
@@ -87,6 +90,8 @@ app.use("/api/v1/symptom", babySymptom);
 app.use("/api/v1/breastpump", breastPump);
 app.use("/api/v1/sleep", babySleep);
 app.use("/api/v1/babytemp", babyTemp);
+app.use("/api/v1/babymedication", babyMedication);
+app.use("/api/v1/babynotes", babyNotes);
 app.use("/api/v1/allhistory", allHistory);
 // app.use("/api/v1/exercise", exercise);   //problem with admin functionality
 app.use("/api/v1/childvaccination", cvaccination);
@@ -116,6 +121,8 @@ app.use("/admin/api/v1/helpdesk", adminHelpDesk);
 app.use("/admin/api/v1/admin", admins);
 app.use("/admin/api/v1/babycare", babyCare);
 app.use("/admin/api/v1/general", adminGeneral);
+
+app.use("/admin/api/v1/imageup", imageUpload);
 
 // app.use("/api/v1/reaction", reaction);
 app.use(errorHandler);

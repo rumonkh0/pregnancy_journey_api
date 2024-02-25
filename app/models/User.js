@@ -152,6 +152,16 @@ const User = sequelize.define(
       allowNull: true,
       defaultValue: null,
     },
+    deleted: {
+      type: DataTypes.INTEGER,
+      allowNull: false,
+      defaultValue: "0",
+    },
+    deleted_date: {
+      type: DataTypes.DATE,
+      allowNull: true,
+      defaultValue: null,
+    },
     createdAt: {
       type: DataTypes.DATE,
       allowNull: false,

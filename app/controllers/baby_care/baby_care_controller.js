@@ -87,7 +87,7 @@ exports.create = (Model) => {
 exports.update = (Model) => {
   return asyncHandler(async (req, res) => {
     // Extract baby ID from the request params or body
-    const { babyId, modelPk } = req.params;
+    const { modelPk } = req.params;
 
     // Get the feed history for the specified baby
     const updated = await Model.update(req.body, {
@@ -99,7 +99,7 @@ exports.update = (Model) => {
     if (!updated[0]) {
       return res
         .status(200)
-        .json({ success: false, message: "Recond no modified" });
+        .json({ success: false, message: "Recond not modified" });
     }
 
     res.status(200).json({ success: true, message: "data updated" });
