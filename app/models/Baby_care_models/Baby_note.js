@@ -15,11 +15,11 @@ const BabyNote = sequelize.define(
       type: DataTypes.INTEGER.UNSIGNED,
       allowNull: false,
     },
-    note_title: {
+    title: {
       type: DataTypes.STRING(255),
       allowNull: true,
     },
-    note_description: {
+    description: {
       type: DataTypes.STRING(255),
       allowNull: true,
     },
