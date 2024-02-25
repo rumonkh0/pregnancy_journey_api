@@ -15,7 +15,7 @@ const MotherProg = require("../models/progress_timeline/Mother_progress_timeline
 
 const router = express.Router();
 
-router.use(protect);
+// router.use(protect);
 const objLangFilter = (obj, lan) => {
   try {
     obj.setDataValue(

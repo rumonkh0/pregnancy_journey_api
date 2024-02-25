@@ -1,8 +1,8 @@
 -- MariaDB dump 10.19  Distrib 10.4.32-MariaDB, for Linux (x86_64)
 --
--- Host: sql.freedb.tech    Database: freedb_pregnancy_journey
+-- Host: localhost    Database: pregnancy_journey
 -- ------------------------------------------------------
--- Server version	8.0.36-0ubuntu0.22.04.1
+-- Server version	10.4.32-MariaDB
 
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
 /*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
@@ -23,8 +23,8 @@ DROP TABLE IF EXISTS `admin_role`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `admin_role` (
-  `admin_id` int NOT NULL,
-  `role_id` int NOT NULL
+  `admin_id` int(11) NOT NULL,
+  `role_id` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -46,13 +46,13 @@ DROP TABLE IF EXISTS `admins`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `admins` (
-  `id` int NOT NULL AUTO_INCREMENT,
-  `username` varchar(255) COLLATE utf8mb4_general_ci NOT NULL,
-  `email` varchar(255) COLLATE utf8mb4_general_ci NOT NULL,
-  `password` varchar(255) COLLATE utf8mb4_general_ci NOT NULL,
-  `photo` int DEFAULT NULL,
-  `createdAt` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  `updatedAt` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `username` varchar(255) NOT NULL,
+  `email` varchar(255) NOT NULL,
+  `password` varchar(255) NOT NULL,
+  `photo` int(11) DEFAULT NULL,
+  `createdAt` timestamp NOT NULL DEFAULT current_timestamp(),
+  `updatedAt` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp(),
   PRIMARY KEY (`id`),
   UNIQUE KEY `username` (`username`),
   UNIQUE KEY `email` (`email`),
@@ -79,16 +79,16 @@ DROP TABLE IF EXISTS `antenatal_visit`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `antenatal_visit` (
-  `id` int NOT NULL AUTO_INCREMENT,
-  `user_id` int unsigned NOT NULL,
-  `visit_type` varchar(255) COLLATE utf8mb4_general_ci NOT NULL,
-  `doctor_name` varchar(255) COLLATE utf8mb4_general_ci NOT NULL,
-  `visit_no` int NOT NULL,
-  `hospital_address` varchar(255) COLLATE utf8mb4_general_ci NOT NULL,
-  `receptionist` varchar(255) COLLATE utf8mb4_general_ci NOT NULL,
-  `mobile` int NOT NULL,
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `user_id` int(10) unsigned NOT NULL,
+  `visit_type` varchar(255) NOT NULL,
+  `doctor_name` varchar(255) NOT NULL,
+  `visit_no` int(11) NOT NULL,
+  `hospital_address` varchar(255) NOT NULL,
+  `receptionist` varchar(255) NOT NULL,
+  `mobile` int(20) NOT NULL,
   `visit_date` datetime NOT NULL,
-  `remarks` varchar(255) COLLATE utf8mb4_general_ci NOT NULL,
+  `remarks` varchar(255) NOT NULL,
   `updatedAt` datetime NOT NULL,
   `createdAt` datetime NOT NULL,
   PRIMARY KEY (`id`),
@@ -115,20 +115,20 @@ DROP TABLE IF EXISTS `baby_breast_pumping`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `baby_breast_pumping` (
-  `id` int NOT NULL AUTO_INCREMENT,
-  `baby_id` int unsigned DEFAULT NULL,
-  `right_milk_amount` int DEFAULT NULL,
-  `left_milk_amount` int DEFAULT NULL,
-  `total_milk` int DEFAULT NULL,
-  `left_duration` varchar(255) COLLATE utf8mb4_general_ci DEFAULT NULL,
-  `right_duration` varchar(255) COLLATE utf8mb4_general_ci DEFAULT NULL,
-  `total_duration` varchar(255) COLLATE utf8mb4_general_ci DEFAULT NULL,
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `baby_id` int(10) unsigned DEFAULT NULL,
+  `right_milk_amount` int(11) DEFAULT NULL,
+  `left_milk_amount` int(11) DEFAULT NULL,
+  `total_milk` int(11) DEFAULT NULL,
+  `left_duration` varchar(255) DEFAULT NULL,
+  `right_duration` varchar(255) DEFAULT NULL,
+  `total_duration` varchar(255) DEFAULT NULL,
   `createdAt` datetime DEFAULT NULL,
   `updatedAt` datetime NOT NULL,
   PRIMARY KEY (`id`),
   KEY `FK_1` (`baby_id`),
   CONSTRAINT `FK_11` FOREIGN KEY (`baby_id`) REFERENCES `baby_list` (`id`) ON DELETE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=40 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=35 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -137,7 +137,7 @@ CREATE TABLE `baby_breast_pumping` (
 
 LOCK TABLES `baby_breast_pumping` WRITE;
 /*!40000 ALTER TABLE `baby_breast_pumping` DISABLE KEYS */;
-INSERT INTO `baby_breast_pumping` VALUES (32,23,58,68,126,'7 minutes','9 minutes','16 minutes','2023-11-28 08:00:00','2023-11-28 17:03:24'),(33,23,58,68,2147483647,'7 minutes','9 minutes','16 minutes','2023-11-28 08:00:00','2023-11-28 17:03:36'),(35,23,58,68,2147483647,'7 minutes','9 minutes','16 minutes','2024-02-24 20:51:34','2024-02-24 20:51:34'),(36,23,6,6,12,'157866 min','157866 min','157866 min','2024-02-24 20:56:37','2024-02-24 20:56:37'),(37,23,6,6,12,'157866 min','157866 min','157866 min','2024-02-24 20:57:05','2024-02-24 20:57:05'),(38,23,6,6,12,'2.727883333333333 min','0.1064 min','2.8342833333333335 min','2024-02-24 21:03:21','2024-02-24 21:03:21'),(39,23,9,7,16,'2.727883333333333 min','1.33425 min','4.062133333333334 min','2024-02-24 21:05:01','2024-02-24 21:05:01');
+INSERT INTO `baby_breast_pumping` VALUES (32,23,58,68,126,'7 minutes','9 minutes','16 minutes','2023-11-28 08:00:00','2023-11-28 17:03:24'),(33,23,58,68,2147483647,'7 minutes','9 minutes','16 minutes','2023-11-28 08:00:00','2023-11-28 17:03:36');
 /*!40000 ALTER TABLE `baby_breast_pumping` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -149,16 +149,16 @@ DROP TABLE IF EXISTS `baby_diaper`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `baby_diaper` (
-  `id` int NOT NULL AUTO_INCREMENT,
-  `baby_id` int unsigned NOT NULL,
-  `status` enum('clean','poo','pee','mixed') COLLATE utf8mb4_general_ci NOT NULL,
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `baby_id` int(10) unsigned NOT NULL,
+  `status` enum('clean','poo','pee','mixed') NOT NULL,
   `createdAt` datetime NOT NULL,
   `updatedAt` datetime DEFAULT NULL,
-  `number` int DEFAULT '1',
+  `number` int(11) DEFAULT 1,
   PRIMARY KEY (`id`),
   KEY `FK_1` (`baby_id`),
   CONSTRAINT `FK_6` FOREIGN KEY (`baby_id`) REFERENCES `baby_list` (`id`) ON DELETE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=19 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=17 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -167,7 +167,7 @@ CREATE TABLE `baby_diaper` (
 
 LOCK TABLES `baby_diaper` WRITE;
 /*!40000 ALTER TABLE `baby_diaper` DISABLE KEYS */;
-INSERT INTO `baby_diaper` VALUES (12,23,'pee','2023-11-28 16:58:54','2023-11-28 16:58:54',1),(16,27,'pee','2023-11-29 11:46:40','2023-11-29 11:46:40',2147483647),(17,27,'pee','2024-02-24 19:58:40','2024-02-24 19:58:40',2147483647),(18,23,'poo','2024-02-24 20:01:35','2024-02-24 20:01:35',4);
+INSERT INTO `baby_diaper` VALUES (12,23,'pee','2023-11-28 16:58:54','2023-11-28 16:58:54',1),(16,27,'pee','2023-11-29 11:46:40','2023-11-29 11:46:40',2147483647);
 /*!40000 ALTER TABLE `baby_diaper` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -179,14 +179,14 @@ DROP TABLE IF EXISTS `baby_feed`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `baby_feed` (
-  `id` int NOT NULL AUTO_INCREMENT,
-  `baby_id` int unsigned NOT NULL,
-  `feed_type` enum('breast','bottle','solid') COLLATE utf8mb4_general_ci NOT NULL,
-  `left_duration` varchar(255) COLLATE utf8mb4_general_ci DEFAULT NULL,
-  `right_duration` varchar(255) COLLATE utf8mb4_general_ci DEFAULT NULL,
-  `total_duration` varchar(255) COLLATE utf8mb4_general_ci DEFAULT NULL,
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `baby_id` int(10) unsigned NOT NULL,
+  `feed_type` enum('breast','bottle','solid') NOT NULL,
+  `left_duration` varchar(255) DEFAULT NULL,
+  `right_duration` varchar(255) DEFAULT NULL,
+  `total_duration` varchar(255) DEFAULT NULL,
   `bottle_amount` double DEFAULT NULL,
-  `solid_name` varchar(255) COLLATE utf8mb4_general_ci DEFAULT NULL,
+  `solid_name` varchar(255) DEFAULT NULL,
   `solid_amount` double DEFAULT NULL COMMENT 'gram',
   `feed_time` datetime DEFAULT NULL,
   `createdAt` datetime NOT NULL,
@@ -194,7 +194,7 @@ CREATE TABLE `baby_feed` (
   PRIMARY KEY (`id`),
   KEY `FK_2` (`baby_id`),
   CONSTRAINT `FK_5` FOREIGN KEY (`baby_id`) REFERENCES `baby_list` (`id`) ON DELETE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=52 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci COMMENT='ml';
+) ENGINE=InnoDB AUTO_INCREMENT=43 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci COMMENT='ml';
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -203,7 +203,7 @@ CREATE TABLE `baby_feed` (
 
 LOCK TABLES `baby_feed` WRITE;
 /*!40000 ALTER TABLE `baby_feed` DISABLE KEYS */;
-INSERT INTO `baby_feed` VALUES (32,23,'breast','100 minutes',NULL,NULL,100,NULL,NULL,'2023-11-28 08:00:00','2023-11-28 08:00:00','2023-11-28 16:57:45'),(33,23,'breast','100 minutes',NULL,NULL,100,NULL,NULL,'2023-11-28 08:00:00','2023-11-28 08:00:00','2023-11-28 16:58:04'),(34,23,'breast','100 minutes',NULL,NULL,100,NULL,NULL,'2023-11-28 08:00:00','2023-11-28 16:59:17','2023-11-28 16:59:17'),(35,23,'breast','10000000000000000000000000000 minutes',NULL,NULL,100,NULL,NULL,'2023-11-28 08:00:00','2023-11-28 17:02:13','2023-11-28 17:02:13'),(39,27,'breast','10000000000000000000000000000 minutes',NULL,NULL,100,NULL,NULL,'2023-11-28 08:00:00','2023-11-29 11:47:08','2023-11-29 11:47:08'),(40,27,'breast','10000000000000000000000000000 minutes',NULL,NULL,100,NULL,NULL,'2023-11-28 08:00:00','2024-02-24 18:13:48','2024-02-24 18:13:48'),(41,27,'breast','10000000000000000000000000000 minutes',NULL,NULL,100,NULL,NULL,'2023-11-28 08:00:00','2024-02-24 18:19:11','2024-02-24 18:19:11'),(42,27,'breast','10000000000000000000000000000 minutes',NULL,'232 minutes',100,NULL,NULL,'2023-11-28 08:00:00','2024-02-24 18:20:26','2024-02-24 18:20:26'),(43,23,'breast','0 min','22941 min','22941 min',NULL,NULL,NULL,'2024-02-25 01:00:38','2024-02-24 19:00:39','2024-02-24 19:00:39'),(44,23,'breast','3381 min','24509 min','27890 min',NULL,NULL,NULL,'2024-02-25 01:03:57','2024-02-24 19:03:59','2024-02-24 19:03:59'),(45,23,'bottle',NULL,NULL,NULL,324,NULL,NULL,'2024-02-25 01:07:31','2024-02-24 19:07:33','2024-02-24 19:07:33'),(46,23,'solid',NULL,NULL,NULL,NULL,NULL,NULL,'2024-02-25 01:14:32','2024-02-24 19:14:34','2024-02-24 19:14:34'),(47,23,'solid',NULL,NULL,NULL,NULL,'Banan kola',500,'2024-02-25 01:15:11','2024-02-24 19:15:12','2024-02-24 19:15:12'),(48,23,'solid',NULL,NULL,NULL,NULL,'Banan kola',500,'2024-02-25 01:18:20','2024-02-24 19:18:22','2024-02-24 19:18:22'),(49,23,'solid',NULL,NULL,NULL,NULL,'Banan kola',500,'2024-02-25 01:19:14','2024-02-24 19:19:16','2024-02-24 19:19:16'),(50,23,'breast','11703 min','24509 min','36212 min',NULL,NULL,NULL,'2024-02-25 01:20:00','2024-02-24 19:20:02','2024-02-24 19:20:02'),(51,23,'breast','11703 min','24509 min','36212 min',NULL,NULL,NULL,'2024-02-25 01:20:45','2024-02-24 19:20:46','2024-02-24 19:20:46');
+INSERT INTO `baby_feed` VALUES (32,23,'breast','100 minutes',NULL,NULL,100,NULL,NULL,'2023-11-28 08:00:00','2023-11-28 08:00:00','2023-11-28 16:57:45'),(33,23,'breast','100 minutes',NULL,NULL,100,NULL,NULL,'2023-11-28 08:00:00','2023-11-28 08:00:00','2023-11-28 16:58:04'),(34,23,'breast','100 minutes',NULL,NULL,100,NULL,NULL,'2023-11-28 08:00:00','2023-11-28 16:59:17','2023-11-28 16:59:17'),(35,23,'breast','10000000000000000000000000000 minutes',NULL,NULL,100,NULL,NULL,'2023-11-28 08:00:00','2023-11-28 17:02:13','2023-11-28 17:02:13'),(39,27,'breast','10000000000000000000000000000 minutes',NULL,NULL,100,NULL,NULL,'2023-11-28 08:00:00','2023-11-29 11:47:08','2023-11-29 11:47:08'),(40,27,'breast','10000000000000000000000000000 minutes',NULL,NULL,100,NULL,NULL,'2023-11-28 08:00:00','2024-02-24 18:13:48','2024-02-24 18:13:48'),(41,27,'breast','10000000000000000000000000000 minutes',NULL,NULL,100,NULL,NULL,'2023-11-28 08:00:00','2024-02-24 18:19:11','2024-02-24 18:19:11'),(42,27,'breast','10000000000000000000000000000 minutes',NULL,'232 minutes',100,NULL,NULL,'2023-11-28 08:00:00','2024-02-24 18:20:26','2024-02-24 18:20:26');
 /*!40000 ALTER TABLE `baby_feed` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -215,11 +215,11 @@ DROP TABLE IF EXISTS `baby_gallery`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `baby_gallery` (
-  `id` int NOT NULL AUTO_INCREMENT,
-  `file_id` int NOT NULL,
-  `baby_id` int unsigned DEFAULT NULL,
-  `image` varchar(255) COLLATE utf8mb4_general_ci DEFAULT NULL,
-  `image_title` varchar(255) COLLATE utf8mb4_general_ci DEFAULT NULL,
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `file_id` int(11) NOT NULL,
+  `baby_id` int(10) unsigned DEFAULT NULL,
+  `image` varchar(255) DEFAULT NULL,
+  `image_title` varchar(255) DEFAULT NULL,
   `updatedAt` datetime DEFAULT NULL,
   `createdAt` datetime DEFAULT NULL,
   PRIMARY KEY (`id`),
@@ -246,14 +246,14 @@ DROP TABLE IF EXISTS `baby_growth_weekly`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `baby_growth_weekly` (
-  `id` int NOT NULL AUTO_INCREMENT,
-  `baby_size_image` int DEFAULT NULL,
-  `week_number` int NOT NULL,
-  `day` int NOT NULL,
-  `weight` text COLLATE utf8mb4_general_ci NOT NULL,
-  `size` text COLLATE utf8mb4_general_ci NOT NULL,
-  `body_change` text COLLATE utf8mb4_general_ci,
-  `baby_details` text COLLATE utf8mb4_general_ci,
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `baby_size_image` int(11) DEFAULT NULL,
+  `week_number` int(11) NOT NULL,
+  `day` int(11) NOT NULL,
+  `weight` text NOT NULL,
+  `size` text NOT NULL,
+  `body_change` text DEFAULT NULL,
+  `baby_details` text DEFAULT NULL,
   UNIQUE KEY `id` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
@@ -275,12 +275,12 @@ DROP TABLE IF EXISTS `baby_list`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `baby_list` (
-  `id` int unsigned NOT NULL AUTO_INCREMENT,
-  `mother_id` int unsigned NOT NULL,
-  `name` varchar(255) COLLATE utf8mb4_general_ci DEFAULT NULL,
-  `photo` int DEFAULT NULL,
-  `baby_serial` int DEFAULT NULL,
-  `gender` varchar(45) COLLATE utf8mb4_general_ci NOT NULL COMMENT 'male=1 female=2',
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `mother_id` int(10) unsigned NOT NULL,
+  `name` varchar(255) DEFAULT NULL,
+  `photo` int(11) DEFAULT NULL,
+  `baby_serial` int(11) DEFAULT NULL,
+  `gender` varchar(45) NOT NULL COMMENT 'male=1 female=2',
   `birth_date` datetime DEFAULT NULL,
   `first_move` datetime DEFAULT NULL,
   `first_heartbeat` datetime DEFAULT NULL,
@@ -289,8 +289,8 @@ CREATE TABLE `baby_list` (
   PRIMARY KEY (`id`),
   KEY `FK_1` (`mother_id`),
   KEY `photo` (`photo`),
-  CONSTRAINT `baby_list_ibfk_1` FOREIGN KEY (`photo`) REFERENCES `media` (`id`) ON DELETE CASCADE,
-  CONSTRAINT `FK_1` FOREIGN KEY (`mother_id`) REFERENCES `users` (`id`) ON DELETE CASCADE
+  CONSTRAINT `FK_1` FOREIGN KEY (`mother_id`) REFERENCES `users` (`id`) ON DELETE CASCADE,
+  CONSTRAINT `baby_list_ibfk_1` FOREIGN KEY (`photo`) REFERENCES `media` (`id`) ON DELETE CASCADE
 ) ENGINE=InnoDB AUTO_INCREMENT=33 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -312,16 +312,16 @@ DROP TABLE IF EXISTS `baby_medications`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `baby_medications` (
-  `id` int NOT NULL,
-  `name` varchar(255) COLLATE utf8mb4_general_ci DEFAULT NULL,
-  `dose` varchar(25) COLLATE utf8mb4_general_ci DEFAULT NULL,
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `name` varchar(255) DEFAULT NULL,
+  `dose` varchar(25) DEFAULT NULL,
   `createdAt` datetime DEFAULT NULL,
   `updatedAt` datetime DEFAULT NULL,
-  `baby_id` int unsigned NOT NULL,
+  `baby_id` int(10) unsigned NOT NULL,
   PRIMARY KEY (`id`),
   KEY `FK_1` (`baby_id`),
   CONSTRAINT `FK_19` FOREIGN KEY (`baby_id`) REFERENCES `baby_list` (`id`) ON DELETE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -330,6 +330,7 @@ CREATE TABLE `baby_medications` (
 
 LOCK TABLES `baby_medications` WRITE;
 /*!40000 ALTER TABLE `baby_medications` DISABLE KEYS */;
+INSERT INTO `baby_medications` VALUES (1,'napa','1 spoon','2024-02-25 06:58:12','2024-02-25 06:58:12',27),(2,'napa','5 spoon','2024-02-25 06:58:30','2024-02-25 07:11:28',27),(3,'parasitamol','2 spoon','2024-02-25 06:58:43','2024-02-25 06:58:43',27);
 /*!40000 ALTER TABLE `baby_medications` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -341,16 +342,16 @@ DROP TABLE IF EXISTS `baby_notes`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `baby_notes` (
-  `id` int NOT NULL,
-  `baby_id` int unsigned NOT NULL,
-  `note_title` varchar(255) COLLATE utf8mb4_general_ci DEFAULT NULL,
-  `note_description` varchar(255) COLLATE utf8mb4_general_ci DEFAULT NULL,
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `baby_id` int(10) unsigned NOT NULL,
+  `note_title` varchar(255) DEFAULT NULL,
+  `note_description` varchar(255) DEFAULT NULL,
   `createdAt` datetime DEFAULT NULL,
   `updatedAt` datetime DEFAULT NULL,
   PRIMARY KEY (`id`),
   KEY `FK_1` (`baby_id`),
   CONSTRAINT `FK_13` FOREIGN KEY (`baby_id`) REFERENCES `baby_list` (`id`) ON DELETE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -359,6 +360,7 @@ CREATE TABLE `baby_notes` (
 
 LOCK TABLES `baby_notes` WRITE;
 /*!40000 ALTER TABLE `baby_notes` DISABLE KEYS */;
+INSERT INTO `baby_notes` VALUES (1,27,NULL,NULL,'2024-02-25 17:12:13','2024-02-25 17:12:13');
 /*!40000 ALTER TABLE `baby_notes` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -370,11 +372,11 @@ DROP TABLE IF EXISTS `baby_progress_timeline`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `baby_progress_timeline` (
-  `id` int NOT NULL,
-  `week` int NOT NULL,
-  `title` varchar(255) COLLATE utf8mb4_general_ci NOT NULL,
-  `description` longtext COLLATE utf8mb4_general_ci NOT NULL,
-  `image` varchar(255) COLLATE utf8mb4_general_ci NOT NULL,
+  `id` int(11) NOT NULL,
+  `week` int(11) NOT NULL,
+  `title` varchar(255) NOT NULL,
+  `description` longtext NOT NULL,
+  `image` varchar(255) NOT NULL,
   `createdAt` datetime NOT NULL,
   `updatedAt` datetime DEFAULT NULL,
   PRIMARY KEY (`id`)
@@ -398,17 +400,17 @@ DROP TABLE IF EXISTS `baby_sleep`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `baby_sleep` (
-  `id` int NOT NULL AUTO_INCREMENT,
-  `baby_id` int unsigned DEFAULT NULL,
-  `start_time` varchar(255) COLLATE utf8mb4_general_ci DEFAULT NULL,
-  `end_time` varchar(255) COLLATE utf8mb4_general_ci DEFAULT NULL,
-  `total_duration` varchar(255) COLLATE utf8mb4_general_ci DEFAULT NULL,
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `baby_id` int(10) unsigned DEFAULT NULL,
+  `start_time` varchar(255) DEFAULT NULL,
+  `end_time` varchar(255) DEFAULT NULL,
+  `total_duration` varchar(255) DEFAULT NULL,
   `createdAt` datetime DEFAULT NULL,
   `updatedAt` datetime DEFAULT NULL,
   PRIMARY KEY (`id`),
   KEY `FK_1` (`baby_id`),
   CONSTRAINT `FK_9` FOREIGN KEY (`baby_id`) REFERENCES `baby_list` (`id`) ON DELETE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=20 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=18 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -417,7 +419,7 @@ CREATE TABLE `baby_sleep` (
 
 LOCK TABLES `baby_sleep` WRITE;
 /*!40000 ALTER TABLE `baby_sleep` DISABLE KEYS */;
-INSERT INTO `baby_sleep` VALUES (14,27,'2023-11-01T20:00:00Z','2023-11-01T22:00:00Z','2 hours','2023-11-29 11:47:21','2023-11-29 11:47:21'),(15,27,'2023-11-01T20:00:00Z','2023-11-01T22:00:00Z','2 hours','2023-12-01 16:52:31','2023-12-01 16:52:31'),(16,23,'2023-11-01T20:00:00Z','2023-11-01T22:00:00Z','2 hours','2023-12-01 16:52:41','2023-12-01 16:52:41'),(17,27,'2023-11-01','2023-11-01','2 hours','2023-12-01 16:53:40','2023-12-01 16:53:40'),(18,23,'2024-02-25T03:17:14.832933','2024-02-25T03:18:45.897586','4.06 min','2024-02-24 21:18:47','2024-02-24 21:18:47'),(19,27,'2023-11-01','2023-11-01','2 hours','2024-02-24 21:21:44','2024-02-24 21:21:44');
+INSERT INTO `baby_sleep` VALUES (14,27,'2023-11-01T20:00:00Z','2023-11-01T22:00:00Z','2 hours','2023-11-29 11:47:21','2023-11-29 11:47:21'),(15,27,'2023-11-01T20:00:00Z','2023-11-01T22:00:00Z','2 hours','2023-12-01 16:52:31','2023-12-01 16:52:31'),(16,23,'2023-11-01T20:00:00Z','2023-11-01T22:00:00Z','2 hours','2023-12-01 16:52:41','2023-12-01 16:52:41'),(17,27,'2023-11-01','2023-11-01','2 hours','2023-12-01 16:53:40','2023-12-01 16:53:40');
 /*!40000 ALTER TABLE `baby_sleep` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -429,15 +431,15 @@ DROP TABLE IF EXISTS `baby_symptoms`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `baby_symptoms` (
-  `id` int NOT NULL AUTO_INCREMENT,
-  `status` varchar(255) COLLATE utf8mb4_general_ci NOT NULL,
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `status` varchar(255) NOT NULL,
   `createdAt` datetime NOT NULL,
   `updatedAt` datetime DEFAULT NULL,
-  `baby_id` int unsigned NOT NULL,
+  `baby_id` int(10) unsigned NOT NULL,
   PRIMARY KEY (`id`),
   KEY `FK_1` (`baby_id`),
   CONSTRAINT `FK_7` FOREIGN KEY (`baby_id`) REFERENCES `baby_list` (`id`) ON DELETE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=34 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=30 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -446,7 +448,7 @@ CREATE TABLE `baby_symptoms` (
 
 LOCK TABLES `baby_symptoms` WRITE;
 /*!40000 ALTER TABLE `baby_symptoms` DISABLE KEYS */;
-INSERT INTO `baby_symptoms` VALUES (24,'cough adsf ad adfa dfa ads ads asdf afdaf asdf a af asf asf ','2023-11-28 17:12:01','2023-11-28 17:12:01',23),(25,'cough adsf ad adfa dfa ads ads asdf afdaf asdf a af asf asfsdfadsfadsf aeafsdf ','2023-11-28 17:12:08','2023-11-28 17:12:08',23),(27,'cough adsf ad adfa dfa ads ads asdf afdaf asdf a af asf asfsdfadsfadsf aeafsdf ','2023-11-29 11:46:25','2023-11-29 11:46:25',27),(28,'cough adsffsdfadsfadsf aeafsdf ','2023-11-29 11:46:57','2023-11-29 11:46:57',27),(29,'cough adsffsd--------------------fadsfadsf aeafsdf ','2023-11-29 11:47:45','2023-11-29 11:47:45',27),(30,'Low Energy','2024-02-24 20:07:52','2024-02-24 20:07:52',23),(31,'Fever','2024-02-24 20:11:15','2024-02-24 20:11:15',23),(32,'arman','2024-02-24 20:13:00','2024-02-24 20:13:00',27),(33,'Rush','2024-02-24 20:13:39','2024-02-24 20:13:39',23);
+INSERT INTO `baby_symptoms` VALUES (24,'cough adsf ad adfa dfa ads ads asdf afdaf asdf a af asf asf ','2023-11-28 17:12:01','2023-11-28 17:12:01',23),(25,'cough adsf ad adfa dfa ads ads asdf afdaf asdf a af asf asfsdfadsfadsf aeafsdf ','2023-11-28 17:12:08','2023-11-28 17:12:08',23),(27,'cough adsf ad adfa dfa ads ads asdf afdaf asdf a af asf asfsdfadsfadsf aeafsdf ','2023-11-29 11:46:25','2023-11-29 11:46:25',27),(28,'cough adsffsdfadsfadsf aeafsdf ','2023-11-29 11:46:57','2023-11-29 11:46:57',27),(29,'cough adsffsd--------------------fadsfadsf aeafsdf ','2023-11-29 11:47:45','2023-11-29 11:47:45',27);
 /*!40000 ALTER TABLE `baby_symptoms` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -458,10 +460,10 @@ DROP TABLE IF EXISTS `baby_temperature`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `baby_temperature` (
-  `id` int NOT NULL AUTO_INCREMENT,
-  `baby_id` int unsigned DEFAULT NULL,
-  `temp_celsius` varchar(255) COLLATE utf8mb4_general_ci DEFAULT NULL,
-  `temp_fahrenheit` varchar(255) COLLATE utf8mb4_general_ci DEFAULT NULL,
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `baby_id` int(10) unsigned DEFAULT NULL,
+  `temp_celsius` varchar(255) DEFAULT NULL,
+  `temp_fahrenheit` varchar(255) DEFAULT NULL,
   `createdAt` datetime DEFAULT NULL,
   `updatedAt` datetime DEFAULT NULL,
   PRIMARY KEY (`id`),
@@ -487,10 +489,10 @@ DROP TABLE IF EXISTS `blog_categories`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `blog_categories` (
-  `id` int NOT NULL AUTO_INCREMENT,
-  `order` int DEFAULT NULL,
-  `name` varchar(2555) COLLATE utf8mb4_general_ci DEFAULT NULL,
-  `image` varchar(45) COLLATE utf8mb4_general_ci DEFAULT NULL,
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `order` int(11) DEFAULT NULL,
+  `name` varchar(2555) DEFAULT NULL,
+  `image` varchar(45) DEFAULT NULL,
   `createdAt` datetime DEFAULT NULL,
   `updatedAt` datetime DEFAULT NULL,
   PRIMARY KEY (`id`)
@@ -515,12 +517,12 @@ DROP TABLE IF EXISTS `blogs`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `blogs` (
-  `id` int NOT NULL AUTO_INCREMENT,
-  `order` int DEFAULT '0',
-  `title` longtext COLLATE utf8mb4_general_ci,
-  `category` int DEFAULT NULL,
-  `description` longtext COLLATE utf8mb4_general_ci,
-  `image` varchar(255) COLLATE utf8mb4_general_ci DEFAULT NULL,
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `order` int(11) DEFAULT 0,
+  `title` longtext DEFAULT NULL,
+  `category` int(11) DEFAULT NULL,
+  `description` longtext DEFAULT NULL,
+  `image` varchar(255) DEFAULT NULL,
   `createdAt` datetime DEFAULT NULL,
   `updatedAt` datetime DEFAULT NULL,
   PRIMARY KEY (`id`),
@@ -547,13 +549,13 @@ DROP TABLE IF EXISTS `bp_trackers`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `bp_trackers` (
-  `id` int NOT NULL AUTO_INCREMENT,
-  `arm` enum('right','left') COLLATE utf8mb4_general_ci DEFAULT NULL,
-  `systolic` int DEFAULT NULL,
-  `diastolic` int DEFAULT NULL,
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `arm` enum('right','left') DEFAULT NULL,
+  `systolic` int(11) DEFAULT NULL,
+  `diastolic` int(11) DEFAULT NULL,
   `createdAt` datetime DEFAULT NULL,
   `updatedAt` datetime DEFAULT NULL,
-  `user_id` int unsigned NOT NULL,
+  `user_id` int(10) unsigned NOT NULL,
   PRIMARY KEY (`id`),
   KEY `FK_1` (`user_id`),
   CONSTRAINT `FK_25` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`)
@@ -578,11 +580,11 @@ DROP TABLE IF EXISTS `child_vaccine_remiinders`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `child_vaccine_remiinders` (
-  `id` int NOT NULL AUTO_INCREMENT,
-  `baby_id` int unsigned NOT NULL,
-  `name` varchar(255) COLLATE utf8mb4_general_ci NOT NULL,
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `baby_id` int(10) unsigned NOT NULL,
+  `name` varchar(255) NOT NULL,
   `vaccine_date` datetime NOT NULL,
-  `status` varchar(255) COLLATE utf8mb4_general_ci DEFAULT 'null',
+  `status` varchar(255) DEFAULT 'null',
   `createdAt` datetime NOT NULL,
   `updatedAt` datetime NOT NULL,
   PRIMARY KEY (`id`),
@@ -609,10 +611,10 @@ DROP TABLE IF EXISTS `comments`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `comments` (
-  `id` int NOT NULL AUTO_INCREMENT,
-  `user_id` int NOT NULL,
-  `post_id` int NOT NULL,
-  `content` text COLLATE utf8mb4_general_ci,
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `user_id` int(11) NOT NULL,
+  `post_id` int(11) NOT NULL,
+  `content` text DEFAULT NULL,
   `createdAt` datetime DEFAULT NULL,
   `updatedAt` datetime DEFAULT NULL,
   PRIMARY KEY (`id`)
@@ -637,13 +639,13 @@ DROP TABLE IF EXISTS `daily_reads`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `daily_reads` (
-  `id` int NOT NULL AUTO_INCREMENT,
-  `title` varchar(255) COLLATE utf8mb4_general_ci DEFAULT NULL,
-  `description` longtext COLLATE utf8mb4_general_ci,
-  `image` varchar(255) COLLATE utf8mb4_general_ci DEFAULT NULL,
-  `createdAt` datetime DEFAULT CURRENT_TIMESTAMP,
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `title` varchar(255) DEFAULT NULL,
+  `description` longtext DEFAULT NULL,
+  `image` varchar(255) DEFAULT NULL,
+  `createdAt` datetime DEFAULT current_timestamp(),
   `updatedAt` datetime DEFAULT NULL,
-  `day` int NOT NULL,
+  `day` int(11) NOT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
@@ -666,11 +668,11 @@ DROP TABLE IF EXISTS `daily_tips`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `daily_tips` (
-  `id` int NOT NULL,
-  `day` int DEFAULT NULL,
-  `title` varchar(255) COLLATE utf8mb4_general_ci DEFAULT NULL,
-  `description` longtext COLLATE utf8mb4_general_ci,
-  `image` varchar(255) COLLATE utf8mb4_general_ci DEFAULT NULL,
+  `id` int(11) NOT NULL,
+  `day` int(11) DEFAULT NULL,
+  `title` varchar(255) DEFAULT NULL,
+  `description` longtext DEFAULT NULL,
+  `image` varchar(255) DEFAULT NULL,
   `createdAt` datetime DEFAULT NULL,
   `updatedAt` datetime NOT NULL,
   PRIMARY KEY (`id`)
@@ -694,11 +696,13 @@ DROP TABLE IF EXISTS `device_token`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `device_token` (
-  `id` int NOT NULL,
-  `device_token` varchar(255) COLLATE utf8mb4_general_ci NOT NULL,
-  `user_id` int NOT NULL,
+  `id` int(11) NOT NULL,
+  `device_token` varchar(255) NOT NULL,
+  `user_id` int(11) unsigned NOT NULL,
   `createdAt` datetime NOT NULL,
-  `updatedAt` datetime NOT NULL
+  `updatedAt` datetime NOT NULL,
+  KEY `user_id` (`user_id`),
+  CONSTRAINT `device_token_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -719,13 +723,13 @@ DROP TABLE IF EXISTS `drug_reminder`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `drug_reminder` (
-  `id` int NOT NULL AUTO_INCREMENT,
-  `name` varchar(255) COLLATE utf8mb4_general_ci NOT NULL,
-  `dose` varchar(255) COLLATE utf8mb4_general_ci NOT NULL,
-  `medication_time` varchar(45) COLLATE utf8mb4_general_ci NOT NULL,
-  `reminder_info` longtext COLLATE utf8mb4_general_ci,
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `name` varchar(255) NOT NULL,
+  `dose` varchar(255) NOT NULL,
+  `medication_time` varchar(45) NOT NULL,
+  `reminder_info` longtext DEFAULT NULL,
   `created_at` datetime NOT NULL,
-  `user_id` int unsigned NOT NULL,
+  `user_id` int(10) unsigned NOT NULL,
   PRIMARY KEY (`id`),
   KEY `FK_1` (`user_id`),
   CONSTRAINT `FK_22_1` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`)
@@ -750,10 +754,10 @@ DROP TABLE IF EXISTS `drug_slider`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `drug_slider` (
-  `id` int NOT NULL AUTO_INCREMENT,
-  `title` varchar(255) COLLATE utf8mb4_general_ci NOT NULL,
-  `media` int DEFAULT NULL,
-  `link` varchar(255) COLLATE utf8mb4_general_ci DEFAULT NULL,
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `title` varchar(255) NOT NULL,
+  `media` int(11) DEFAULT NULL,
+  `link` varchar(255) DEFAULT NULL,
   `createdAt` datetime NOT NULL,
   `updatedAt` datetime NOT NULL,
   PRIMARY KEY (`id`),
@@ -780,10 +784,10 @@ DROP TABLE IF EXISTS `exercises`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `exercises` (
-  `id` int NOT NULL,
-  `title` varchar(255) COLLATE utf8mb4_general_ci DEFAULT NULL,
-  `description` longtext COLLATE utf8mb4_general_ci,
-  `image` varchar(255) COLLATE utf8mb4_general_ci DEFAULT NULL,
+  `id` int(11) NOT NULL,
+  `title` varchar(255) DEFAULT NULL,
+  `description` longtext DEFAULT NULL,
+  `image` varchar(255) DEFAULT NULL,
   `createdAt` datetime DEFAULT NULL,
   `updatedAt` datetime DEFAULT NULL,
   PRIMARY KEY (`id`)
@@ -807,22 +811,22 @@ DROP TABLE IF EXISTS `general_setting`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `general_setting` (
-  `id` int NOT NULL AUTO_INCREMENT,
-  `SMTP_HOST` varchar(255) COLLATE utf8mb4_general_ci NOT NULL,
-  `SMTP_PORT` varchar(255) COLLATE utf8mb4_general_ci NOT NULL,
-  `SMTP_EMAIL` varchar(255) COLLATE utf8mb4_general_ci NOT NULL,
-  `SMTP_PASSWORD` varchar(255) COLLATE utf8mb4_general_ci NOT NULL,
-  `FROM_EMAIL` varchar(255) COLLATE utf8mb4_general_ci NOT NULL,
-  `FROM_NAME` varchar(255) COLLATE utf8mb4_general_ci NOT NULL,
-  `native_ad` int NOT NULL,
-  `banner_ad` int NOT NULL,
-  `interstitial_ad` int NOT NULL,
-  `rewarded_ad` int NOT NULL,
-  `app_link` text COLLATE utf8mb4_general_ci NOT NULL,
-  `facebook_url` text COLLATE utf8mb4_general_ci NOT NULL,
-  `youtube_url` text COLLATE utf8mb4_general_ci NOT NULL,
-  `twitter_url` text COLLATE utf8mb4_general_ci NOT NULL,
-  `instagram_url` text COLLATE utf8mb4_general_ci NOT NULL,
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `SMTP_HOST` varchar(255) NOT NULL,
+  `SMTP_PORT` varchar(255) NOT NULL,
+  `SMTP_EMAIL` varchar(255) NOT NULL,
+  `SMTP_PASSWORD` varchar(255) NOT NULL,
+  `FROM_EMAIL` varchar(255) NOT NULL,
+  `FROM_NAME` varchar(255) NOT NULL,
+  `native_ad` int(11) NOT NULL,
+  `banner_ad` int(11) NOT NULL,
+  `interstitial_ad` int(11) NOT NULL,
+  `rewarded_ad` int(11) NOT NULL,
+  `app_link` text NOT NULL,
+  `facebook_url` text NOT NULL,
+  `youtube_url` text NOT NULL,
+  `twitter_url` text NOT NULL,
+  `instagram_url` text NOT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
@@ -844,16 +848,16 @@ DROP TABLE IF EXISTS `help_desk`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `help_desk` (
-  `id` int NOT NULL AUTO_INCREMENT,
-  `user_id` int unsigned DEFAULT NULL,
-  `admin_id` int DEFAULT NULL,
-  `message` varchar(255) COLLATE utf8mb4_general_ci NOT NULL,
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `user_id` int(11) unsigned DEFAULT NULL,
+  `admin_id` int(11) DEFAULT NULL,
+  `message` varchar(255) NOT NULL,
   `createdAt` datetime NOT NULL,
   `updatedAt` datetime NOT NULL,
   PRIMARY KEY (`id`),
   KEY `admin_id` (`admin_id`),
   KEY `user_id` (`user_id`),
-  CONSTRAINT `help_desk_ibfk_1` FOREIGN KEY (`admin_id`) REFERENCES `admins` (`id`),
+  CONSTRAINT `help_desk_ibfk_1` FOREIGN KEY (`admin_id`) REFERENCES `admins` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
   CONSTRAINT `help_desk_ibfk_2` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
@@ -876,12 +880,12 @@ DROP TABLE IF EXISTS `languages`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `languages` (
-  `id` int NOT NULL AUTO_INCREMENT,
-  `name` varchar(50) COLLATE utf8mb4_general_ci NOT NULL,
-  `lang_code` varchar(11) COLLATE utf8mb4_general_ci NOT NULL,
-  `lang_country` varchar(11) COLLATE utf8mb4_general_ci NOT NULL,
-  `country` varchar(255) COLLATE utf8mb4_general_ci NOT NULL,
-  `flag` varchar(255) COLLATE utf8mb4_general_ci NOT NULL,
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `name` varchar(50) NOT NULL,
+  `lang_code` varchar(11) NOT NULL,
+  `lang_country` varchar(11) NOT NULL,
+  `country` varchar(255) NOT NULL,
+  `flag` varchar(255) NOT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
@@ -904,16 +908,16 @@ DROP TABLE IF EXISTS `media`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `media` (
-  `id` int NOT NULL AUTO_INCREMENT,
-  `uploaded_by` varchar(255) COLLATE utf8mb4_general_ci DEFAULT NULL,
-  `file_name` varchar(255) COLLATE utf8mb4_general_ci DEFAULT NULL,
-  `file_path` varchar(255) COLLATE utf8mb4_general_ci DEFAULT NULL,
-  `file_type` varchar(255) COLLATE utf8mb4_general_ci DEFAULT NULL,
-  `mime_type` varchar(255) COLLATE utf8mb4_general_ci DEFAULT NULL,
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `uploaded_by` varchar(255) DEFAULT NULL,
+  `file_name` varchar(255) DEFAULT NULL,
+  `file_path` varchar(255) DEFAULT NULL,
+  `file_type` varchar(255) DEFAULT NULL,
+  `mime_type` varchar(255) DEFAULT NULL,
   `createdAt` datetime DEFAULT NULL,
   `updatedAt` datetime NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=81 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=113 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -922,7 +926,7 @@ CREATE TABLE `media` (
 
 LOCK TABLES `media` WRITE;
 /*!40000 ALTER TABLE `media` DISABLE KEYS */;
-INSERT INTO `media` VALUES (51,'rumon0','post_images-rumon0-1707311132468.jpg','public/uploads/post/post_images-rumon0-1707311132468.jpg','jpg','image/jpeg','2024-02-07 13:05:32','2024-02-07 13:05:32'),(52,'rumon0','post_images-rumon0-1707311132488.jpg','public/uploads/post/post_images-rumon0-1707311132488.jpg','jpg','image/jpeg','2024-02-07 13:05:32','2024-02-07 13:05:32'),(53,'rumon0','post_images-rumon0-1707311232121.jpg','public/uploads/post/post_images-rumon0-1707311232121.jpg','jpg','image/jpeg','2024-02-07 13:07:12','2024-02-07 13:07:12'),(54,'rumon0','post_images-rumon0-1707311232127.jpg','public/uploads/post/post_images-rumon0-1707311232127.jpg','jpg','image/jpeg','2024-02-07 13:07:12','2024-02-07 13:07:12'),(55,'rumon0','post_images-rumon0-1707311524163.jpg','public/uploads/post/post_images-rumon0-1707311524163.jpg','jpg','image/jpeg','2024-02-07 13:12:04','2024-02-07 13:12:04'),(56,'rumon0','post_images-rumon0-1707311524170.jpg','public/uploads/post/post_images-rumon0-1707311524170.jpg','jpg','image/jpeg','2024-02-07 13:12:04','2024-02-07 13:12:04'),(57,'rumon0','post_images-rumon0-1707311755073.jpg','public/uploads/post/post_images-rumon0-1707311755073.jpg','jpg','image/jpeg','2024-02-07 13:15:55','2024-02-07 13:15:55'),(58,'rumon0','post_images-rumon0-1707311755078.jpg','public/uploads/post/post_images-rumon0-1707311755078.jpg','jpg','image/jpeg','2024-02-07 13:15:55','2024-02-07 13:15:55'),(64,'rumonkh','admin_image_field-rumonkh-1707406231775.jpg','public/uploads/admin/admin_image_field-rumonkh-1707406231775.jpg','jpg','image/jpeg','2024-02-08 15:30:31','2024-02-08 15:30:31'),(65,'shapla','baby_image_field-shapla-1708508688021.png','public/uploads/user/baby_image_field-shapla-1708508688021.png','png','image/png','2024-02-21 09:44:48','2024-02-21 09:44:48'),(66,'shapla','baby_image_field-shapla-1708508756140.png','public/uploads/user/baby_image_field-shapla-1708508756140.png','png','image/png','2024-02-21 09:45:56','2024-02-21 09:45:56'),(67,'shapla','baby_image_field-shapla-1708508772997.png','public/uploads/user/baby_image_field-shapla-1708508772997.png','png','image/png','2024-02-21 09:46:13','2024-02-21 09:46:13'),(68,'shapla','baby_image_field-shapla-1708508962048.png','public/uploads/user/baby_image_field-shapla-1708508962048.png','png','image/png','2024-02-21 09:49:22','2024-02-21 09:49:22'),(69,'shapla','baby_image_field-shapla-1708509001306.png','public/uploads/user/baby_image_field-shapla-1708509001306.png','png','image/png','2024-02-21 09:50:01','2024-02-21 09:50:01'),(70,'shapla','baby_image_field-shapla-1708509083318.png','public/uploads/user/baby_image_field-shapla-1708509083318.png','png','image/png','2024-02-21 09:51:23','2024-02-21 09:51:23'),(71,'shapla','baby_image_field-shapla-1708509097522.png','public/uploads/user/baby_image_field-shapla-1708509097522.png','png','image/png','2024-02-21 09:51:37','2024-02-21 09:51:37'),(72,'shapla','baby_image_field-shapla-1708509118902.png','public/uploads/user/baby_image_field-shapla-1708509118902.png','png','image/png','2024-02-21 09:51:58','2024-02-21 09:51:58'),(73,'shapla','baby_image_field-shapla-1708509164246.png','public/uploads/user/baby_image_field-shapla-1708509164246.png','png','image/png','2024-02-21 09:52:44','2024-02-21 09:52:44'),(74,'shapla','baby_image_field-shapla-1708509187140.png','public/uploads/user/baby_image_field-shapla-1708509187140.png','png','image/png','2024-02-21 09:53:07','2024-02-21 09:53:07'),(75,'shapla','baby_image_field-shapla-1708509276193.png','public/uploads/user/baby_image_field-shapla-1708509276193.png','png','image/png','2024-02-21 09:54:36','2024-02-21 09:54:36'),(76,'shapla','baby_image_field-shapla-1708509317748.png','public/uploads/user/baby_image_field-shapla-1708509317748.png','png','image/png','2024-02-21 09:55:17','2024-02-21 09:55:17'),(77,'shapla','user_image_field-shapla-1708684609250.png','public/uploads/user/user_image_field-shapla-1708684609250.png','png','image/png','2024-02-23 10:36:49','2024-02-23 10:36:49'),(78,'rumonkh','user_image_field-rumonkh-1708790924434.jpg','public/uploads/user/user_image_field-rumonkh-1708790924434.jpg','jpg','image/jpeg','2024-02-24 16:08:44','2024-02-24 16:08:44'),(79,'rumonkh','user_image_field-rumonkh-1708790978847.jpg','public/uploads/user/user_image_field-rumonkh-1708790978847.jpg','jpg','image/jpeg','2024-02-24 16:09:38','2024-02-24 16:09:38'),(80,'rumonkh','user_image_field-rumonkh-1708805545330.jpg','public/uploads/user/user_image_field-rumonkh-1708805545330.jpg','jpg','image/jpeg','2024-02-24 20:12:25','2024-02-24 20:12:25');
+INSERT INTO `media` VALUES (51,'rumon0','post_images-rumon0-1707311132468.jpg','public/uploads/post/post_images-rumon0-1707311132468.jpg','jpg','image/jpeg','2024-02-07 13:05:32','2024-02-07 13:05:32'),(52,'rumon0','post_images-rumon0-1707311132488.jpg','public/uploads/post/post_images-rumon0-1707311132488.jpg','jpg','image/jpeg','2024-02-07 13:05:32','2024-02-07 13:05:32'),(53,'rumon0','post_images-rumon0-1707311232121.jpg','public/uploads/post/post_images-rumon0-1707311232121.jpg','jpg','image/jpeg','2024-02-07 13:07:12','2024-02-07 13:07:12'),(54,'rumon0','post_images-rumon0-1707311232127.jpg','public/uploads/post/post_images-rumon0-1707311232127.jpg','jpg','image/jpeg','2024-02-07 13:07:12','2024-02-07 13:07:12'),(55,'rumon0','post_images-rumon0-1707311524163.jpg','public/uploads/post/post_images-rumon0-1707311524163.jpg','jpg','image/jpeg','2024-02-07 13:12:04','2024-02-07 13:12:04'),(56,'rumon0','post_images-rumon0-1707311524170.jpg','public/uploads/post/post_images-rumon0-1707311524170.jpg','jpg','image/jpeg','2024-02-07 13:12:04','2024-02-07 13:12:04'),(57,'rumon0','post_images-rumon0-1707311755073.jpg','public/uploads/post/post_images-rumon0-1707311755073.jpg','jpg','image/jpeg','2024-02-07 13:15:55','2024-02-07 13:15:55'),(58,'rumon0','post_images-rumon0-1707311755078.jpg','public/uploads/post/post_images-rumon0-1707311755078.jpg','jpg','image/jpeg','2024-02-07 13:15:55','2024-02-07 13:15:55'),(64,'rumonkh','admin_image_field-rumonkh-1707406231775.jpg','public/uploads/admin/admin_image_field-rumonkh-1707406231775.jpg','jpg','image/jpeg','2024-02-08 15:30:31','2024-02-08 15:30:31'),(65,'shapla','baby_image_field-shapla-1708508688021.png','public/uploads/user/baby_image_field-shapla-1708508688021.png','png','image/png','2024-02-21 09:44:48','2024-02-21 09:44:48'),(66,'shapla','baby_image_field-shapla-1708508756140.png','public/uploads/user/baby_image_field-shapla-1708508756140.png','png','image/png','2024-02-21 09:45:56','2024-02-21 09:45:56'),(67,'shapla','baby_image_field-shapla-1708508772997.png','public/uploads/user/baby_image_field-shapla-1708508772997.png','png','image/png','2024-02-21 09:46:13','2024-02-21 09:46:13'),(68,'shapla','baby_image_field-shapla-1708508962048.png','public/uploads/user/baby_image_field-shapla-1708508962048.png','png','image/png','2024-02-21 09:49:22','2024-02-21 09:49:22'),(69,'shapla','baby_image_field-shapla-1708509001306.png','public/uploads/user/baby_image_field-shapla-1708509001306.png','png','image/png','2024-02-21 09:50:01','2024-02-21 09:50:01'),(70,'shapla','baby_image_field-shapla-1708509083318.png','public/uploads/user/baby_image_field-shapla-1708509083318.png','png','image/png','2024-02-21 09:51:23','2024-02-21 09:51:23'),(71,'shapla','baby_image_field-shapla-1708509097522.png','public/uploads/user/baby_image_field-shapla-1708509097522.png','png','image/png','2024-02-21 09:51:37','2024-02-21 09:51:37'),(72,'shapla','baby_image_field-shapla-1708509118902.png','public/uploads/user/baby_image_field-shapla-1708509118902.png','png','image/png','2024-02-21 09:51:58','2024-02-21 09:51:58'),(73,'shapla','baby_image_field-shapla-1708509164246.png','public/uploads/user/baby_image_field-shapla-1708509164246.png','png','image/png','2024-02-21 09:52:44','2024-02-21 09:52:44'),(74,'shapla','baby_image_field-shapla-1708509187140.png','public/uploads/user/baby_image_field-shapla-1708509187140.png','png','image/png','2024-02-21 09:53:07','2024-02-21 09:53:07'),(75,'shapla','baby_image_field-shapla-1708509276193.png','public/uploads/user/baby_image_field-shapla-1708509276193.png','png','image/png','2024-02-21 09:54:36','2024-02-21 09:54:36'),(76,'shapla','baby_image_field-shapla-1708509317748.png','public/uploads/user/baby_image_field-shapla-1708509317748.png','png','image/png','2024-02-21 09:55:17','2024-02-21 09:55:17'),(77,'shapla','user_image_field-shapla-1708684609250.png','public/uploads/user/user_image_field-shapla-1708684609250.png','png','image/png','2024-02-23 10:36:49','2024-02-23 10:36:49'),(78,'rumonkh','user_image_field-rumonkh-1708790924434.jpg','public/uploads/user/user_image_field-rumonkh-1708790924434.jpg','jpg','image/jpeg','2024-02-24 16:08:44','2024-02-24 16:08:44'),(79,'rumonkh','user_image_field-rumonkh-1708790978847.jpg','public/uploads/user/user_image_field-rumonkh-1708790978847.jpg','jpg','image/jpeg','2024-02-24 16:09:38','2024-02-24 16:09:38'),(80,NULL,'admin_up-admin-1708858123544.jpg','public/uploads/admins/admin_up-admin-1708858123544.jpg','jpg','image/jpeg','2024-02-25 10:48:43','2024-02-25 10:48:43'),(81,NULL,'admin_up-admin-1708858180678.jpg','public/uploads/admins/admin_up-admin-1708858180678.jpg','jpg','image/jpeg','2024-02-25 10:49:40','2024-02-25 10:49:40'),(82,NULL,'admin_up-admin-1708858326835.jpg','public/uploads/admins/admin_up-admin-1708858326835.jpg','jpg','image/jpeg','2024-02-25 10:52:06','2024-02-25 10:52:06'),(83,NULL,'admin_up-admin-1708860961564.jpg','public/uploads/admins/admin_up-admin-1708860961564.jpg','jpg','image/jpeg','2024-02-25 11:36:01','2024-02-25 11:36:01'),(84,NULL,'admin_up-admin-1708861403669.jpg','public/uploads/admins/admin_up-admin-1708861403669.jpg','jpg','image/jpeg','2024-02-25 11:43:23','2024-02-25 11:43:23'),(85,NULL,'admin_up-admin-1708861521574.jpg','public/uploads/admins/admin_up-admin-1708861521574.jpg','jpg','image/jpeg','2024-02-25 11:45:21','2024-02-25 11:45:21'),(86,NULL,'admin_up-admin-1708861555223.jpg','public/uploads/admins/admin_up-admin-1708861555223.jpg','jpg','image/jpeg','2024-02-25 11:45:55','2024-02-25 11:45:55'),(87,NULL,'admin_up-admin-1708861650791.jpg','public/uploads/admins/admin_up-admin-1708861650791.jpg','jpg','image/jpeg','2024-02-25 11:47:30','2024-02-25 11:47:30'),(88,NULL,'admin_up-admin-1708861894487.jpg','public/uploads/admins/admin_up-admin-1708861894487.jpg','jpg','image/jpeg','2024-02-25 11:51:34','2024-02-25 11:51:34'),(89,NULL,'admin_up-admin-1708861947716.jpg','public/uploads/admins/admin_up-admin-1708861947716.jpg','jpg','image/jpeg','2024-02-25 11:52:27','2024-02-25 11:52:27'),(90,NULL,'admin_up-admin-1708862114622.jpg','public/uploads/admins/admin_up-admin-1708862114622.jpg','jpg','image/jpeg','2024-02-25 11:55:14','2024-02-25 11:55:14'),(91,NULL,'admin_up-admin-1708862131065.jpg','public/uploads/admins/admin_up-admin-1708862131065.jpg','jpg','image/jpeg','2024-02-25 11:55:31','2024-02-25 11:55:31'),(92,NULL,'admin_up-admin-1708862246898.jpg','public/uploads/admins/admin_up-admin-1708862246898.jpg','jpg','image/jpeg','2024-02-25 11:57:26','2024-02-25 11:57:26'),(93,NULL,'admin_up-admin-1708862898449.jpg','public/uploads/admins/admin_up-admin-1708862898449.jpg','jpg','image/jpeg','2024-02-25 12:08:18','2024-02-25 12:08:18'),(94,NULL,'admin_up-admin-1708863044258.jpg','public/uploads/admins/admin_up-admin-1708863044258.jpg','jpg','image/jpeg','2024-02-25 12:10:44','2024-02-25 12:10:44'),(95,NULL,'admin_up-admin-1708864320916.jpg','public/uploads/admins/admin_up-admin-1708864320916.jpg','jpg','image/jpeg','2024-02-25 12:32:00','2024-02-25 12:32:00'),(96,NULL,'admin_up-admin-1708864639070.jpg','public/uploads/admins/admin_up-admin-1708864639070.jpg','jpg','image/jpeg','2024-02-25 12:37:19','2024-02-25 12:37:19'),(97,NULL,'admin_up-admin-1708864650801.jpg','public/uploads/admins/admin_up-admin-1708864650801.jpg','jpg','image/jpeg','2024-02-25 12:37:30','2024-02-25 12:37:30'),(98,NULL,'admin_up-admin-1708865070494.jpg','public/uploads/admins/admin_up-admin-1708865070494.jpg','jpg','image/jpeg','2024-02-25 12:44:30','2024-02-25 12:44:30'),(99,NULL,'admin_up-admin-1708865170710.jpg','public/uploads/admins/admin_up-admin-1708865170710.jpg','jpg','image/jpeg','2024-02-25 12:46:10','2024-02-25 12:46:10'),(100,NULL,'admin_up-admin-1708865267001.jpg','public/uploads/admins/admin_up-admin-1708865267001.jpg','jpg','image/jpeg','2024-02-25 12:47:47','2024-02-25 12:47:47'),(101,NULL,'admin_up-admin-1708866285767.jpg','public/uploads/admins/admin_up-admin-1708866285767.jpg','jpg','image/jpeg','2024-02-25 13:04:45','2024-02-25 13:04:45'),(102,NULL,'admin_up-admin-1708866394949.jpg','public/uploads/admins/admin_up-admin-1708866394949.jpg','jpg','image/jpeg','2024-02-25 13:06:35','2024-02-25 13:06:35'),(103,NULL,'admin_up-admin-1708866478174.jpg','public/uploads/admins/admin_up-admin-1708866478174.jpg','jpg','image/jpeg','2024-02-25 13:07:58','2024-02-25 13:07:58'),(104,NULL,'admin_up-admin-1708868239791.jpg','public/uploads/admins/admin_up-admin-1708868239791.jpg','jpg','image/jpeg','2024-02-25 13:37:19','2024-02-25 13:37:19'),(105,NULL,'admin_up-admin-1708868248898.jpg','public/uploads/admins/admin_up-admin-1708868248898.jpg','jpg','image/jpeg','2024-02-25 13:37:28','2024-02-25 13:37:28'),(106,NULL,'admin_up-admin-1708868380048.jpg','public/uploads/admins/admin_up-admin-1708868380048.jpg','jpg','image/jpeg','2024-02-25 13:39:40','2024-02-25 13:39:40'),(107,NULL,'admin_up-admin-1708868588444.jpg','public/uploads/admins/admin_up-admin-1708868588444.jpg','jpg','image/jpeg','2024-02-25 13:43:08','2024-02-25 13:43:08'),(108,NULL,'admin_up-admin-1708870663422.jpg','public/uploads/admins/admin_up-admin-1708870663422.jpg','jpg','image/jpeg','2024-02-25 14:17:43','2024-02-25 14:17:43'),(109,NULL,'admin_up-admin-1708870670290.jpg','public/uploads/admins/admin_up-admin-1708870670290.jpg','jpg','image/jpeg','2024-02-25 14:17:50','2024-02-25 14:17:50'),(110,NULL,'admin_up-admin-1708870970351.jpg','public/uploads/admins/admin_up-admin-1708870970351.jpg','jpg','image/jpeg','2024-02-25 14:22:50','2024-02-25 14:22:50'),(111,NULL,'admin_up-admin-1708871062098.jpg','public/uploads/admins/admin_up-admin-1708871062098.jpg','jpg','image/jpeg','2024-02-25 14:24:22','2024-02-25 14:24:22'),(112,NULL,'admin_up-admin-1708874241619.jpg','public/uploads/admins/admin_up-admin-1708874241619.jpg','jpg','image/jpeg','2024-02-25 15:17:21','2024-02-25 15:17:21');
 /*!40000 ALTER TABLE `media` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -934,10 +938,10 @@ DROP TABLE IF EXISTS `module`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `module` (
-  `id` int NOT NULL AUTO_INCREMENT,
-  `name` varchar(255) COLLATE utf8mb4_general_ci NOT NULL,
-  `status` varchar(1) COLLATE utf8mb4_general_ci NOT NULL,
-  `slug` varchar(255) COLLATE utf8mb4_general_ci NOT NULL,
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `name` varchar(255) NOT NULL,
+  `status` varchar(1) NOT NULL,
+  `slug` varchar(255) NOT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
@@ -959,9 +963,9 @@ DROP TABLE IF EXISTS `mother_activity`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `mother_activity` (
-  `id` int NOT NULL AUTO_INCREMENT,
-  `user_id` int unsigned NOT NULL,
-  `activity` varchar(255) COLLATE utf8mb4_general_ci NOT NULL,
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `user_id` int(10) unsigned NOT NULL,
+  `activity` varchar(255) NOT NULL,
   `createdAt` datetime NOT NULL,
   `updatedAt` datetime NOT NULL,
   PRIMARY KEY (`id`),
@@ -988,10 +992,10 @@ DROP TABLE IF EXISTS `mother_mood_trackers`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `mother_mood_trackers` (
-  `id` int NOT NULL AUTO_INCREMENT,
-  `user_id` int unsigned NOT NULL,
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `user_id` int(10) unsigned NOT NULL,
   `mood_time` datetime NOT NULL,
-  `current_mood` varchar(255) COLLATE utf8mb4_general_ci NOT NULL,
+  `current_mood` varchar(255) NOT NULL,
   `createdAt` datetime NOT NULL,
   `updatedAt` datetime NOT NULL,
   PRIMARY KEY (`id`),
@@ -1018,11 +1022,11 @@ DROP TABLE IF EXISTS `mother_progress_timeline`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `mother_progress_timeline` (
-  `id` int NOT NULL,
-  `week` int NOT NULL,
-  `title` varchar(255) COLLATE utf8mb4_general_ci NOT NULL,
-  `description` longtext COLLATE utf8mb4_general_ci NOT NULL,
-  `image` varchar(255) COLLATE utf8mb4_general_ci NOT NULL,
+  `id` int(11) NOT NULL,
+  `week` int(11) NOT NULL,
+  `title` varchar(255) NOT NULL,
+  `description` longtext NOT NULL,
+  `image` varchar(255) NOT NULL,
   `createdAt` datetime DEFAULT NULL,
   `updatedAt` datetime DEFAULT NULL,
   PRIMARY KEY (`id`)
@@ -1047,9 +1051,9 @@ DROP TABLE IF EXISTS `mother_vaccine_reminders`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `mother_vaccine_reminders` (
-  `id` int NOT NULL AUTO_INCREMENT,
-  `user_id` int unsigned NOT NULL,
-  `name` varchar(255) COLLATE utf8mb4_general_ci DEFAULT NULL,
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `user_id` int(10) unsigned NOT NULL,
+  `name` varchar(255) DEFAULT NULL,
   `vaccine_date` datetime DEFAULT NULL,
   `createdAt` datetime NOT NULL,
   `updatedAt` datetime DEFAULT NULL,
@@ -1077,12 +1081,12 @@ DROP TABLE IF EXISTS `notes`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `notes` (
-  `id` int NOT NULL AUTO_INCREMENT,
-  `user_id` int unsigned NOT NULL,
-  `title` varchar(255) COLLATE utf8mb4_general_ci NOT NULL,
-  `description` longtext COLLATE utf8mb4_general_ci NOT NULL,
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `user_id` int(10) unsigned NOT NULL,
+  `title` varchar(255) NOT NULL,
+  `description` longtext NOT NULL,
   `deadline` datetime DEFAULT NULL,
-  `status` int NOT NULL DEFAULT '0',
+  `status` int(11) NOT NULL DEFAULT 0,
   `createdAt` datetime NOT NULL,
   `updatedAt` datetime NOT NULL,
   PRIMARY KEY (`id`),
@@ -1108,11 +1112,11 @@ DROP TABLE IF EXISTS `pages`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `pages` (
-  `id` int NOT NULL AUTO_INCREMENT,
-  `title` int NOT NULL,
-  `description` text COLLATE utf8mb4_general_ci NOT NULL,
-  `image` int DEFAULT NULL,
-  `status` varchar(1) COLLATE utf8mb4_general_ci DEFAULT '1',
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `title` int(11) NOT NULL,
+  `description` text NOT NULL,
+  `image` int(11) DEFAULT NULL,
+  `status` varchar(1) DEFAULT '1',
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
@@ -1134,8 +1138,8 @@ DROP TABLE IF EXISTS `postmedia`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `postmedia` (
-  `post_id` int NOT NULL,
-  `media_id` int NOT NULL,
+  `post_id` int(11) NOT NULL,
+  `media_id` int(11) NOT NULL,
   PRIMARY KEY (`post_id`,`media_id`),
   KEY `media_id` (`media_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
@@ -1159,16 +1163,16 @@ DROP TABLE IF EXISTS `postnatal_visit`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `postnatal_visit` (
-  `id` int NOT NULL AUTO_INCREMENT,
-  `user_id` int unsigned NOT NULL,
-  `visit_type` varchar(255) COLLATE utf8mb4_general_ci NOT NULL,
-  `doctor_name` varchar(255) COLLATE utf8mb4_general_ci NOT NULL,
-  `visit_no` int NOT NULL,
-  `hospital_address` varchar(255) COLLATE utf8mb4_general_ci NOT NULL,
-  `receptionist` varchar(255) COLLATE utf8mb4_general_ci NOT NULL,
-  `mobile` int NOT NULL,
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `user_id` int(10) unsigned NOT NULL,
+  `visit_type` varchar(255) NOT NULL,
+  `doctor_name` varchar(255) NOT NULL,
+  `visit_no` int(11) NOT NULL,
+  `hospital_address` varchar(255) NOT NULL,
+  `receptionist` varchar(255) NOT NULL,
+  `mobile` int(20) NOT NULL,
   `visit_date` datetime NOT NULL,
-  `remarks` varchar(255) COLLATE utf8mb4_general_ci NOT NULL,
+  `remarks` varchar(255) NOT NULL,
   `updatedAt` datetime NOT NULL,
   `createdAt` datetime NOT NULL,
   PRIMARY KEY (`id`),
@@ -1195,11 +1199,11 @@ DROP TABLE IF EXISTS `posts`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `posts` (
-  `id` int NOT NULL AUTO_INCREMENT,
-  `user_id` int NOT NULL,
-  `title` varchar(255) COLLATE utf8mb4_general_ci DEFAULT NULL,
-  `content` text COLLATE utf8mb4_general_ci,
-  `published` int NOT NULL DEFAULT '0',
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `user_id` int(11) NOT NULL,
+  `title` varchar(255) DEFAULT NULL,
+  `content` text DEFAULT NULL,
+  `published` int(1) NOT NULL DEFAULT 0,
   `published_date` datetime DEFAULT NULL,
   `updatedAt` datetime DEFAULT NULL,
   `createdAt` datetime DEFAULT NULL,
@@ -1225,11 +1229,11 @@ DROP TABLE IF EXISTS `reactions`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `reactions` (
-  `id` int NOT NULL AUTO_INCREMENT,
-  `type` int DEFAULT NULL,
-  `user_id` int NOT NULL,
-  `post_id` int DEFAULT NULL,
-  `comment_id` int DEFAULT NULL,
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `type` int(11) DEFAULT NULL,
+  `user_id` int(11) NOT NULL,
+  `post_id` int(11) DEFAULT NULL,
+  `comment_id` int(11) DEFAULT NULL,
   `createdAt` datetime DEFAULT NULL,
   `updatedAt` datetime DEFAULT NULL,
   PRIMARY KEY (`id`)
@@ -1254,8 +1258,8 @@ DROP TABLE IF EXISTS `reactiontypes`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `reactiontypes` (
-  `id` int NOT NULL AUTO_INCREMENT,
-  `type_name` varchar(255) COLLATE utf8mb4_general_ci NOT NULL,
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `type_name` varchar(255) NOT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
@@ -1278,10 +1282,10 @@ DROP TABLE IF EXISTS `replies`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `replies` (
-  `id` int NOT NULL AUTO_INCREMENT,
-  `user_id` int NOT NULL,
-  `comment_id` int NOT NULL,
-  `content` text COLLATE utf8mb4_general_ci,
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `user_id` int(11) NOT NULL,
+  `comment_id` int(11) NOT NULL,
+  `content` text DEFAULT NULL,
   `createAt` datetime DEFAULT NULL,
   `updatedAt` datetime DEFAULT NULL,
   PRIMARY KEY (`id`)
@@ -1305,9 +1309,9 @@ DROP TABLE IF EXISTS `roles`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `roles` (
-  `id` int NOT NULL AUTO_INCREMENT,
-  `role` varchar(45) COLLATE utf8mb4_general_ci NOT NULL,
-  `description` varchar(255) COLLATE utf8mb4_general_ci DEFAULT NULL,
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `role` varchar(45) NOT NULL,
+  `description` varchar(255) DEFAULT NULL,
   `createdAt` datetime NOT NULL,
   `updatedAt` datetime NOT NULL,
   PRIMARY KEY (`id`)
@@ -1332,11 +1336,11 @@ DROP TABLE IF EXISTS `tool_mother_baby_kick_counters`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `tool_mother_baby_kick_counters` (
-  `id` int NOT NULL AUTO_INCREMENT,
-  `user_id` int unsigned NOT NULL,
-  `baby_serial` int DEFAULT NULL,
-  `duration` varchar(255) COLLATE utf8mb4_general_ci DEFAULT NULL,
-  `kicks` int DEFAULT NULL,
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `user_id` int(11) unsigned NOT NULL,
+  `baby_serial` int(11) DEFAULT NULL,
+  `duration` varchar(255) DEFAULT NULL,
+  `kicks` int(11) DEFAULT NULL,
   `start_time` datetime DEFAULT NULL,
   `createdAt` datetime DEFAULT NULL,
   `updatedAt` datetime DEFAULT NULL,
@@ -1363,12 +1367,12 @@ DROP TABLE IF EXISTS `tool_mother_contraction_timers`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `tool_mother_contraction_timers` (
-  `id` int NOT NULL AUTO_INCREMENT,
-  `user_id` int unsigned NOT NULL,
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `user_id` int(11) unsigned NOT NULL,
   `start` datetime DEFAULT NULL,
-  `duration` varchar(255) COLLATE utf8mb4_general_ci DEFAULT NULL,
-  `frequency` varchar(255) COLLATE utf8mb4_general_ci DEFAULT NULL,
-  `intensity` varchar(255) COLLATE utf8mb4_general_ci DEFAULT NULL,
+  `duration` varchar(255) DEFAULT NULL,
+  `frequency` varchar(255) DEFAULT NULL,
+  `intensity` varchar(255) DEFAULT NULL,
   `createdAt` datetime NOT NULL,
   `updatedAt` datetime DEFAULT NULL,
   PRIMARY KEY (`id`)
@@ -1393,11 +1397,11 @@ DROP TABLE IF EXISTS `tool_mother_symptoms`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `tool_mother_symptoms` (
-  `id` int NOT NULL AUTO_INCREMENT,
-  `user_id` int NOT NULL,
-  `symptom` varchar(255) COLLATE utf8mb4_general_ci DEFAULT NULL,
-  `intensity` varchar(255) COLLATE utf8mb4_general_ci DEFAULT NULL,
-  `remarks` varchar(255) COLLATE utf8mb4_general_ci DEFAULT NULL,
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `user_id` int(11) NOT NULL,
+  `symptom` varchar(255) DEFAULT NULL,
+  `intensity` varchar(255) DEFAULT NULL,
+  `remarks` varchar(255) DEFAULT NULL,
   `createdAt` datetime DEFAULT NULL,
   `updatedAt` datetime DEFAULT NULL,
   PRIMARY KEY (`id`)
@@ -1422,40 +1426,44 @@ DROP TABLE IF EXISTS `users`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `users` (
-  `id` int unsigned NOT NULL AUTO_INCREMENT,
-  `social_id` varchar(255) COLLATE utf8mb4_general_ci DEFAULT NULL,
-  `username` varchar(255) COLLATE utf8mb4_general_ci NOT NULL,
-  `first_name` varchar(255) COLLATE utf8mb4_general_ci DEFAULT NULL,
-  `last_name` varchar(255) COLLATE utf8mb4_general_ci DEFAULT NULL,
-  `age` int DEFAULT NULL,
-  `gender` int DEFAULT NULL,
-  `photo` varchar(255) COLLATE utf8mb4_general_ci DEFAULT NULL,
-  `social_photo` varchar(255) COLLATE utf8mb4_general_ci DEFAULT NULL,
-  `child_number` int DEFAULT NULL,
+  `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
+  `social_id` varchar(255) DEFAULT NULL,
+  `username` varchar(255) NOT NULL,
+  `first_name` varchar(255) DEFAULT NULL,
+  `last_name` varchar(255) DEFAULT NULL,
+  `age` int(11) DEFAULT NULL,
+  `gender` int(11) DEFAULT NULL,
+  `photo` int(11) DEFAULT NULL,
+  `social_photo` varchar(255) DEFAULT NULL,
+  `child_number` int(11) DEFAULT NULL,
   `edd_date` datetime DEFAULT NULL,
-  `edd_calculation_type` varchar(255) COLLATE utf8mb4_general_ci DEFAULT NULL,
-  `email` varchar(255) COLLATE utf8mb4_general_ci NOT NULL,
-  `password` varchar(255) COLLATE utf8mb4_general_ci DEFAULT NULL,
-  `language` varchar(255) COLLATE utf8mb4_general_ci DEFAULT NULL,
-  `country` varchar(255) COLLATE utf8mb4_general_ci DEFAULT NULL,
-  `pregnancy_loss` int DEFAULT NULL,
+  `edd_calculation_type` varchar(255) DEFAULT NULL,
+  `email` varchar(255) NOT NULL,
+  `password` varchar(255) DEFAULT NULL,
+  `language` varchar(255) DEFAULT NULL,
+  `country` varchar(255) DEFAULT NULL,
+  `pregnancy_loss` int(11) DEFAULT NULL,
   `pregnancy_loss_date` datetime DEFAULT NULL,
-  `baby_already_born` int DEFAULT NULL,
-  `login_type` varchar(255) COLLATE utf8mb4_general_ci NOT NULL COMMENT 'email=1 google=2 facebook=2 twitter=2',
-  `user_type` varchar(255) COLLATE utf8mb4_general_ci NOT NULL DEFAULT 'general_user',
-  `subscription` varchar(255) COLLATE utf8mb4_general_ci NOT NULL DEFAULT 'Free',
-  `password_reset_token` varchar(255) COLLATE utf8mb4_general_ci DEFAULT NULL,
-  `reset_password_expire` varchar(255) COLLATE utf8mb4_general_ci DEFAULT NULL,
-  `confirm_email_token` varchar(255) COLLATE utf8mb4_general_ci DEFAULT NULL,
-  `is_email_confirmed` varchar(45) COLLATE utf8mb4_general_ci DEFAULT '0',
-  `is_profile_complete` varchar(225) COLLATE utf8mb4_general_ci NOT NULL DEFAULT '0',
+  `baby_already_born` int(11) DEFAULT NULL,
+  `login_type` varchar(255) NOT NULL COMMENT 'email=1 google=2 facebook=2 twitter=2',
+  `user_type` varchar(255) NOT NULL DEFAULT 'general_user',
+  `subscription` varchar(255) NOT NULL DEFAULT 'Free',
+  `password_reset_token` varchar(255) DEFAULT NULL,
+  `reset_password_expire` varchar(255) DEFAULT NULL,
+  `confirm_email_token` varchar(255) DEFAULT NULL,
+  `is_email_confirmed` varchar(45) DEFAULT '0',
+  `is_profile_complete` varchar(225) NOT NULL DEFAULT '0',
   `lmp_date` datetime DEFAULT NULL,
+  `deleted` int(11) NOT NULL DEFAULT 0,
+  `deleted_date` datetime DEFAULT NULL,
   `createdAt` datetime NOT NULL,
   `updatedAt` datetime DEFAULT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `username` (`username`),
   UNIQUE KEY `email` (`email`),
-  UNIQUE KEY `social_id` (`social_id`)
+  UNIQUE KEY `social_id` (`social_id`),
+  KEY `users_ibfk_1` (`photo`),
+  CONSTRAINT `users_ibfk_1` FOREIGN KEY (`photo`) REFERENCES `media` (`id`) ON DELETE SET NULL ON UPDATE CASCADE
 ) ENGINE=InnoDB AUTO_INCREMENT=104 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -1465,7 +1473,7 @@ CREATE TABLE `users` (
 
 LOCK TABLES `users` WRITE;
 /*!40000 ALTER TABLE `users` DISABLE KEYS */;
-INSERT INTO `users` VALUES (4,NULL,'mahbub','mela','reza',28,1,'user_photo.jpg',NULL,2,'2023-12-15 00:00:00',NULL,'newuser@email.com1','newPassword','English',NULL,NULL,NULL,1,'email','general_user','free','resetToken123',NULL,NULL,'0','0','2023-01-01 00:00:00','2023-11-26 10:10:11','2023-11-26 10:10:11'),(6,NULL,'hasan','hasu','reza',28,1,'user_photo.jpg',NULL,2,'2023-12-15 00:00:00',NULL,'newuser@1email.com','$2b$10$g2mg/6jNBgvQQ96abgCK7OY5Q1PlETEDs..p9.hyrbSORi4PmeqEe','English',NULL,NULL,NULL,1,'email','general_user','free','$2b$10$anuZk7v.Rbx5CGyV33hMAe1iQzwZG4Nm1mWtOpoWt0pYNrdQUTMje','Tue Nov 28 2023 18:27:38 GMT+0600 (Bangladesh Standard Time)600000',NULL,'0','0','2023-01-01 00:00:00','2023-11-26 10:11:07','2023-11-28 12:29:50'),(7,NULL,'kamal','kalu','reza',28,1,'user_photo.jpg',NULL,2,'2023-12-15 00:00:00',NULL,'new1user@email.com','$2b$10$M5LSsfNStlqUq/XHRL5qS.FsRwSZ3Tsgze.569oFqgum5Q2kTbq3S','English',NULL,NULL,NULL,1,'email','general_user','free','2f1cbc7873708f75f944e1c39831f55cd37e0d5d4d58f900b63c66c6cfd3b286','Sun Nov 26 2023 23:02:41 GMT+0600 (Bangladesh Standard Time)600000',NULL,'0','0','2023-01-01 00:00:00','2023-11-26 10:28:12','2023-11-26 17:03:22'),(9,NULL,'mala','kalu','reza',28,1,'user_photo.jpg',NULL,2,'2023-12-15 00:00:00',NULL,'newuser@email.co1m','000','English',NULL,NULL,NULL,1,'email','general_user','free','resetToken123',NULL,NULL,'0','0','2023-01-01 00:00:00','2023-11-26 10:30:39','2023-11-26 10:30:39'),(10,NULL,'dala','kalu','reza',28,1,'user_photo.jpg',NULL,2,'2023-12-15 00:00:00',NULL,'ne1wuser@email.com','000','English',NULL,NULL,NULL,1,'email','general_user','free','resetToken123',NULL,NULL,'0','0','2023-01-01 00:00:00','2023-11-26 10:33:34','2023-11-26 10:33:34'),(11,NULL,'jala','kalu','reza',28,1,'79',NULL,2,'2023-12-15 00:00:00',NULL,'n1ewuser@email.com','000','English',NULL,NULL,NULL,1,'email','general_user','Premium','resetToken123',NULL,NULL,'0','0','2023-01-01 00:00:00','2023-11-26 10:38:54','2024-02-24 16:09:38'),(12,NULL,'shapla','555','25',25,1,'80',NULL,1,'2023-12-15 00:00:00',NULL,'shapla@email.com','$2b$10$a.2MqcV5L1XlcROdV2dpDOvzO9in9wMCZX2rEWiAPHP9759PgWQx.','Bangla',NULL,NULL,NULL,1,'email','general_user','Free','8d216e62a0af344ecb1efb8a6a43f1101da31e2d5c78a012f94e2a0e0dbf62b3',NULL,NULL,'1','1','2023-01-01 00:00:00','2023-11-26 10:41:15','2024-02-24 21:38:09'),(14,NULL,'golu','kalu','reza',28,1,NULL,NULL,2,'2023-12-15 00:00:00',NULL,'newus2er@email.com','$2b$10$otm.uhl0i4Nm1F4OrxlY7uOF2u4ZDG566JRiYHLHV.gp1aKSznvFm','English',NULL,NULL,NULL,1,'email','general_user','free','resetToken123',NULL,'337bf1c5d6636747cceb47dd1293ac0959f6e7bcddc93f1855b49ce334fe15df','0','0','2023-01-01 00:00:00','2023-11-26 16:51:42','2023-11-26 16:51:42'),(20,NULL,'arman','arman','akt',32,NULL,'78',NULL,NULL,NULL,NULL,'ne2wuser@email.com','$2b$10$SUks2UpGEX5X9n3543kKqeA4MjyDQlID94A2nW4VSLDkOxqBw0rqa','gr','Anguilla',NULL,NULL,0,'','general_user','Free','$2b$10$HM7sJOwaW3H22wUh8158I.SpWrdGyxUwLXbnOmplr2aNQ4BNvQ.EK','Tue Nov 28 2023 23:22:28 GMT+0600 (Bangladesh Standard Time)600000',NULL,'1','0','0000-00-00 00:00:00','2023-11-28 17:22:27','2024-02-24 16:10:02');
+INSERT INTO `users` VALUES (4,NULL,'mahbub','mela','reza',28,1,NULL,NULL,2,'2023-12-15 00:00:00',NULL,'newuser@email.com1','newPassword','English',NULL,NULL,NULL,1,'email','general_user','free','resetToken123',NULL,NULL,'0','0','2023-01-01 00:00:00',0,NULL,'2023-11-26 10:10:11','2023-11-26 10:10:11'),(6,NULL,'hasan','hasu','reza',28,1,NULL,NULL,2,'2023-12-15 00:00:00',NULL,'newuser@1email.com','$2b$10$g2mg/6jNBgvQQ96abgCK7OY5Q1PlETEDs..p9.hyrbSORi4PmeqEe','English',NULL,NULL,NULL,1,'email','general_user','free','$2b$10$anuZk7v.Rbx5CGyV33hMAe1iQzwZG4Nm1mWtOpoWt0pYNrdQUTMje','Tue Nov 28 2023 18:27:38 GMT+0600 (Bangladesh Standard Time)600000',NULL,'0','0','2023-01-01 00:00:00',0,NULL,'2023-11-26 10:11:07','2023-11-28 12:29:50'),(7,NULL,'kamal','kalu','reza',28,1,NULL,NULL,2,'2023-12-15 00:00:00',NULL,'new1user@email.com','$2b$10$M5LSsfNStlqUq/XHRL5qS.FsRwSZ3Tsgze.569oFqgum5Q2kTbq3S','English',NULL,NULL,NULL,1,'email','general_user','free','2f1cbc7873708f75f944e1c39831f55cd37e0d5d4d58f900b63c66c6cfd3b286','Sun Nov 26 2023 23:02:41 GMT+0600 (Bangladesh Standard Time)600000',NULL,'0','0','2023-01-01 00:00:00',0,NULL,'2023-11-26 10:28:12','2023-11-26 17:03:22'),(9,NULL,'mala','kalu','reza',28,1,NULL,NULL,2,'2023-12-15 00:00:00',NULL,'newuser@email.co1m','000','English',NULL,NULL,NULL,1,'email','general_user','free','resetToken123',NULL,NULL,'0','0','2023-01-01 00:00:00',0,NULL,'2023-11-26 10:30:39','2023-11-26 10:30:39'),(10,NULL,'dala','kalu','reza',28,1,NULL,NULL,2,'2023-12-15 00:00:00',NULL,'ne1wuser@email.com','000','English',NULL,NULL,NULL,1,'email','general_user','free','resetToken123',NULL,NULL,'0','0','2023-01-01 00:00:00',0,NULL,'2023-11-26 10:33:34','2023-11-26 10:33:34'),(11,NULL,'jala','kalu','reza',28,1,79,NULL,2,'2023-12-15 00:00:00',NULL,'n1ewuser@email.com','000','English',NULL,NULL,NULL,1,'email','general_user','Premium','resetToken123',NULL,NULL,'0','0','2023-01-01 00:00:00',0,NULL,'2023-11-26 10:38:54','2024-02-24 16:09:38'),(12,NULL,'shapla','shapla','jahan',12,1,77,NULL,1,'2023-12-15 00:00:00',NULL,'shapla@email.com','$2b$10$a.2MqcV5L1XlcROdV2dpDOvzO9in9wMCZX2rEWiAPHP9759PgWQx.','Bangla',NULL,NULL,NULL,1,'email','general_user','free','8d216e62a0af344ecb1efb8a6a43f1101da31e2d5c78a012f94e2a0e0dbf62b3',NULL,NULL,'1','0','2023-01-01 00:00:00',0,NULL,'2023-11-26 10:41:15','2024-02-23 10:36:49'),(14,NULL,'golu','kalu','reza',28,1,NULL,NULL,2,'2023-12-15 00:00:00',NULL,'newus2er@email.com','$2b$10$otm.uhl0i4Nm1F4OrxlY7uOF2u4ZDG566JRiYHLHV.gp1aKSznvFm','English',NULL,NULL,NULL,1,'email','general_user','free','resetToken123',NULL,'337bf1c5d6636747cceb47dd1293ac0959f6e7bcddc93f1855b49ce334fe15df','0','0','2023-01-01 00:00:00',0,NULL,'2023-11-26 16:51:42','2023-11-26 16:51:42'),(20,NULL,'arman','arman','akt',32,1,78,NULL,NULL,NULL,NULL,'ne2wuser@email.com','$2b$10$SUks2UpGEX5X9n3543kKqeA4MjyDQlID94A2nW4VSLDkOxqBw0rqa','gr','Anguilla',NULL,NULL,0,'','general_user','Free','$2b$10$HM7sJOwaW3H22wUh8158I.SpWrdGyxUwLXbnOmplr2aNQ4BNvQ.EK','Tue Nov 28 2023 23:22:28 GMT+0600 (Bangladesh Standard Time)600000',NULL,'1','0','0000-00-00 00:00:00',0,NULL,'2023-11-28 17:22:27','2024-02-24 16:10:02');
 /*!40000 ALTER TABLE `users` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -1477,16 +1485,16 @@ DROP TABLE IF EXISTS `video`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `video` (
-  `id` int NOT NULL AUTO_INCREMENT,
-  `title` varchar(255) COLLATE utf8mb4_general_ci NOT NULL,
-  `description` varchar(255) COLLATE utf8mb4_general_ci DEFAULT NULL,
-  `type` varchar(255) COLLATE utf8mb4_general_ci NOT NULL,
-  `duration` varchar(255) COLLATE utf8mb4_general_ci NOT NULL,
-  `youtube_link` text COLLATE utf8mb4_general_ci,
-  `image_link` text COLLATE utf8mb4_general_ci,
-  `file_id` int NOT NULL,
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `title` varchar(255) NOT NULL,
+  `description` varchar(255) DEFAULT NULL,
+  `type` varchar(255) NOT NULL,
+  `duration` varchar(255) NOT NULL,
+  `youtube_link` text DEFAULT NULL,
+  `image_link` text DEFAULT NULL,
+  `file_id` int(11) NOT NULL,
   `updatedAt` datetime DEFAULT NULL,
-  `createdAt` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `createdAt` datetime NOT NULL DEFAULT current_timestamp(),
   PRIMARY KEY (`id`),
   KEY `media` (`file_id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
@@ -1510,10 +1518,10 @@ DROP TABLE IF EXISTS `warning_signs`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `warning_signs` (
-  `id` int NOT NULL AUTO_INCREMENT,
-  `order` int DEFAULT NULL,
-  `title` varchar(255) COLLATE utf8mb4_general_ci DEFAULT NULL,
-  `description` longtext COLLATE utf8mb4_general_ci,
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `order` int(11) DEFAULT NULL,
+  `title` varchar(255) DEFAULT NULL,
+  `description` longtext DEFAULT NULL,
   `createdAt` datetime DEFAULT NULL,
   `updatedAt` datetime DEFAULT NULL,
   PRIMARY KEY (`id`)
@@ -1538,11 +1546,11 @@ DROP TABLE IF EXISTS `weight_logs`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `weight_logs` (
-  `id` int NOT NULL,
-  `user_id` int unsigned NOT NULL,
+  `id` int(11) NOT NULL,
+  `user_id` int(10) unsigned NOT NULL,
   `date` datetime DEFAULT NULL,
   `weight_kg` double DEFAULT NULL,
-  `weight_lbs` int NOT NULL,
+  `weight_lbs` int(11) NOT NULL,
   `createdAt` datetime DEFAULT NULL,
   `updatedAt` datetime DEFAULT NULL,
   PRIMARY KEY (`id`),
@@ -1569,4 +1577,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2024-02-25 23:14:10
+-- Dump completed on 2024-02-25 23:12:18
