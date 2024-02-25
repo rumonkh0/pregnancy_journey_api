@@ -6,8 +6,7 @@ const Admin = require("../models/Admin");
 const Role = require("../models/Role");
 const Media = require("../models/Media");
 
-// Protect routes
-exports.protect = asyncHandler(async (req, res, next) => {
+exports.tokenCheck = (req) => {
   let token;
 
   if (
@@ -20,6 +19,13 @@ exports.protect = asyncHandler(async (req, res, next) => {
     // Set token from cookie
     token = req.cookies.token;
   }
+
+  return token;
+};
+
+// Protect routes
+exports.protect = asyncHandler(async (req, res, next) => {
+  let token = this.tokenCheck(req);
 
   // Make sure token exists
   if (!token) {

@@ -12,7 +12,7 @@ const Video = require("../models/Video");
 const Media = require("../models/Media");
 const BabyProg = require("../models/progress_timeline/Baby_progress_timeline");
 const MotherProg = require("../models/progress_timeline/Mother_progress_timeline");
-
+const { tokenCheck } = require("../middleware/auth");
 const router = express.Router();
 
 // router.use(protect);
@@ -124,6 +124,20 @@ const dashboard = asyncHandler(async (req, res, next) => {
   });
 });
 
-router.get("/", dashboard);
+router.get(
+  "/",
+  (req, res, next) => {
+    let token = tokenCheck(req);
+    console.log(token);
+    if (token !== "none" && token !== undefined) {
+      console.log("token ache");
+      next();
+    } else {
+      dashboard(req, res, next);
+    }
+  },
+  protect,
+  dashboard
+);
 
 module.exports = router;
