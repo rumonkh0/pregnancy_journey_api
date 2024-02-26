@@ -11,6 +11,7 @@ const {
 
 const router = express.Router();
 const { protect } = require("../middleware/auth");
+const MotherDiet = require("../models/tools/mother/Mother_diet");
 
 router.use(protect);
 
@@ -20,4 +21,8 @@ router.post("/", create(HelpDesk));
 // router.put("/:modelPk", update(HelpDesk));
 router.delete("/:modelPk", deleteOne(HelpDesk));
 // router.delete("/", deleteAll(HelpDesk));
+
+router.get("/", getHistory(MotherDiet));
+router.get("/:modelPk", getOne(MotherDiet));
+router.post("/", create(MotherDiet));
 module.exports = router;

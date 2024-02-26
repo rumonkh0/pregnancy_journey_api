@@ -1,7 +1,7 @@
 const { Op } = require("sequelize");
 const asyncHandler = require("./async");
 
-const advancedResults = (model, include) =>
+const advancedResults = (model, include, language) =>
   asyncHandler(async (req, res, next) => {
     const reqQuery = { ...req.query };
 
@@ -15,7 +15,15 @@ const advancedResults = (model, include) =>
     } = req.query;
 
     // Filtering: Remove fields from query parameters
-    const removeFields = ["select", "sort", "page", "limit", "field", "search"];
+    const removeFields = [
+      "select",
+      "sort",
+      "page",
+      "limit",
+      "field",
+      "search",
+      "lan",
+    ];
     removeFields.forEach((param) => delete reqQuery[param]);
 
     let limit = limitno ? parseInt(limitno, 10) : 10;
@@ -72,7 +80,6 @@ const advancedResults = (model, include) =>
       offset: page ? (page - 1) * limit : 0,
       limit,
     };
-    // console.log(query);
     // Include associated models if needed
     if (include) {
       query.include = include;
@@ -80,7 +87,6 @@ const advancedResults = (model, include) =>
 
     // Executing query
     const results = await model.findAll(query);
-    // console.log(results);
     const startIndex = (page - 1) * limit;
     const endIndex = page * limit;
     const total = await model.count({ where });
@@ -101,14 +107,36 @@ const advancedResults = (model, include) =>
       };
     }
 
+    let newData;
+    let lan;
+    if (language) {
+      lan = req.query.lan;
+      newData = results.map((obj) => {
+        obj.setDataValue(
+          "title",
+          obj.title &&
+            (JSON.parse(obj.title)[lan]
+              ? JSON.parse(obj.title)[lan]
+              : JSON.parse(obj.title)["en"])
+        );
+        obj.setDataValue(
+          "description",
+          obj.description &&
+            (JSON.parse(obj.description)[lan]
+              ? JSON.parse(obj.description)[lan]
+              : JSON.parse(obj.description)["en"])
+        );
+        return obj;
+      });
+    }
+
     res.advancedResults = {
       success: true,
       count: results.length,
       total,
       pagination,
-      data: results,
+      data: lan ? newData : results,
     };
-
 
     next();
   });

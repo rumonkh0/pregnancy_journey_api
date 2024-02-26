@@ -70,7 +70,6 @@ exports.createPost = asyncHandler(async (req, res, next) => {
       file_name: filename,
       file_type: path.extname(filename).slice(1),
     };
-    // console.log(element)
     let media = await Media.create(postMedia);
     await PostMedia.create({
       post_id: post.id,

@@ -43,6 +43,7 @@ exports.stringify = (...fields) => {
 // @access    Private
 exports.getAll = (Model, include) => {
   return asyncHandler(async (req, res, next) => {
+    if (res.advancedResults) return res.status(200).json(res.advancedResults);
     lan = req.query.lan;
     const data = await Model.findAll({
       order: [["createdAt", "DESC"]],

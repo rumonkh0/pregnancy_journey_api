@@ -14,6 +14,7 @@ const {
   resendOTP,
   confirmEmail,
   oAuth,
+  deviceToken,
 } = require("../controllers/auth");
 const router = express.Router();
 
@@ -75,5 +76,6 @@ router.put("/resetpassword/", resetPassword);
 router.post("/sendotp", protect, resendOTP);
 router.post("/confirmemail", protect, confirmEmail);
 router.post("/social-auth", oAuth);
+router.post("/devicetoken", protect, deviceToken);
 
 module.exports = router;

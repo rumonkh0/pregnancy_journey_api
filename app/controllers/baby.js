@@ -56,9 +56,7 @@ exports.createBaby = asyncHandler(async (req, res, next) => {
   //   return res.status(401).json({success: false, message: "File type must be image"})
   // }
   if (path.extname(originalname) == "image") {
-    console.log("its a image");
   }
-  console.log(req.file);
   req.media = {
     uploaded_by: req.user.username,
     file_path,
@@ -126,9 +124,7 @@ exports.updateBaby = asyncHandler(async (req, res) => {
   //   return res.status(401).json({success: false, message: "File type must be image"})
   // }
   if (path.extname(originalname) == "image") {
-    console.log("its a image");
   }
-  console.log(req.file);
   req.media = {
     uploaded_by: req.user.username,
     file_path,

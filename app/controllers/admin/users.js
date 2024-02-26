@@ -89,7 +89,6 @@ exports.updateUser = asyncHandler(async (req, res) => {
   }
 
   const { mimetype, filename, path: file_path } = req.file;
-  console.log(req.file);
   // if (!mimetype.startsWith("image")) {
   //   return res
   //     .status(401)

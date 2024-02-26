@@ -128,9 +128,7 @@ router.get(
   "/",
   (req, res, next) => {
     let token = tokenCheck(req);
-    console.log(token);
     if (token !== "none" && token !== undefined) {
-      console.log("token ache");
       next();
     } else {
       dashboard(req, res, next);

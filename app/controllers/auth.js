@@ -8,6 +8,7 @@ const asyncHandler = require("../middleware/async");
 const User = require("../models/User");
 const Media = require("../models/Media");
 const sendEmail = require("../resource/utils/sendEmail");
+const deviceToken = require("../models/DeviceToken");
 
 // @desc      Register user
 // @route     POST /api/v1/auth/register
@@ -250,7 +251,6 @@ exports.updateDetails = asyncHandler(async (req, res, next) => {
   }
 
   const { mimetype, filename, path: file_path } = req.file;
-  console.log(req.file);
   // if (!mimetype.startsWith("image")) {
   //   return res
   //     .status(401)
@@ -649,6 +649,34 @@ exports.oAuth = asyncHandler(async (req, res, next) => {
     // code block
   }
   const data = await User.findOne({ where: {} });
+});
+
+exports.deviceToken = asyncHandler(async (req, res, next) => {
+  const data = req.body;
+
+  let prevData = await deviceToken.findOne({ where: { user_id: req.user.id } });
+
+  if (prevData) {
+    await deviceToken.update(data, { where: { user_id: req.user.id } });
+    const updated = await deviceToken.findOne({
+      where: { user_id: req.user.id },
+    });
+    return res.status(200).json({
+      remark: "SUCCESSFUL",
+      success: true,
+      message: "devide token updated",
+      data: updated,
+    });
+  }
+
+  data.user_id = req.user.id;
+  const devicetoken = await deviceToken.create(data);
+  res.status(200).json({
+    remark: "SUCCESSFUL",
+    success: true,
+    message: "devide token created",
+    data: devicetoken,
+  });
 });
 
 // Get token from model, create cookie and send response
