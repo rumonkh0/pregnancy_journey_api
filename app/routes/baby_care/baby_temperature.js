@@ -17,7 +17,7 @@ router.use(protect);
 
 router.get("/:babyId", checkBabyOwner, getHistory(BabyTemp));
 router.get("/:babyId/:modelPk", checkBabyOwner, getOne(BabyTemp));
-router.post("/:babyId/", checkBabyOwner, create(BabyTemp));
+router.post("/:babyId", checkBabyOwner, create(BabyTemp));
 router.put("/:babyId/:modelPk", checkBabyOwner, update(BabyTemp));
 router.delete("/:babyId/:modelPk", checkBabyOwner, deleteOne(BabyTemp));
 router.delete("/:babyId", checkBabyOwner, deleteAll(BabyTemp));

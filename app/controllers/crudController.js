@@ -44,6 +44,9 @@ exports.stringify = (...fields) => {
 exports.getAll = (Model, include) => {
   return asyncHandler(async (req, res, next) => {
     if (res.advancedResults) return res.status(200).json(res.advancedResults);
+
+    // console.log("ayyyyyyyyyyyy")
+
     lan = req.query.lan;
     const data = await Model.findAll({
       order: [["createdAt", "DESC"]],
@@ -101,18 +104,23 @@ exports.getOne = (Model, include) => {
         .json({ success: false, message: "Data not found" });
     }
 
-    data.setDataValue(
-      "title",
-      JSON.parse(data.title)[lan]
-        ? JSON.parse(data.title)[lan]
-        : JSON.parse(data.title)["en"]
-    );
-    data.setDataValue(
-      "description",
-      JSON.parse(data.description)[lan]
-        ? JSON.parse(data.description)[lan]
-        : JSON.parse(data.description)["en"]
-    );
+    if (lan == "all") {
+      data.setDataValue("title", JSON.parse(data.title));
+      data.setDataValue("description", JSON.parse(data.description));
+    } else {
+      data.setDataValue(
+        "title",
+        JSON.parse(data.title)[lan]
+          ? JSON.parse(data.title)[lan]
+          : JSON.parse(data.title)["en"]
+      );
+      data.setDataValue(
+        "description",
+        JSON.parse(data.description)[lan]
+          ? JSON.parse(data.description)[lan]
+          : JSON.parse(data.description)["en"]
+      );
+    }
 
     res.status(200).json({ success: true, message: "Data found", data });
   });

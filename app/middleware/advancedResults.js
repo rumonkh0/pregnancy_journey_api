@@ -108,26 +108,33 @@ const advancedResults = (model, include, language) =>
     }
 
     let newData;
-    let lan;
+    // console.log(results);
     if (language) {
       lan = req.query.lan;
-      newData = results.map((obj) => {
-        obj.setDataValue(
-          "title",
-          obj.title &&
-            (JSON.parse(obj.title)[lan]
-              ? JSON.parse(obj.title)[lan]
-              : JSON.parse(obj.title)["en"])
-        );
-        obj.setDataValue(
-          "description",
-          obj.description &&
-            (JSON.parse(obj.description)[lan]
-              ? JSON.parse(obj.description)[lan]
-              : JSON.parse(obj.description)["en"])
-        );
-        return obj;
-      });
+      if (lan == "all") {
+        results.map((obj) => {
+          data.setDataValue("title", JSON.parse(data.title));
+          data.setDataValue("description", JSON.parse(data.description));
+        });
+      } else {
+        newData = results.map((obj) => {
+          obj.setDataValue(
+            "title",
+            obj.title &&
+              (JSON.parse(obj.title)[lan]
+                ? JSON.parse(obj.title)[lan]
+                : JSON.parse(obj.title)["en"])
+          );
+          obj.setDataValue(
+            "description",
+            obj.description &&
+              (JSON.parse(obj.description)[lan]
+                ? JSON.parse(obj.description)[lan]
+                : JSON.parse(obj.description)["en"])
+          );
+          return obj;
+        });
+      }
     }
 
     res.advancedResults = {
@@ -135,9 +142,8 @@ const advancedResults = (model, include, language) =>
       count: results.length,
       total,
       pagination,
-      data: lan ? newData : results,
+      data: results,
     };
-
     next();
   });
 

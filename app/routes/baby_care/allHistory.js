@@ -70,7 +70,7 @@ const getCombinedBabyData = async (req, res, next) => {
         data: combinedData,
       });
   } catch (error) {
-    console.error("Error:", error);
+    // console.error("Error:", error);
     throw error;
   }
 };

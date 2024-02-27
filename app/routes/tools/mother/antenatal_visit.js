@@ -15,13 +15,13 @@ const { protect } = require("../../../middleware/auth");
 
 router.use(protect);
 
-router.get("/", checkOwner(AntenatalVisit), getHistory(AntenatalVisit));
-router.get("/:modelPk", checkOwner(AntenatalVisit), getOne(AntenatalVisit));
+router.get("/", getHistory(AntenatalVisit));
+router.get("/:modelPk", getOne(AntenatalVisit));
 router.post("/", create(AntenatalVisit));
-router.put("/:modelPk", checkOwner(AntenatalVisit), update(AntenatalVisit));
+router.put("/:modelPk", update(AntenatalVisit));
 router.delete(
   "/:modelPk",
-  checkOwner(AntenatalVisit),
+
   deleteOne(AntenatalVisit)
 );
 router.delete("/", deleteAll(AntenatalVisit));

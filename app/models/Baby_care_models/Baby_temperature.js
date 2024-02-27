@@ -34,7 +34,6 @@ const BabyTemperature = sequelize.define(
   },
   {
     tableName: "baby_temperature",
-    comment: "ml",
     timestamps: true,
   }
 );

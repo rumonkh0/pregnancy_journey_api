@@ -9,7 +9,7 @@ exports.checkBabyOwner = asyncHandler(async (req, res, next) => {
     return res.status(200).json({
       remark: "UNAUTORIZED",
       success: false,
-      message: "not authorized for access this route",
+      message: "not authorized for access bbbbbbbbbbbbbb this route",
     });
 
   // Check if the requesting mother owns the specified baby
@@ -116,8 +116,9 @@ exports.deleteOne = (Model) => {
 
     // Get the feed history for the specified baby
     const deleted = await Model.destroy({ where: { id: modelPk } });
-
-    res.status(200).json({ success: true, message: "data deleted" });
+    res.status(200).deleted
+      ? res.json({ success: true, message: "data deleted" })
+      : res.json({ success: false, message: "something wrong" });
   });
 };
 
