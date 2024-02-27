@@ -40,16 +40,12 @@ exports.getPost = asyncHandler(async (req, res, next) => {
       },
     ],
   });
-  const total_reaction = await Reaction.count({ where: { post_id: id } });
-  const total_comment = await Comment.count({
-    where: { post_id: id },
-  });
   if (!post)
     return res.status(404).json({ success: false, message: "Post not found" });
   res.status(200).json({
     success: true,
     message: "Post found",
-    data: { post, total_reaction, total_comment },
+    data: post,
   });
 });
 

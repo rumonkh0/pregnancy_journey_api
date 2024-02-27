@@ -34,6 +34,12 @@ const Post = sequelize.define(
       type: DataTypes.DATE,
       allowNull: true,
     },
+    total_reaction: {
+      type: DataTypes.INTEGER,
+    },
+    total_comment: {
+      type: DataTypes.INTEGER,
+    },
     updatedAt: {
       type: DataTypes.DATE,
       allowNull: true,
