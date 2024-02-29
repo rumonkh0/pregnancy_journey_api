@@ -26,6 +26,14 @@ const Video = sequelize.define(
       type: DataTypes.STRING(255),
       allowNull: false,
     },
+    youtube_link: {
+      type: DataTypes.TEXT,
+      allowNull: false,
+    },
+    image_link: {
+      type: DataTypes.TEXT,
+      allowNull: false,
+    },
     file_id: {
       type: DataTypes.INTEGER,
       allowNull: false,

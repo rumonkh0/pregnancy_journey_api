@@ -1,4 +1,7 @@
+const path = require("path");
+const fs = require("fs");
 const express = require("express");
+const multer = require("multer");
 const blog = require("./blog");
 const blogCategories = require("./blogCategories");
 const warningSign = require("./warningSign");
@@ -9,13 +12,53 @@ const babyProgress = require("./babyProgress");
 const drugSlider = require("./drugSlider");
 const videos = require("./videos");
 
+const uploadDirectory = "public/uploads/general/";
+
+// Ensure that the upload directory exists; if not, create it
+if (!fs.existsSync(uploadDirectory)) {
+  fs.mkdirSync(uploadDirectory, { recursive: true });
+}
+const allowedExtensions = [".jpg", ".jpeg", ".png", ".gif"];
+
+const storage = multer.diskStorage({
+  destination: function (req, file, cb) {
+    cb(null, uploadDirectory);
+  },
+  filename: function (req, file, cb) {
+    cb(
+      null,
+      file.fieldname +
+        "-" +
+        "admin" +
+        "-" +
+        Date.now() +
+        path.extname(file.originalname)
+    );
+  },
+});
+
+const upload = multer({
+  storage: storage,
+  fileFilter: (req, file, cb) => {
+    const ext = path.extname(file.originalname).toLowerCase();
+    if (allowedExtensions.includes(ext)) {
+      cb(null, true);
+    } else {
+      cb(new Error("Invalid file type. Only images are allowed."));
+    }
+  },
+  limits: {
+    fileSize: 5 * 1024 * 1024, // 5 MB size limit
+  },
+});
+
 const router = express.Router({ mergeParams: true });
 
-router.use("/blogs", blog);
-router.use("/blogcategories", blogCategories);
-router.use("/warningsigns", warningSign);
-router.use("/dailyreads", dailyReads);
-router.use("/dailytips", dailyTips);
+router.use("/blogs", upload.single("blog_image"), blog);
+router.use("/blogcategories", upload.single("blog_image"), blogCategories);
+router.use("/warningsigns", upload.single("warning_image"), warningSign);
+router.use("/dailyreads", upload.single("dailyreads_image"), dailyReads);
+router.use("/dailytips", upload.single("dailytips_image"), dailyTips);
 router.use("/motherprogress", motherProgress);
 router.use("/babyprogress", babyProgress);
 router.use("/drugslider", drugSlider);

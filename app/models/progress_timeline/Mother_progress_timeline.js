@@ -10,7 +10,7 @@ const MotherProgressTimeline = sequelize.define(
       primaryKey: true,
       autoIncrement: true,
     },
-    week: {
+    day: {
       type: DataTypes.INTEGER,
       allowNull: false,
     },

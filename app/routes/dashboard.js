@@ -47,7 +47,7 @@ const lanFilter = (data, lan) => {
 };
 
 const dashboard = asyncHandler(async (req, res, next) => {
-  const { day, week, lan } = req.query;
+  const { day, lan } = req.query;
   let user,
     babyList,
     babySize,
@@ -78,12 +78,12 @@ const dashboard = asyncHandler(async (req, res, next) => {
   }
   //Baby Progress Timeline
   let babyProgressTimeline = await BabyProg.findOne({
-    where: { week },
+    where: { day },
   });
 
   //Mother Progress Timeline
   let motherProgressTimeline = await MotherProg.findOne({
-    where: { week },
+    where: { day },
   });
   //Get All Blogs
   //   let blogs = await Blog.findAll();

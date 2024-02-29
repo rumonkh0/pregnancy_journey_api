@@ -59,6 +59,7 @@ const advancedResults = (model, include, language) =>
                 sequelizeQuery[key] = value;
               }
           } else {
+            if (sequelizeQuery[key] == "") return;
             sequelizeQuery[key] = value;
           }
           return sequelizeQuery;
@@ -67,6 +68,7 @@ const advancedResults = (model, include, language) =>
       );
     }
     let where = convertToSequelizeQuery(reqQuery);
+    console.log(where);
     // where = { ...where, field: { [Op.substring]: search } };
     if (search && field) {
       where[field] = { [Op.substring]: search };
@@ -98,6 +100,8 @@ const advancedResults = (model, include, language) =>
         page: page + 1,
         limit,
       };
+    } else {
+      pagination.next = null;
     }
 
     if (startIndex > 0) {
@@ -105,6 +109,8 @@ const advancedResults = (model, include, language) =>
         page: page - 1,
         limit,
       };
+    } else {
+      pagination.prev = null;
     }
 
     let newData;
