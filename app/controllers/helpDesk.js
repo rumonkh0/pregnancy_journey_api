@@ -12,7 +12,7 @@ exports.getHistory = (Model) => {
       where: { user_id: req.user.id },
       order: [["createdAt", "ASC"]],
       include: [
-        { model: Admin, attributes: ["username"] },
+        { model: Admin, attributes: ["id", "username"] },
         { model: User, attributes: ["username", "email"] },
       ],
     });

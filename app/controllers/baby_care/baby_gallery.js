@@ -208,9 +208,10 @@ exports.deleteBabygallery = asyncHandler(async (req, res) => {
 
   // Get the feed history for the specified baby
   const deleted = await BabyGallery.destroy({ where: { id: modelPk } });
+  console.log(gallery.media);
   if (gallery.media) {
-    await Media.destroy({ where: { id: file_id } });
-    await unlinkAsync(file_path);
+    await Media.destroy({ where: { id: gallery.media.id } });
+    await unlinkAsync(gallery.media.file_path);
   }
 
   res

@@ -19,6 +19,8 @@ const {
 } = require("../controllers/crudController");
 const Media = require("../models/Media");
 
+
+
 const router = express.Router();
 
 router.get("/blogs", getAll(Blog));

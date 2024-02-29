@@ -2,6 +2,7 @@ const { sequelize } = require("../../config/db");
 const { DataTypes } = require("sequelize");
 const Post = require("./community/Post");
 const PostMedia = require("./community/PostMedia");
+const PostTopic = require("./community/Post_topic");
 
 const Media = sequelize.define(
   "Media",
@@ -49,5 +50,7 @@ const Media = sequelize.define(
 
 // Media.belongsToMany(Post, { through: PostMedia, foreignKey: 'id' });
 // Media.belongsToMany(Post, { through: 'PostMedia', foreignKey: 'mediaId' });
+Media.hasMany(PostTopic, { as: "media", foreignKey: "image" });
+PostTopic.belongsTo(Media, { as: "media", foreignKey: "image" });
 
 module.exports = Media;

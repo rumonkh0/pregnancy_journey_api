@@ -5,6 +5,7 @@ const PostMedia = require("./PostMedia");
 const Comment = require("./Comment");
 const Reaction = require("./Reaction");
 const User = require("../User");
+const PostTopic = require("./Post_topic");
 
 const Post = sequelize.define(
   "Post",
@@ -15,6 +16,9 @@ const Post = sequelize.define(
       autoIncrement: true,
     },
     user_id: {
+      type: DataTypes.INTEGER,
+    },
+    topic: {
       type: DataTypes.INTEGER,
     },
     title: {
@@ -57,6 +61,7 @@ const Post = sequelize.define(
 
 Post.hasMany(Comment, { foreignKey: "post_id", onDelete: "CASCADE" });
 Post.hasMany(Reaction, { foreignKey: "post_id", onDelete: "CASCADE" });
+Post.belongsTo(PostTopic, { foreignKey: "topic" });
 // Post.belongsTo(User, { foreignKey: "user_id" });
 // User.hasMany(Post, { foreignKey: "user_id" });
 

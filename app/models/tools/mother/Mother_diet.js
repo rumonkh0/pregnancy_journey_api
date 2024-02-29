@@ -1,5 +1,7 @@
 const { DataTypes } = require("sequelize");
 const { sequelize } = require("../../../../config/db");
+const Admin = require("../../Admin");
+const User = require("../../User");
 
 const MotherDiet = sequelize.define(
   "MotherDiet",
@@ -55,5 +57,8 @@ const MotherDiet = sequelize.define(
     timestamps: true,
   }
 );
+
+MotherDiet.belongsTo(User, { foreignKey: "user_idQuery" });
+User.hasMany(MotherDiet, { foreignKey: "user_idQuery" });
 
 module.exports = MotherDiet;

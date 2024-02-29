@@ -113,8 +113,8 @@ const advancedResults = (model, include, language) =>
       lan = req.query.lan;
       if (lan == "all") {
         results.map((obj) => {
-          data.setDataValue("title", JSON.parse(data.title));
-          data.setDataValue("description", JSON.parse(data.description));
+          obj.setDataValue("title", JSON.parse(obj.title));
+          obj.setDataValue("description", JSON.parse(obj.description));
         });
       } else {
         newData = results.map((obj) => {

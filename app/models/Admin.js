@@ -7,6 +7,7 @@ const { DataTypes } = require("sequelize");
 const Media = require("./Media");
 const Role = require("./Role");
 const AdminRole = require("./AdminRole");
+const MotherDiet = require("./tools/mother/Mother_diet");
 
 // Define the Admin model
 const Admin = sequelize.define(
@@ -90,6 +91,9 @@ Admin.prototype.getSignedJwtToken = function () {
 
 Admin.belongsToMany(Role, { through: AdminRole, foreignKey: "admin_id" });
 Role.belongsToMany(Admin, { through: AdminRole, foreignKey: "role_id" });
+
+MotherDiet.belongsTo(Admin, { foreignKey: "admin_id" });
+Admin.hasMany(MotherDiet, { foreignKey: "admin_id" });
 
 Admin.prototype.toJSON = function () {
   const values = { ...this.get() };
