@@ -59,7 +59,7 @@ const advancedResults = (model, include, language) =>
                 sequelizeQuery[key] = value;
               }
           } else {
-            if (sequelizeQuery[key] == "") return;
+            if (value == "") return; //delete sequelizeQuery[key];
             sequelizeQuery[key] = value;
           }
           return sequelizeQuery;
