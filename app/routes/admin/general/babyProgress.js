@@ -12,13 +12,18 @@ const {
 
 const router = express.Router({ mergeParams: true });
 const { protect, authorize } = require("../../../middleware/auth");
+const advancedResults = require("../../../middleware/advancedResults");
 
 router.use(
   protect,
   authorize("superadmin", "admin", "babyprogress"),
   stringify("title", "description")
 );
-router.get("/", getAll(BabyProgress));
+router.get(
+  "/",
+  advancedResults(BabyProgress, undefined, "lan"),
+  getAll(BabyProgress)
+);
 router.get("/:modelPk", getOne(BabyProgress));
 router.post("/", create(BabyProgress));
 router.put("/:modelPk", update(BabyProgress));

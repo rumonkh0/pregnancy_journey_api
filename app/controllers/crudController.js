@@ -1,5 +1,8 @@
 const asyncHandler = require("../middleware/async");
+const path = require("path");
+const fs = require("fs");
 const { where } = require("sequelize");
+const Media = require("../models/Media");
 
 /*
 |-----------------------------------------------------------------------------------------------|
@@ -13,7 +16,8 @@ exports.stringify = (...fields) => {
   return asyncHandler(async (req, res, next) => {
     if (req.body)
       fields.map((field) => {
-        if (req.body[field]) {
+        if (req.body[field] && typeof req.body[field] == "object") {
+          // console.log(typeof req.body[field]);
           req.body[field] = JSON.stringify(req.body[field]);
         }
       });
@@ -50,7 +54,7 @@ exports.getAll = (Model, include) => {
     lan = req.query.lan;
     const data = await Model.findAll({
       order: [["createdAt", "DESC"]],
-      include: include,
+      include: { model: Media, as: "media" },
     });
 
     if (!data) {
@@ -95,7 +99,7 @@ exports.getOne = (Model, include) => {
     // Get the feed history for the specified baby
     const data = await Model.findOne({
       where: { id: modelPk },
-      include: include,
+      include: { model: Media, as: "media" },
     });
 
     if (!data) {
@@ -131,9 +135,46 @@ exports.getOne = (Model, include) => {
 // @access    Private
 exports.create = (Model) => {
   return asyncHandler(async (req, res, next) => {
-    console.log(req.body);
-    const babyFeed = await Model.create(req.body);
-    res.status(200).json({ success: true, message: "Created", data: babyFeed });
+    let data = req.body;
+    // console.log(req.file);
+    if (!req.file) {
+      let result = await Model.create(data);
+
+      return res.status(200).json({
+        success: true,
+        message: "Content created successfully",
+        data: result,
+      });
+    }
+
+    const { mimetype, filename, path: file_path } = req.file;
+    req.media = {
+      uploaded_by: req.admin.username,
+      file_path,
+      mime_type: mimetype,
+      file_name: filename,
+      file_type: path.extname(filename).slice(1),
+    };
+
+    let media, prevMedia;
+    try {
+      media = await Media.create(req.media);
+      data.image = media.id;
+    } catch (err) {
+      if (req.file && req.file && req.file.path) {
+        const filePath = req.file.path;
+        await unlinkAsync(filePath);
+      }
+      return res.status(200).json({
+        remark: "UNSUCCESSFULL",
+        success: false,
+        message: "data upload failed",
+        error: err,
+      });
+    }
+    const result = await Model.create(data);
+
+    res.status(200).json({ success: true, message: "Created", data: result });
   });
 };
 

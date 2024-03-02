@@ -40,6 +40,7 @@ const storage = multer.diskStorage({
 const upload = multer({
   storage: storage,
   fileFilter: (req, file, cb) => {
+    console.log("file");
     const ext = path.extname(file.originalname).toLowerCase();
     if (allowedExtensions.includes(ext)) {
       cb(null, true);
@@ -55,14 +56,22 @@ const upload = multer({
 const router = express.Router({ mergeParams: true });
 
 router.use("/blogs", upload.single("blog_image"), blog);
-router.use("/blogcategories", upload.single("blog_image"), blogCategories);
+router.use(
+  "/blogcategories",
+  upload.single("blog_category_image"),
+  blogCategories
+);
 router.use("/warningsigns", upload.single("warning_image"), warningSign);
 router.use("/dailyreads", upload.single("dailyreads_image"), dailyReads);
 router.use("/dailytips", upload.single("dailytips_image"), dailyTips);
-router.use("/motherprogress", motherProgress);
-router.use("/babyprogress", babyProgress);
-router.use("/drugslider", drugSlider);
-router.use("/videos", videos);
+router.use(
+  "/motherprogress",
+  upload.single("motherprogress_image"),
+  motherProgress
+);
+router.use("/babyprogress", upload.single("babyprogress_image"), babyProgress);
+router.use("/drugslider", upload.single("drugslider_image"), drugSlider);
+router.use("/videos", upload.single("videos_image"), videos);
 
 // const warning = () => {
 

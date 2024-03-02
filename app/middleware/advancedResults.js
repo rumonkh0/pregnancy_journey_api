@@ -68,7 +68,7 @@ const advancedResults = (model, include, language) =>
       );
     }
     let where = convertToSequelizeQuery(reqQuery);
-    console.log(where);
+    // console.log(where);
     // where = { ...where, field: { [Op.substring]: search } };
     if (search && field) {
       where[field] = { [Op.substring]: search };

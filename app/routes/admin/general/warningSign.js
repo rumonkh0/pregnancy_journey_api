@@ -11,6 +11,7 @@ const {
 } = require("../../../controllers/crudController");
 
 const { protect, authorize } = require("../../../middleware/auth");
+const advancedResults = require("../../../middleware/advancedResults");
 
 router.use(
   protect,
@@ -18,7 +19,11 @@ router.use(
   stringify("title", "description")
 );
 
-router.get("/", getAll(WarningSign));
+router.get(
+  "/",
+  advancedResults(WarningSign, undefined, "lan"),
+  getAll(WarningSign)
+);
 router.get("/:modelPk", getOne(WarningSign));
 router.post("/", create(WarningSign));
 router.put("/:modelPk", update(WarningSign));
