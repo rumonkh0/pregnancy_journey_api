@@ -42,6 +42,6 @@ const DrugSlider = sequelize.define(
 );
 
 // Define associations
-DrugSlider.belongsTo(Media, { foreignKey: "image" }); // Assuming you have a 'Media' model
+DrugSlider.belongsTo(Media, { foreignKey: "image", as: "media" }); // Assuming you have a 'Media' model
 
 module.exports = DrugSlider;

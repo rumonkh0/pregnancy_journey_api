@@ -34,7 +34,7 @@ const Video = sequelize.define(
       type: DataTypes.TEXT,
       allowNull: false,
     },
-    file_id: {
+    image: {
       type: DataTypes.INTEGER,
       allowNull: false,
       // You might want to add a reference to another table here, if 'media' refers to another table's primary key
@@ -55,6 +55,6 @@ const Video = sequelize.define(
   }
 );
 
-Video.belongsTo(Media, { as: "media", foreignKey: "file_id" });
+Video.belongsTo(Media, { as: "media", foreignKey: "image" });
 
 module.exports = Video;
