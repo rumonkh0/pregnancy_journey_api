@@ -79,21 +79,40 @@ const dashboard = asyncHandler(async (req, res, next) => {
   //Baby Progress Timeline
   let babyProgressTimeline = await BabyProg.findOne({
     where: { day },
+    include: { model: Media, as: "media" },
   });
 
   //Mother Progress Timeline
   let motherProgressTimeline = await MotherProg.findOne({
     where: { day },
+    include: { model: Media, as: "media" },
   });
   //Get All Blogs
   //   let blogs = await Blog.findAll();
-  blogs = lanFilter(await Blog.findAll(), lan);
+  blogs = lanFilter(
+    await Blog.findAll({
+      include: { model: Media, as: "media" },
+    }),
+    lan
+  );
 
   //Get Daily Reads
-  dailyReads = lanFilter(await DailyRead.findOne({ where: { day } }), lan);
+  dailyReads = lanFilter(
+    await DailyRead.findOne({
+      where: { day },
+      include: { model: Media, as: "media" },
+    }),
+    lan
+  );
 
   //Get Daily Tips
-  dailyTips = lanFilter(await DailyTip.findOne({ where: { day } }), lan);
+  dailyTips = lanFilter(
+    await DailyTip.findOne({
+      where: { day },
+      include: { model: Media, as: "media" },
+    }),
+    lan
+  );
 
   //Get Videos
   videos = lanFilter(
@@ -102,7 +121,12 @@ const dashboard = asyncHandler(async (req, res, next) => {
   );
 
   //Get Warning Signs
-  warningSigns = lanFilter(await WarningSign.findAll(), lan);
+  warningSigns = lanFilter(
+    await WarningSign.findAll({
+      include: { model: Media, as: "media" },
+    }),
+    lan
+  );
 
   res.status(200).json({
     remark: "SUCCESSFULL",
