@@ -62,6 +62,7 @@ const Post = sequelize.define(
 Post.hasMany(Comment, { foreignKey: "post_id", onDelete: "CASCADE" });
 Post.hasMany(Reaction, { foreignKey: "post_id", onDelete: "CASCADE" });
 Post.belongsTo(PostTopic, { foreignKey: "topic" });
+PostTopic.hasMany(Post, { foreignKey: "topic" });
 // Post.belongsTo(User, { foreignKey: "user_id" });
 // User.hasMany(Post, { foreignKey: "user_id" });
 

@@ -1,13 +1,21 @@
 const PostTopic = require("../../models/community/Post_topic");
 const asyncHandler = require("../../middleware/async");
-const { Media } = require("../../models/Association");
+const { Media, Post } = require("../../models/Association");
+const User = require("../../models/User");
 
 // @desc      Get  PostTopic List
 // @route     GET /api/v1/babylist
 // @access    Private
 exports.getAllReactionType = asyncHandler(async (req, res, next) => {
   const babyList = await PostTopic.findAll({
-    include: { model: Media, as: "media", attributes: ["id", "file_path"] },
+    include: [
+      { model: Media, as: "media", attributes: ["id", "file_path"] },
+      {
+        model: Post,
+        include: { model: User, attributes: ["id", "username"] },
+        limit: 6,
+      },
+    ],
   });
   res.json({ success: true, message: "Found All Topics", data: babyList });
 });
@@ -18,7 +26,14 @@ exports.getAllReactionType = asyncHandler(async (req, res, next) => {
 exports.getReactionType = asyncHandler(async (req, res, next) => {
   const babyList = await PostTopic.findOne({
     where: { id: req.params.pk },
-    include: { model: Media, as: "media", attributes: ["id", "file_path"] },
+    include: [
+      { model: Media, as: "media", attributes: ["id", "file_path"] },
+      {
+        model: Post,
+        include: { model: User, attributes: ["id", "username"] },
+        limit: 6,
+      },
+    ],
   });
   res.json({ success: true, message: "Found Topic", data: babyList });
 });

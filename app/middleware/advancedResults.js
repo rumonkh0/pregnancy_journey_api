@@ -158,7 +158,7 @@ const advancedResults = (model, include, language) =>
       );
     }
 
-    console.log(results);
+    // console.log(results);
 
     res.advancedResults = {
       success: true,
