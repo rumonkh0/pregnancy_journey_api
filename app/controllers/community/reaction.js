@@ -1,6 +1,9 @@
 const Reaction = require("../../models/community/Reaction");
 const asyncHandler = require("../../middleware/async");
 const { Op } = require("sequelize");
+const { Post } = require("../../models/Association");
+const Comment = require("../../models/community/Comment");
+const User = require("../../models/User");
 
 // @desc      Get  Reaction List Of Mother
 // @route     GET /api/v1/babylist
@@ -9,11 +12,13 @@ exports.getAllReaction = asyncHandler(async (req, res, next) => {
   if (req.params.postId) {
     const reactions = await Reaction.findAll({
       where: {
-        [Op.and]: [
-          { post_id: req.params.postId },
-          { comment_id: { [Op.ne]: null } },
-        ],
+        [Op.and]: [{ post_id: req.params.postId }, { comment_id: null }],
       },
+      include: {
+        model: User,
+        attributes: ["id", "username", "first_name", "last_name"],
+      },
+      
     });
     return res.json({
       success: true,
@@ -63,6 +68,14 @@ exports.createReaction = asyncHandler(async (req, res, next) => {
   reactionData.comment_id = req.params.commentId;
 
   if (reactionData.post_id) {
+    let available = await Post.findOne({
+      where: { id: req.params.postId },
+    });
+
+    if (!available) {
+      return res.status(200).json({ success: false, message: "No post found" });
+    }
+
     let prevData = await Reaction.findOne({
       where: { user_id: req.user.id, post_id: req.params.postId },
     });
@@ -78,6 +91,15 @@ exports.createReaction = asyncHandler(async (req, res, next) => {
   }
 
   if (reactionData.comment_id) {
+    let available = await Comment.findOne({
+      where: { id: req.params.commentId },
+    });
+
+    if (!available) {
+      return res
+        .status(200)
+        .json({ success: false, message: "No comment found" });
+    }
     let prevData = await Reaction.findOne({
       where: { user_id: req.user.id, comment_id: req.params.commentId },
     });

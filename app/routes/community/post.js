@@ -76,7 +76,7 @@ const populate = [
       as: "media",
       attributes: ["id", "file_path", "file_name"],
     },
-    attributes: ["id", "username"],
+    attributes: ["id", "username", "first_name", "last_name"],
     require: false,
   },
   {
