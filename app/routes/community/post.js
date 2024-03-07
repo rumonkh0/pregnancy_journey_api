@@ -15,6 +15,8 @@ const router = express.Router({ mergeParams: true });
 const { protect } = require("../../middleware/auth");
 const advancedResults = require("../../middleware/advancedResults");
 const { Post, Media } = require("../../models/Association");
+const User = require("../../models/User");
+const PostTopic = require("../../models/community/Post_topic");
 
 const uploadDirectory = "public/uploads/post/";
 
@@ -61,11 +63,28 @@ router.use("/:postId/reaction", reactionRouter);
 
 router.use(protect);
 
-const populate = {
-  model: Media,
-  attributes: ["id", "file_name", "file_path"],
-  require: false,
-};
+const populate = [
+  {
+    model: Media,
+    attributes: ["id", "file_name", "file_path"],
+    require: false,
+  },
+  {
+    model: User,
+    include: {
+      model: Media,
+      as: "media",
+      attributes: ["id", "file_path", "file_name"],
+    },
+    attributes: ["id", "username"],
+    require: false,
+  },
+  {
+    model: PostTopic,
+    attributes: ["id", "title"],
+    require: false,
+  },
+];
 
 router.get("/", advancedResults(Post, populate), getAllPost);
 router.get("/:id", getPost);

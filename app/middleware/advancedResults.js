@@ -1,5 +1,6 @@
 const { Op } = require("sequelize");
 const asyncHandler = require("./async");
+const Reaction = require("../models/community/Reaction");
 
 const advancedResults = (model, include, language) =>
   asyncHandler(async (req, res, next) => {
@@ -88,7 +89,7 @@ const advancedResults = (model, include, language) =>
     }
 
     // Executing query
-    const results = await model.findAll(query);
+    let results = await model.findAll(query);
     const startIndex = (page - 1) * limit;
     const endIndex = page * limit;
     const total = await model.count({ where });
@@ -142,6 +143,22 @@ const advancedResults = (model, include, language) =>
         });
       }
     }
+
+    // console.log(model);
+    // let nresult;
+    if (model.name == "Post") {
+      results = await Promise.all(
+        results.map(async (post) => {
+          let jpost = post.toJSON();
+          jpost.react = await Reaction.findOne({
+            where: { user_id: req.user.id, post_id: jpost.id },
+          });
+          return jpost;
+        })
+      );
+    }
+
+    console.log(results);
 
     res.advancedResults = {
       success: true,
