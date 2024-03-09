@@ -8,7 +8,7 @@ const BabyProgressTimeline = require("../models/progress_timeline/Baby_progress_
 const MotherProgressTimeline = require("../models/progress_timeline/Mother_progress_timeline");
 const DrugSlider = require("../models/Drug_slider");
 const BlogCategory = require("../models/blogs/Blog_category");
-
+const advancedResults = require("../middleware/advancedResults");
 const {
   getAll,
   getOne,
@@ -19,11 +19,9 @@ const {
 } = require("../controllers/crudController");
 const Media = require("../models/Media");
 
-
-
 const router = express.Router();
 
-router.get("/blogs", getAll(Blog));
+router.get("/blogs", advancedResults(Blog, undefined, "lan"), getAll(Blog));
 router.get("/warningsigns", getAll(WarningSign, { model: Media, as: "media" }));
 router.get("/dailytips", getAll(DailyTip));
 router.get("/dailyreads", getAll(DailyRead));

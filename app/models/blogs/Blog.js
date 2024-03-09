@@ -22,10 +22,6 @@ const Blog = sequelize.define(
     category: {
       type: DataTypes.INTEGER,
       allowNull: false,
-      references: {
-        model: BlogCategories,
-        key: "id",
-      },
     },
     description: {
       type: DataTypes.TEXT,
@@ -49,5 +45,8 @@ const Blog = sequelize.define(
     timestamps: true,
   }
 );
+
+BlogCategories.hasMany(Blog, { foreignKey: "category" });
+Blog.belongsTo(BlogCategories, { foreignKey: "category" });
 
 module.exports = Blog;

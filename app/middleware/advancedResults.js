@@ -1,6 +1,7 @@
 const { Op } = require("sequelize");
 const asyncHandler = require("./async");
 const Reaction = require("../models/community/Reaction");
+const ReactionType = require("../models/community/ReactionType");
 
 const advancedResults = (model, include, language) =>
   asyncHandler(async (req, res, next) => {
@@ -124,7 +125,7 @@ const advancedResults = (model, include, language) =>
           obj.setDataValue("description", JSON.parse(obj.description));
         });
       } else {
-        newData = results.map((obj) => {
+        results.map((obj) => {
           obj.setDataValue(
             "title",
             obj.title &&
@@ -134,10 +135,11 @@ const advancedResults = (model, include, language) =>
           );
           obj.setDataValue(
             "description",
-            obj.description &&
-              (JSON.parse(obj.description)[lan]
-                ? JSON.parse(obj.description)[lan]
-                : JSON.parse(obj.description)["en"])
+            undefined
+            // obj.description &&
+            //   (JSON.parse(obj.description)[lan]
+            //     ? JSON.parse(obj.description)[lan]
+            //     : JSON.parse(obj.description)["en"])
           );
           return obj;
         });
@@ -152,13 +154,16 @@ const advancedResults = (model, include, language) =>
           let jpost = post.toJSON();
           jpost.react = await Reaction.findOne({
             where: { user_id: req.user.id, post_id: jpost.id },
+            include: { model: ReactionType, attributes: ["type_name"] },
           });
           return jpost;
         })
       );
     }
+    
 
     // console.log(results);
+    // console.log(model);
 
     res.advancedResults = {
       success: true,

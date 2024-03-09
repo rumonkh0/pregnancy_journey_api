@@ -4,6 +4,7 @@ const { Op } = require("sequelize");
 const { Post } = require("../../models/Association");
 const Comment = require("../../models/community/Comment");
 const User = require("../../models/User");
+const ReactionType = require("../../models/community/ReactionType");
 
 // @desc      Get  Reaction List Of Mother
 // @route     GET /api/v1/babylist
@@ -14,11 +15,13 @@ exports.getAllReaction = asyncHandler(async (req, res, next) => {
       where: {
         [Op.and]: [{ post_id: req.params.postId }, { comment_id: null }],
       },
-      include: {
-        model: User,
-        attributes: ["id", "username", "first_name", "last_name"],
-      },
-      
+      include: [
+        {
+          model: User,
+          attributes: ["id", "username", "first_name", "last_name"],
+        },
+        { model: ReactionType, attributes: ["type_name"] },
+      ],
     });
     return res.json({
       success: true,
@@ -30,6 +33,13 @@ exports.getAllReaction = asyncHandler(async (req, res, next) => {
   if (req.params.commentId) {
     const reactions = await Reaction.findAll({
       where: { comment_id: req.params.commentId },
+      include: [
+        {
+          model: User,
+          attributes: ["id", "username", "first_name", "last_name"],
+        },
+        { model: ReactionType, attributes: ["type_name"] },
+      ],
     });
     return res.json({
       success: true,

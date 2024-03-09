@@ -8,6 +8,7 @@ const path = require("path");
 const fs = require("fs");
 const User = require("../../models/User");
 const ReactionType = require("../../models/community/ReactionType");
+const PostTopic = require("../../models/community/Post_topic");
 // const Media = require("../../models/Media");
 
 // @desc      Get  Post List Of Mother
@@ -22,26 +23,40 @@ exports.getAllPost = asyncHandler(async (req, res, next) => {
 // @access    Private
 exports.getPost = asyncHandler(async (req, res, next) => {
   const id = req.params.id;
-  const post = await Post.findOne({
+  let post = await Post.findOne({
     where: { id },
     include: [
       { model: Media, attributes: ["id", "file_name", "file_path"] },
-      { model: User, attributes: ["id", "username"] },
+
       {
-        model: Reaction,
-        include: [
-          { model: User, attributes: ["id", "username"] },
-          { model: ReactionType, attributes: ["type_name"] },
-        ],
+        model: User,
+        include: {
+          model: Media,
+          as: "media",
+          attributes: ["id", "file_path", "file_name"],
+        },
+        attributes: ["id", "username", "first_name", "last_name"],
+        require: false,
       },
+      // {
+      //   model: Reaction,
+      //   include: [
+      //     { model: User, attributes: ["id", "username"] },
+      //     { model: ReactionType, attributes: ["type_name"] },
+      //   ],
+      // },
       {
-        model: Comment,
-        include: [{ model: User, attributes: ["id", "username"] }],
+        model: PostTopic,
+        attributes: ["id", "title"],
       },
     ],
   });
   if (!post)
     return res.status(404).json({ success: false, message: "Post not found" });
+
+  post = post.toJSON();
+  post.react = await Reaction.findOne({ where: { user_id: req.user.id } });
+
   res.status(200).json({
     success: true,
     message: "Post found",

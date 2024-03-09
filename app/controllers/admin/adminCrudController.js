@@ -1,14 +1,16 @@
 const asyncHandler = require("../../middleware/async");
 const { where } = require("sequelize");
+const User = require("../../models/User");
 
 // @desc      Get  Baby get all as history
 // @route     GET /api/v1/route/history
 // @access    Private
-exports.getAllOfUser = (Model) => {
+exports.getAllOfUser = (Model, ordr) => {
   return asyncHandler(async (req, res, next) => {
     const data = await Model.findAll({
       where: { user_id: req.params.userId },
-      order: [["createdAt", "DESC"]],
+      include: { model: User, attributes: ["username"] },
+      order: ordr === "asc" ? [["createdAt", "ASC"]] : [["createdAt", "DESC"]],
     });
     if (!data) {
       return res.status(403).json({

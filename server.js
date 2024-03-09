@@ -55,6 +55,7 @@ const helpDesk = require("./app/routes/helpDesk");
 //admin section
 const admins = require("./app/routes/admin/admin");
 const adminLogin = require("./app/routes/admin/adminAuth");
+const adminDashboard = require("./app/routes/admin/dashboard");
 const adminHelpDesk = require("./app/routes/admin/helpDesk");
 const babyCare = require("./app/routes/admin/babyCare");
 const adminGeneral = require("./app/routes/admin/general/general");
@@ -121,6 +122,7 @@ app.use("/api/v1/helpdesk", helpDesk);
 //admin section
 app.use("/admin/api/v1/auth", adminLogin);
 app.use("/admin/api/v1/users", users);
+app.use("/admin/api/v1/dashboard", adminDashboard);
 app.use("/admin/api/v1/helpdesk", adminHelpDesk);
 app.use("/admin/api/v1/admin", admins);
 app.use("/admin/api/v1/babycare", babyCare);

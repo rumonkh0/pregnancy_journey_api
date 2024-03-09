@@ -10,11 +10,11 @@ exports.getAllReactionType = asyncHandler(async (req, res, next) => {
   const babyList = await PostTopic.findAll({
     include: [
       { model: Media, as: "media", attributes: ["id", "file_path"] },
-      {
-        model: Post,
-        include: { model: User, attributes: ["id", "username"] },
-        limit: 6,
-      },
+      // {
+      //   model: Post,
+      //   include: { model: User, attributes: ["id", "username"] },
+      //   limit: 6,
+      // },
     ],
   });
   res.json({ success: true, message: "Found All Topics", data: babyList });
