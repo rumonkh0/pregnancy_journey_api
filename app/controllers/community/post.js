@@ -55,7 +55,9 @@ exports.getPost = asyncHandler(async (req, res, next) => {
     return res.status(404).json({ success: false, message: "Post not found" });
 
   post = post.toJSON();
-  post.react = await Reaction.findOne({ where: { user_id: req.user.id } });
+  post.react = await Reaction.findOne({
+    where: { user_id: req.user.id, post_id: req.params.id },
+  });
 
   res.status(200).json({
     success: true,

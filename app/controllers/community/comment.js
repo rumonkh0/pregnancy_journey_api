@@ -1,5 +1,7 @@
 const Comment = require("../../models/community/Comment");
 const asyncHandler = require("../../middleware/async");
+const User = require("../../models/User");
+const Media = require("../../models/Media");
 
 // @desc      Get  Comment List Of Mother
 // @route     GET /api/v1/babylist
@@ -7,6 +9,15 @@ const asyncHandler = require("../../middleware/async");
 exports.getAllComment = asyncHandler(async (req, res, next) => {
   const comments = await Comment.findAll({
     where: { post_id: req.params.postId },
+    include: {
+      model: User,
+      attributes: ["id", "username", "first_name", "last_name"],
+      include: {
+        model: Media,
+        as: "media",
+        attributes: ["id", "file_path", "file_name"],
+      },
+    },
   });
   res.json({ success: true, message: "Found comments", data: comments });
 });
@@ -16,13 +27,20 @@ exports.getAllComment = asyncHandler(async (req, res, next) => {
 // @access    Private
 exports.getComment = asyncHandler(async (req, res, next) => {
   const id = req.params.id;
-  const comment = await Comment.findAll({
+  const comment = await Comment.findOne({
     where: { id },
+    include: {
+      model: User,
+      attributes: ["id", "username", "first_name", "last_name"],
+      include: {
+        model: Media,
+        as: "media",
+        attributes: ["id", "file_path", "file_name"],
+      },
+    },
   });
-  if (!comment.length)
+  if (!comment)
     return res
-
-    
       .status(404)
       .json({ success: false, message: "Comment not found" });
   res
