@@ -90,10 +90,16 @@ exports.createReaction = asyncHandler(async (req, res, next) => {
       where: { user_id: req.user.id, post_id: req.params.postId },
     });
 
+    // console.log(prevData);
     if (prevData) {
-      await Reaction.update(req.body, {
-        where: { user_id: req.user.id, post_id: req.params.postId },
-      });
+      prevData.type == reactionData.type
+        ? await Reaction.destroy({
+            where: { user_id: req.user.id, post_id: req.params.postId },
+          })
+        : await Reaction.update(req.body, {
+            where: { user_id: req.user.id, post_id: req.params.postId },
+          });
+
       return res
         .status(200)
         .json({ success: true, message: "Post Reaction updated" });

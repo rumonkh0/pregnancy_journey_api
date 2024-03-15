@@ -38,8 +38,8 @@ const Reaction = sequelize.define(
     tableName: "reactions", // Define table name explicitly
     timestamps: true, // Set to true if you want timestamps
     hooks: {
-      afterDestroy: async (reaction) => {
-        post_id = reaction.post_id;
+      afterBulkDestroy: async (reaction) => {
+        post_id = reaction.where.post_id;
         await getTotalReaction(post_id);
       },
       afterSave: async (reaction) => {
@@ -62,7 +62,7 @@ const getTotalReaction = async (post_id) => {
       raw: true,
     });
 
-    console.log(result);
+    // console.log(result);
 
     // Update averageCost field in Bootcamp model
     await sequelize.models.Post.update(
@@ -70,9 +70,9 @@ const getTotalReaction = async (post_id) => {
       { where: { id: post_id } }
     );
 
-    console.log("Total reaction updated successfully");
+    // console.log("Total reaction updated successfully");
   } catch (err) {
-    console.error("Error updating reaction:", err);
+    // console.error("Error updating reaction:", err);
   }
 };
 

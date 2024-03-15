@@ -5,6 +5,7 @@ const {
   createComment,
   updateComment,
   deleteComment,
+  checkOwner,
 } = require("../../controllers/community/comment");
 const router = express.Router({ mergeParams: true });
 const reactionRouter = require("./reaction");
@@ -17,6 +18,6 @@ router.get("/", getAllComment);
 router.get("/:id", getComment);
 router.post("/", createComment);
 router.put("/:id", updateComment);
-router.delete("/:id", deleteComment);
+router.delete("/:id", checkOwner, deleteComment);
 
 module.exports = router;

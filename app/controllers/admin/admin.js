@@ -7,7 +7,7 @@ const AdminRole = require("../../models/AdminRole");
 // @route     GET /api/v1/bootcamps
 // @access    Public
 exports.getAdmins = asyncHandler(async (req, res, next) => {
-  // res.status(200).json(res.advancedResults);
+  if (res.advancedResults) return res.status(200).json(res.advancedResults);
   // try {
   const admins = await Admin.findAll({
     include: [

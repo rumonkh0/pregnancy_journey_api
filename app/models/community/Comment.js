@@ -38,25 +38,26 @@ const Comment = sequelize.define(
     tableName: "comments", // Define table name explicitly
     timestamps: true, // Set to true if you want timestamps
     hooks: {
-      afterDestroy: async (reaction) => {
-        post_id = reaction.post_id;
-        await getTotalReaction(post_id);
+      afterDestroy: async (comment) => {
+        console.log("comment");
+        post_id = comment.post_id;
+        await getTotalComment(post_id);
       },
-      afterSave: async (reaction) => {
-        post_id = reaction.post_id;
-        await getTotalReaction(post_id);
+      afterSave: async (comment) => {
+        post_id = comment.post_id;
+        await getTotalComment(post_id);
       },
     },
   }
 );
 
 // Method to get average tuition cost for a bootcamp and update the Bootcamp model
-const getTotalReaction = async (post_id) => {
+const getTotalComment = async (post_id) => {
   try {
     // Calculate average cost using Sequelize's aggregation functions
     const result = await Comment.findOne({
       attributes: [
-        [Sequelize.fn("COUNT", Sequelize.col("type")), "total_comment"],
+        [Sequelize.fn("COUNT", Sequelize.col("id")), "total_comment"],
       ],
       where: { post_id },
       raw: true,
@@ -68,9 +69,9 @@ const getTotalReaction = async (post_id) => {
       { where: { id: post_id } }
     );
 
-    console.log("Total reaction updated successfully");
+    console.log("Total comment updated successfully");
   } catch (err) {
-    console.error("Error updating reaction:", err);
+    console.error("Error updating comment:", err);
   }
 };
 

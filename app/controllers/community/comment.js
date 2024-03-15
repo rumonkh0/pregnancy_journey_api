@@ -3,6 +3,21 @@ const asyncHandler = require("../../middleware/async");
 const User = require("../../models/User");
 const Media = require("../../models/Media");
 
+//Check Owner of comment
+exports.checkOwner = asyncHandler(async (req, res, next) => {
+  const comment = await Comment.findOne({
+    where: { id: req.params.id, user_id: req.user.id },
+  });
+  if (!comment) {
+    return res.status(200).json({
+      success: false,
+      message: "you are not owner of the comment",
+    });
+  }
+  console.log("checked");
+  next();
+});
+
 // @desc      Get  Comment List Of Mother
 // @route     GET /api/v1/babylist
 // @access    Private
@@ -82,9 +97,8 @@ exports.updateComment = asyncHandler(async (req, res) => {
 // @access    Private/Admin
 exports.deleteComment = asyncHandler(async (req, res) => {
   const id = req.params.id;
-  const deleted = await Comment.destroy({
-    where: { id, user_id: req.user.id },
-  });
+  const comment = await Comment.findOne({ where: { id } });
+  const deleted = comment.destroy();
   if (!deleted)
     return res
       .status(404)
