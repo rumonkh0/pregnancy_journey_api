@@ -92,17 +92,26 @@ exports.createReaction = asyncHandler(async (req, res, next) => {
 
     // console.log(prevData);
     if (prevData) {
-      prevData.type == reactionData.type
-        ? await Reaction.destroy({
-            where: { user_id: req.user.id, post_id: req.params.postId },
-          })
-        : await Reaction.update(req.body, {
-            where: { user_id: req.user.id, post_id: req.params.postId },
-          });
+      if (prevData.type == reactionData.type) {
+        await Reaction.destroy({
+          where: { user_id: req.user.id, post_id: req.params.postId },
+        });
 
-      return res
-        .status(200)
-        .json({ success: true, message: "Post Reaction updated" });
+        return res.status(200).json({
+          remark: "UNREACTED",
+          success: true,
+          message: "Post Reaction updated",
+        });
+      } else {
+        await Reaction.update(req.body, {
+          where: { user_id: req.user.id, post_id: req.params.postId },
+        });
+        return res.status(200).json({
+          remark: "REACTED",
+          success: true,
+          message: "Post Reaction submitted",
+        });
+      }
     }
   }
 
@@ -131,9 +140,12 @@ exports.createReaction = asyncHandler(async (req, res, next) => {
   }
 
   const reaction = await Reaction.create(reactionData);
-  res
-    .status(201)
-    .json({ success: true, message: "Reaction created", data: reaction });
+  res.status(201).json({
+    remark: "REACTED",
+    success: true,
+    message: "Reaction created",
+    data: reaction,
+  });
 });
 
 // @desc      Update reaction
