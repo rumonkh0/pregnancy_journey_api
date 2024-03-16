@@ -93,9 +93,11 @@ exports.createReaction = asyncHandler(async (req, res, next) => {
     // console.log(prevData);
     if (prevData) {
       if (prevData.type == reactionData.type) {
-        await Reaction.destroy({
+        const deleteData = await Reaction.findOne({
           where: { user_id: req.user.id, post_id: req.params.postId },
         });
+
+        await deleteData.destroy();
 
         return res.status(200).json({
           remark: "UNREACTED",
@@ -130,12 +132,32 @@ exports.createReaction = asyncHandler(async (req, res, next) => {
     });
 
     if (prevData) {
-      await Reaction.update(req.body, {
-        where: { user_id: req.user.id, comment_id: req.params.commentId },
-      });
-      return res
-        .status(200)
-        .json({ success: true, message: "Comment Reaction updated" });
+      if (prevData.type == reactionData.type) {
+        const deleteData = await Reaction.findOne({
+          where: { user_id: req.user.id, comment_id: req.params.commentId },
+        });
+        await deleteData.destroy();
+        return res.status(200).json({
+          remark: "UNREACTED",
+          success: true,
+          message: "Comment Reaction updated",
+        });
+      } else {
+        await Reaction.update(req.body, {
+          where: { user_id: req.user.id, comment_id: req.params.commentId },
+        });
+        return res.status(200).json({
+          remark: "REACTED",
+          success: true,
+          message: "Comment Reaction submitted",
+        });
+      }
+      // await Reaction.update(req.body, {
+      //   where: { user_id: req.user.id, comment_id: req.params.commentId },
+      // });
+      // return res
+      //   .status(200)
+      //   .json({ success: true, message: "Comment Reaction updated" });
     }
   }
 

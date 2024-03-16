@@ -22,6 +22,12 @@ const Comment = sequelize.define(
       type: DataTypes.INTEGER,
       allowNull: false,
     },
+    total_reaction: {
+      type: DataTypes.INTEGER,
+    },
+    total_comment: {
+      type: DataTypes.INTEGER,
+    },
     content: {
       type: DataTypes.TEXT,
     },

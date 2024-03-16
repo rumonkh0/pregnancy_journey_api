@@ -1,4 +1,4 @@
-const { DataTypes, Sequelize } = require("sequelize");
+const { DataTypes, Sequelize, where } = require("sequelize");
 const { sequelize } = require("../../../config/db"); // Replace with your Sequelize instance
 const Post = require("./Post");
 
@@ -38,37 +38,54 @@ const Reaction = sequelize.define(
     tableName: "reactions", // Define table name explicitly
     timestamps: true, // Set to true if you want timestamps
     hooks: {
-      afterBulkDestroy: async (reaction) => {
+      afterDestroy: async (reaction) => {
+        console.log(reaction);
         post_id = reaction.where.post_id;
-        await getTotalReaction(post_id);
+        comment_id = reaction.comment_id;
+        post_id
+          ? await getTotalReaction(post_id, "post")
+          : await getTotalReaction(comment_id, "comment");
       },
       afterSave: async (reaction) => {
+        console.log(reaction);
         post_id = reaction.post_id;
-        await getTotalReaction(post_id);
+        comment_id = reaction.comment_id;
+        post_id
+          ? await getTotalReaction(post_id, "post")
+          : await getTotalReaction(comment_id, "comment");
       },
     },
   }
 );
 
 // Method to get average tuition cost for a bootcamp and update the Bootcamp model
-const getTotalReaction = async (post_id) => {
+const getTotalReaction = async (id, type) => {
   try {
     // Calculate average cost using Sequelize's aggregation functions
-    const result = await Reaction.findOne({
+    const query = {
       attributes: [
         [Sequelize.fn("COUNT", Sequelize.col("type")), "total_reaction"],
       ],
-      where: { post_id },
       raw: true,
-    });
+    };
+    type == "post"
+      ? (query["where"] = { post_id: id })
+      : (query["where"] = { comment_id: id });
+    console.log(query);
+    const result = await Reaction.findOne(query);
 
     // console.log(result);
 
     // Update averageCost field in Bootcamp model
-    await sequelize.models.Post.update(
-      { total_reaction: result.total_reaction },
-      { where: { id: post_id } }
-    );
+    type == "post"
+      ? await sequelize.models.Post.update(
+          { total_reaction: result.total_reaction },
+          { where: { id } }
+        )
+      : await sequelize.models.Comment.update(
+          { total_reaction: result.total_reaction },
+          { where: { id } }
+        );
 
     // console.log("Total reaction updated successfully");
   } catch (err) {
