@@ -89,7 +89,7 @@ const getTotalReaction = async (id, type) => {
 
     // console.log("Total reaction updated successfully");
   } catch (err) {
-    // console.error("Error updating reaction:", err);
+    console.error("Error updating reaction:", err);
   }
 };
 
