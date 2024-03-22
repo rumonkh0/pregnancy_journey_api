@@ -56,7 +56,7 @@ const Comment = sequelize.define(
           : await getTotalComment(comment_id, "comment");
       },
       afterSave: async (comment) => {
-        console.log(comment);
+        // console.log(comment);
         post_id = comment.post_id;
         comment_id = comment.comment_id;
         comment.post_id
@@ -79,18 +79,19 @@ const getTotalComment = async (post_id, type) => {
       raw: true,
     };
     type == "post"
-      ? (query["where"] = { post_id: id })
-      : (query["where"] = { comment_id: id });
+      ? (query["where"] = { post_id: post_id })
+      : (query["where"] = { comment_id: post_id });
 
     const result = await Comment.findOne(query);
 
     // Update averageCost field in Bootcamp model
+    console.log(type);
     type == "post"
       ? await sequelize.models.Post.update(
           { total_comment: result.total_comment },
           { where: { id: post_id } }
         )
-      : await sequelize.models.Post.update(
+      : await sequelize.models.Comment.update(
           { total_comment: result.total_comment },
           { where: { id: post_id } }
         );

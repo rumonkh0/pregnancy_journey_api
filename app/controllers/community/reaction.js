@@ -77,6 +77,14 @@ exports.createReaction = asyncHandler(async (req, res, next) => {
   reactionData.type = req.params.reactionType;
   reactionData.comment_id = req.params.commentId;
 
+  const types = await ReactionType.findAll();
+  const found = types.find((typeId) => typeId.id == req.params.reactionType);
+  if (found === undefined)
+    return res.status(200).json({
+      success: false,
+      message: "No react found with id " + req.params.reactionType,
+    });
+
   if (reactionData.post_id) {
     let available = await Post.findOne({
       where: { id: req.params.postId },
