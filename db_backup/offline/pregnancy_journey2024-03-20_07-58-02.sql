@@ -628,7 +628,7 @@ CREATE TABLE `comments` (
   `createdAt` datetime DEFAULT NULL,
   `updatedAt` datetime DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=31 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=30 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -637,7 +637,7 @@ CREATE TABLE `comments` (
 
 LOCK TABLES `comments` WRITE;
 /*!40000 ALTER TABLE `comments` DISABLE KEYS */;
-INSERT INTO `comments` VALUES (1,12,3,NULL,0,0,'this is a large content','2023-12-14 12:52:57','2023-12-14 12:52:57'),(3,12,3,NULL,0,0,'this is a last content','2023-12-14 12:53:17','2023-12-14 12:53:17'),(4,12,3,NULL,0,0,'this is a checking content','2023-12-14 12:55:38','2023-12-14 12:55:38'),(5,12,2,NULL,0,0,'this is a checking content','2023-12-14 13:20:23','2023-12-14 13:20:23'),(6,12,47,NULL,0,0,'this is another comment','2024-03-11 15:42:10','2024-03-11 15:42:10'),(7,12,47,NULL,0,0,'this is another test ','2024-03-11 15:42:25','2024-03-11 15:42:25'),(20,12,46,NULL,0,0,'this is another test ','2024-03-15 16:24:28','2024-03-22 17:01:10'),(21,12,46,NULL,0,0,'this is another test ','2024-03-15 16:24:28','2024-03-15 16:24:28'),(22,12,46,NULL,0,0,'this is another test ','2024-03-15 16:24:29','2024-03-15 16:24:29'),(23,12,46,NULL,0,0,'this is another test ','2024-03-15 16:24:29','2024-03-15 16:24:29'),(24,12,46,NULL,0,0,'this is another test ','2024-03-15 16:43:20','2024-03-15 16:43:20'),(25,12,46,NULL,0,0,'this is another test ','2024-03-16 16:20:10','2024-03-16 16:20:10'),(29,12,NULL,20,0,0,'this is another reply test ','2024-03-16 16:48:52','2024-03-16 16:48:52'),(30,12,NULL,20,0,0,'this is another reply test ','2024-03-22 16:50:17','2024-03-22 16:50:17');
+INSERT INTO `comments` VALUES (1,12,3,NULL,0,0,'this is a large content','2023-12-14 12:52:57','2023-12-14 12:52:57'),(3,12,3,NULL,0,0,'this is a last content','2023-12-14 12:53:17','2023-12-14 12:53:17'),(4,12,3,NULL,0,0,'this is a checking content','2023-12-14 12:55:38','2023-12-14 12:55:38'),(5,12,2,NULL,0,0,'this is a checking content','2023-12-14 13:20:23','2023-12-14 13:20:23'),(6,12,47,NULL,0,0,'this is another comment','2024-03-11 15:42:10','2024-03-11 15:42:10'),(7,12,47,NULL,0,0,'this is another test ','2024-03-11 15:42:25','2024-03-11 15:42:25'),(20,12,46,NULL,0,0,'this is another test ','2024-03-15 16:24:28','2024-03-16 16:09:25'),(21,12,46,NULL,0,0,'this is another test ','2024-03-15 16:24:28','2024-03-15 16:24:28'),(22,12,46,NULL,0,0,'this is another test ','2024-03-15 16:24:29','2024-03-15 16:24:29'),(23,12,46,NULL,0,0,'this is another test ','2024-03-15 16:24:29','2024-03-15 16:24:29'),(24,12,46,NULL,0,0,'this is another test ','2024-03-15 16:43:20','2024-03-15 16:43:20'),(25,12,46,NULL,0,0,'this is another test ','2024-03-16 16:20:10','2024-03-16 16:20:10'),(29,12,NULL,20,0,0,'this is another reply test ','2024-03-16 16:48:52','2024-03-16 16:48:52');
 /*!40000 ALTER TABLE `comments` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -1303,7 +1303,7 @@ CREATE TABLE `posts` (
 
 LOCK TABLES `posts` WRITE;
 /*!40000 ALTER TABLE `posts` DISABLE KEYS */;
-INSERT INTO `posts` VALUES (1,12,1,'hello i am first title','this is a large content',0,NULL,2,0,'2024-02-27 20:27:18','2023-12-13 17:58:37'),(3,12,1,'hello i am another title','this is a large content',0,NULL,0,0,'2023-12-13 17:59:04','2023-12-13 17:59:04'),(4,12,1,'hello i am last title','this is a large content',0,NULL,0,0,'2023-12-13 17:59:09','2023-12-13 17:59:09'),(5,12,1,'hello i am last title','this is a large content',0,NULL,0,0,'2024-02-03 17:42:42','2024-02-03 17:42:42'),(6,12,1,'New develop ment for adding multiple images','this is a large content',0,NULL,0,0,'2024-02-03 17:43:26','2024-02-03 17:43:26'),(12,12,1,'new title','large content',0,NULL,0,0,'2024-02-04 09:20:28','2024-02-04 09:20:28'),(13,12,1,'new title','large content',0,NULL,0,0,'2024-02-04 09:20:41','2024-02-04 09:20:41'),(14,12,1,'new title','large content',0,NULL,0,0,'2024-02-04 09:23:10','2024-02-04 09:23:10'),(15,12,1,'new title','large content',0,NULL,0,0,'2024-02-04 09:23:47','2024-02-04 09:23:47'),(16,12,1,'new title','large content',0,NULL,0,0,'2024-02-04 09:28:08','2024-02-04 09:28:08'),(17,12,1,'new title','large content',0,NULL,0,0,'2024-02-04 09:28:55','2024-02-04 09:28:55'),(18,12,1,'new title','large content',0,NULL,0,0,'2024-02-04 09:29:27','2024-02-04 09:29:27'),(19,12,1,'new title','large content',0,NULL,0,0,'2024-02-04 09:31:22','2024-02-04 09:31:22'),(20,12,1,'new title','large content',0,NULL,1,0,'2024-03-16 16:05:07','2024-02-04 09:33:57'),(21,12,1,'new title','large content',0,NULL,0,0,'2024-02-04 09:36:03','2024-02-04 09:36:03'),(23,12,1,'new title','large content',0,NULL,0,0,'2024-02-04 10:05:57','2024-02-04 10:05:57'),(24,12,1,'creation finished 1','all about my post in the field',0,NULL,0,0,'2024-02-04 10:07:12','2024-02-04 10:07:12'),(33,52,1,'photo diye','2 ta photo ache',0,NULL,0,0,'2024-02-07 12:43:06','2024-02-07 12:43:06'),(34,52,1,'photo diye','2 ta photo ache',0,NULL,0,0,'2024-02-07 12:43:36','2024-02-07 12:43:36'),(35,52,1,'photo diye','2 ta photo ache',0,NULL,0,0,'2024-02-07 13:03:08','2024-02-07 13:03:08'),(36,52,1,'photo diye','2 ta photo ache',0,NULL,0,0,'2024-02-07 13:03:30','2024-02-07 13:03:30'),(37,52,1,'photo diye','2 ta photo ache',0,NULL,0,0,'2024-02-07 13:03:49','2024-02-07 13:03:49'),(38,52,1,'photo diye','2 ta photo ache',0,NULL,0,0,'2024-02-07 13:05:32','2024-02-07 13:05:32'),(39,52,1,'photo diye','2 ta photo ache',0,NULL,0,0,'2024-02-07 13:07:12','2024-02-07 13:07:12'),(40,52,1,'photo diye','2 ta photo ache',0,NULL,0,0,'2024-02-07 13:12:04','2024-02-07 13:12:04'),(41,52,1,'photo diye','2 ta photo ache',0,NULL,0,0,'2024-02-07 13:12:18','2024-02-07 13:12:18'),(42,52,1,'photo diye','2 ta photo ache',0,NULL,0,0,'2024-02-07 13:12:46','2024-02-07 13:12:46'),(43,52,1,'photo diye','2 ta photo ache',0,NULL,0,0,'2024-02-07 13:14:08','2024-02-07 13:14:08'),(44,52,1,'photo diye','2 ta photo ache',0,NULL,0,0,'2024-02-07 13:15:55','2024-02-07 13:15:55'),(45,12,1,'photo diye','2 ta photo ache',0,NULL,0,0,'2024-02-29 19:04:07','2024-02-29 19:04:07'),(46,109,3,'photo diye','2 ta photo ache',0,NULL,1,6,'2024-03-22 16:47:01','2024-02-29 19:05:23'),(47,109,3,'photo diye','2 ta photo ache',0,NULL,2,0,'2024-03-07 16:17:19','2024-02-29 19:05:47');
+INSERT INTO `posts` VALUES (1,12,1,'hello i am first title','this is a large content',0,NULL,2,0,'2024-02-27 20:27:18','2023-12-13 17:58:37'),(3,12,1,'hello i am another title','this is a large content',0,NULL,0,0,'2023-12-13 17:59:04','2023-12-13 17:59:04'),(4,12,1,'hello i am last title','this is a large content',0,NULL,0,0,'2023-12-13 17:59:09','2023-12-13 17:59:09'),(5,12,1,'hello i am last title','this is a large content',0,NULL,0,0,'2024-02-03 17:42:42','2024-02-03 17:42:42'),(6,12,1,'New develop ment for adding multiple images','this is a large content',0,NULL,0,0,'2024-02-03 17:43:26','2024-02-03 17:43:26'),(12,12,1,'new title','large content',0,NULL,0,0,'2024-02-04 09:20:28','2024-02-04 09:20:28'),(13,12,1,'new title','large content',0,NULL,0,0,'2024-02-04 09:20:41','2024-02-04 09:20:41'),(14,12,1,'new title','large content',0,NULL,0,0,'2024-02-04 09:23:10','2024-02-04 09:23:10'),(15,12,1,'new title','large content',0,NULL,0,0,'2024-02-04 09:23:47','2024-02-04 09:23:47'),(16,12,1,'new title','large content',0,NULL,0,0,'2024-02-04 09:28:08','2024-02-04 09:28:08'),(17,12,1,'new title','large content',0,NULL,0,0,'2024-02-04 09:28:55','2024-02-04 09:28:55'),(18,12,1,'new title','large content',0,NULL,0,0,'2024-02-04 09:29:27','2024-02-04 09:29:27'),(19,12,1,'new title','large content',0,NULL,0,0,'2024-02-04 09:31:22','2024-02-04 09:31:22'),(20,12,1,'new title','large content',0,NULL,1,0,'2024-03-16 16:05:07','2024-02-04 09:33:57'),(21,12,1,'new title','large content',0,NULL,0,0,'2024-02-04 09:36:03','2024-02-04 09:36:03'),(23,12,1,'new title','large content',0,NULL,0,0,'2024-02-04 10:05:57','2024-02-04 10:05:57'),(24,12,1,'creation finished 1','all about my post in the field',0,NULL,0,0,'2024-02-04 10:07:12','2024-02-04 10:07:12'),(33,52,1,'photo diye','2 ta photo ache',0,NULL,0,0,'2024-02-07 12:43:06','2024-02-07 12:43:06'),(34,52,1,'photo diye','2 ta photo ache',0,NULL,0,0,'2024-02-07 12:43:36','2024-02-07 12:43:36'),(35,52,1,'photo diye','2 ta photo ache',0,NULL,0,0,'2024-02-07 13:03:08','2024-02-07 13:03:08'),(36,52,1,'photo diye','2 ta photo ache',0,NULL,0,0,'2024-02-07 13:03:30','2024-02-07 13:03:30'),(37,52,1,'photo diye','2 ta photo ache',0,NULL,0,0,'2024-02-07 13:03:49','2024-02-07 13:03:49'),(38,52,1,'photo diye','2 ta photo ache',0,NULL,0,0,'2024-02-07 13:05:32','2024-02-07 13:05:32'),(39,52,1,'photo diye','2 ta photo ache',0,NULL,0,0,'2024-02-07 13:07:12','2024-02-07 13:07:12'),(40,52,1,'photo diye','2 ta photo ache',0,NULL,0,0,'2024-02-07 13:12:04','2024-02-07 13:12:04'),(41,52,1,'photo diye','2 ta photo ache',0,NULL,0,0,'2024-02-07 13:12:18','2024-02-07 13:12:18'),(42,52,1,'photo diye','2 ta photo ache',0,NULL,0,0,'2024-02-07 13:12:46','2024-02-07 13:12:46'),(43,52,1,'photo diye','2 ta photo ache',0,NULL,0,0,'2024-02-07 13:14:08','2024-02-07 13:14:08'),(44,52,1,'photo diye','2 ta photo ache',0,NULL,0,0,'2024-02-07 13:15:55','2024-02-07 13:15:55'),(45,12,1,'photo diye','2 ta photo ache',0,NULL,0,0,'2024-02-29 19:04:07','2024-02-29 19:04:07'),(46,109,3,'photo diye','2 ta photo ache',0,NULL,2,6,'2024-03-16 16:20:10','2024-02-29 19:05:23'),(47,109,3,'photo diye','2 ta photo ache',0,NULL,2,0,'2024-03-07 16:17:19','2024-02-29 19:05:47');
 /*!40000 ALTER TABLE `posts` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -1323,7 +1323,7 @@ CREATE TABLE `reactions` (
   `createdAt` datetime DEFAULT NULL,
   `updatedAt` datetime DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=71 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=58 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -1332,7 +1332,7 @@ CREATE TABLE `reactions` (
 
 LOCK TABLES `reactions` WRITE;
 /*!40000 ALTER TABLE `reactions` DISABLE KEYS */;
-INSERT INTO `reactions` VALUES (1,1,12,3,NULL,'2023-12-14 14:41:52','2023-12-14 14:41:52'),(2,1,12,4,NULL,'2023-12-14 14:43:16','2023-12-14 14:43:16'),(5,2,12,NULL,1,'2023-12-14 15:24:51','2024-03-16 15:33:45'),(6,3,13,1,NULL,'2023-12-14 15:03:26','2023-12-14 15:05:21'),(18,3,12,2,NULL,'2024-02-27 20:21:29','2024-02-27 20:23:50'),(19,3,12,1,NULL,'2024-02-27 20:27:18','2024-02-27 20:27:24'),(20,3,12,47,NULL,'2024-03-07 16:08:51','2024-03-07 16:08:51'),(21,3,111,47,NULL,'2024-03-07 16:17:19','2024-03-07 16:17:19'),(22,3,111,46,NULL,'2024-03-07 16:18:43','2024-03-07 16:18:43'),(24,3,12,465,NULL,'2024-03-07 17:13:01','2024-03-07 17:13:17');
+INSERT INTO `reactions` VALUES (1,1,12,3,NULL,'2023-12-14 14:41:52','2023-12-14 14:41:52'),(2,1,12,4,NULL,'2023-12-14 14:43:16','2023-12-14 14:43:16'),(5,2,12,NULL,1,'2023-12-14 15:24:51','2024-03-16 15:33:45'),(6,3,13,1,NULL,'2023-12-14 15:03:26','2023-12-14 15:05:21'),(18,3,12,2,NULL,'2024-02-27 20:21:29','2024-02-27 20:23:50'),(19,3,12,1,NULL,'2024-02-27 20:27:18','2024-02-27 20:27:24'),(20,3,12,47,NULL,'2024-03-07 16:08:51','2024-03-07 16:08:51'),(21,3,111,47,NULL,'2024-03-07 16:17:19','2024-03-07 16:17:19'),(22,3,111,46,NULL,'2024-03-07 16:18:43','2024-03-07 16:18:43'),(24,3,12,465,NULL,'2024-03-07 17:13:01','2024-03-07 17:13:17'),(43,4,12,46,NULL,'2024-03-16 15:45:11','2024-03-16 15:45:11');
 /*!40000 ALTER TABLE `reactions` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -1347,7 +1347,7 @@ CREATE TABLE `reactiontypes` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `type_name` varchar(255) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -1356,7 +1356,7 @@ CREATE TABLE `reactiontypes` (
 
 LOCK TABLES `reactiontypes` WRITE;
 /*!40000 ALTER TABLE `reactiontypes` DISABLE KEYS */;
-INSERT INTO `reactiontypes` VALUES (1,'love'),(2,'care'),(3,'like'),(4,'happy'),(5,'wow'),(6,'sad'),(7,'angry');
+INSERT INTO `reactiontypes` VALUES (1,'like'),(2,'sad'),(3,'happy'),(4,'angry'),(5,'wow'),(6,'love');
 /*!40000 ALTER TABLE `reactiontypes` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -1667,4 +1667,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2024-03-22 23:04:51
+-- Dump completed on 2024-03-20  7:56:11

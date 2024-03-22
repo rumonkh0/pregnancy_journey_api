@@ -39,15 +39,14 @@ const Reaction = sequelize.define(
     timestamps: true, // Set to true if you want timestamps
     hooks: {
       afterDestroy: async (reaction) => {
-        console.log(reaction);
-        post_id = reaction.where.post_id;
+        post_id = reaction.post_id;
         comment_id = reaction.comment_id;
         post_id
           ? await getTotalReaction(post_id, "post")
           : await getTotalReaction(comment_id, "comment");
       },
       afterSave: async (reaction) => {
-        console.log(reaction);
+        // console.log(reaction);
         post_id = reaction.post_id;
         comment_id = reaction.comment_id;
         post_id
@@ -71,7 +70,8 @@ const getTotalReaction = async (id, type) => {
     type == "post"
       ? (query["where"] = { post_id: id })
       : (query["where"] = { comment_id: id });
-    console.log(query);
+    // console.log(query);
+    // console.log(type);
     const result = await Reaction.findOne(query);
 
     // console.log(result);

@@ -49,35 +49,51 @@ const Comment = sequelize.define(
     timestamps: true, // Set to true if you want timestamps
     hooks: {
       afterDestroy: async (comment) => {
-        console.log("comment");
         post_id = comment.post_id;
-        await getTotalComment(post_id);
+        comment_id = comment.comment_id;
+        comment.post_id
+          ? await getTotalComment(post_id, "post")
+          : await getTotalComment(comment_id, "comment");
       },
       afterSave: async (comment) => {
+        console.log(comment);
         post_id = comment.post_id;
-        await getTotalComment(post_id);
+        comment_id = comment.comment_id;
+        comment.post_id
+          ? await getTotalComment(post_id, "post")
+          : await getTotalComment(comment_id, "comment");
       },
     },
   }
 );
 
 // Method to get average tuition cost for a bootcamp and update the Bootcamp model
-const getTotalComment = async (post_id) => {
+const getTotalComment = async (post_id, type) => {
   try {
     // Calculate average cost using Sequelize's aggregation functions
-    const result = await Comment.findOne({
+
+    const query = {
       attributes: [
         [Sequelize.fn("COUNT", Sequelize.col("id")), "total_comment"],
       ],
-      where: { post_id },
       raw: true,
-    });
+    };
+    type == "post"
+      ? (query["where"] = { post_id: id })
+      : (query["where"] = { comment_id: id });
+
+    const result = await Comment.findOne(query);
 
     // Update averageCost field in Bootcamp model
-    await sequelize.models.Post.update(
-      { total_comment: result.total_comment },
-      { where: { id: post_id } }
-    );
+    type == "post"
+      ? await sequelize.models.Post.update(
+          { total_comment: result.total_comment },
+          { where: { id: post_id } }
+        )
+      : await sequelize.models.Post.update(
+          { total_comment: result.total_comment },
+          { where: { id: post_id } }
+        );
 
     console.log("Total comment updated successfully");
   } catch (err) {
