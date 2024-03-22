@@ -132,21 +132,20 @@ exports.deletePost = asyncHandler(async (req, res) => {
 
   await Promise.all(
     post.Media.map(async (media) => {
-      // console.log(media.file_path);
-      await unlinkAsync(media.file_path);
+      // const ll = await fs.access(media.file_path);
+      // console.log(ll);
+      if (fs.existsSync(media.file_path)) {
+        await unlinkAsync(media.file_path);
+      }
+      await PostMedia.destroy({ where: { media_id: media.id } });
+      await Media.destroy({ where: { id: media.id } });
     })
   );
-  // post.Media.forEach((media) => {
-  //   await unlinkAsync(media.file_path);
-  // });
 
-  // await unlinkAsync(userWithMedia.media.file_path);
-
-  //   // await Media.destroy({ where: { id: user.photo } });
-  // const deleted = await Post.destroy({
-  //   where: { id, user_id: req.user.id },
-  // });
-  // if (!deleted)
-  return res.status(404).json({ success: false, message: "Post not found" });
+  const deleted = await Post.destroy({
+    where: { id, user_id: req.user.id },
+  });
+  if (!deleted)
+    return res.status(404).json({ success: false, message: "Post not found" });
   res.json({ message: "Post deleted" });
 });
