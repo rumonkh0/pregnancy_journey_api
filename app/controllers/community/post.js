@@ -6,6 +6,8 @@ const Comment = require("../../models/community/Comment");
 const PostMedia = require("../../models/community/PostMedia");
 const path = require("path");
 const fs = require("fs");
+const { promisify } = require("util");
+const unlinkAsync = promisify(fs.unlink);
 const User = require("../../models/User");
 const ReactionType = require("../../models/community/ReactionType");
 const PostTopic = require("../../models/community/Post_topic");
@@ -119,10 +121,32 @@ exports.updatePost = asyncHandler(async (req, res) => {
 // @access    Private/Admin
 exports.deletePost = asyncHandler(async (req, res) => {
   const id = req.params.id;
-  const deleted = await Post.destroy({
-    where: { id, user_id: req.user.id },
+  const post = await Post.findByPk(id, {
+    include: {
+      model: Media,
+      attributes: ["id", "file_path"],
+    },
   });
-  if (!deleted)
-    return res.status(404).json({ success: false, message: "Post not found" });
+  const plain = post.toJSON();
+  // console.log(plain.Media);
+
+  await Promise.all(
+    post.Media.map(async (media) => {
+      // console.log(media.file_path);
+      await unlinkAsync(media.file_path);
+    })
+  );
+  // post.Media.forEach((media) => {
+  //   await unlinkAsync(media.file_path);
+  // });
+
+  // await unlinkAsync(userWithMedia.media.file_path);
+
+  //   // await Media.destroy({ where: { id: user.photo } });
+  // const deleted = await Post.destroy({
+  //   where: { id, user_id: req.user.id },
+  // });
+  // if (!deleted)
+  return res.status(404).json({ success: false, message: "Post not found" });
   res.json({ message: "Post deleted" });
 });

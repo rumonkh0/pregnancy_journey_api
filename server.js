@@ -79,7 +79,7 @@ if (process.env.NODE_ENV === "development") {
 app.use(cors());
 
 // Set static folder
-app.use(express.static(path.join(__dirname, "public")));
+app.use("/public", express.static(path.join(__dirname, "public")));
 
 //Mount routes
 app.use("/api/v1/dashboard", dashboard);
