@@ -54,7 +54,10 @@ const helpDesk = require("./app/routes/helpDesk");
 
 //admin section
 const admins = require("./app/routes/admin/admin");
+const sendnotification = require("./app/routes/admin/notification");
 const adminLogin = require("./app/routes/admin/adminAuth");
+const adminPost = require("./app/routes/admin/community/post");
+const adminPostTopic = require("./app/routes/admin/community/topic");
 const adminDashboard = require("./app/routes/admin/dashboard");
 const adminHelpDesk = require("./app/routes/admin/helpDesk");
 const babyCare = require("./app/routes/admin/babyCare");
@@ -121,8 +124,11 @@ app.use("/api/v1/helpdesk", helpDesk);
 
 //admin section
 app.use("/admin/api/v1/auth", adminLogin);
+app.use("/admin/api/v1/sendnotification", sendnotification);
 app.use("/admin/api/v1/users", users);
 app.use("/admin/api/v1/dashboard", adminDashboard);
+app.use("/admin/api/v1/post-topic", adminPostTopic);
+app.use("/admin/api/v1/post", adminPost);
 app.use("/admin/api/v1/helpdesk", adminHelpDesk);
 app.use("/admin/api/v1/admin", admins);
 app.use("/admin/api/v1/babycare", babyCare);

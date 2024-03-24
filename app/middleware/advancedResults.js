@@ -152,15 +152,15 @@ const advancedResults = (model, include, language) =>
       results = await Promise.all(
         results.map(async (post) => {
           let jpost = post.toJSON();
-          jpost.react = await Reaction.findOne({
-            where: { user_id: req.user.id, post_id: jpost.id },
-            include: { model: ReactionType, attributes: ["type_name"] },
-          });
+          req.user &&
+            (jpost.react = await Reaction.findOne({
+              where: { user_id: req.user.id, post_id: jpost.id },
+              include: { model: ReactionType, attributes: ["type_name"] },
+            }));
           return jpost;
         })
       );
     }
-    
 
     // console.log(results);
     // console.log(model);

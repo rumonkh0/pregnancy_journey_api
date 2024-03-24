@@ -1,17 +1,17 @@
-// const Post = require("../../models/community/Post");
-const { Post, Media } = require("../../models/Association");
-const asyncHandler = require("../../middleware/async");
-const Reaction = require("../../models/community/Reaction");
-const Comment = require("../../models/community/Comment");
-const PostMedia = require("../../models/community/PostMedia");
+// const Post = require("../../../models/community/Post");
+const { Post, Media } = require("../../../models/Association");
+const asyncHandler = require("../../../middleware/async");
+const Reaction = require("../../../models/community/Reaction");
+const Comment = require("../../../models/community/Comment");
+const PostMedia = require("../../../models/community/PostMedia");
 const path = require("path");
 const fs = require("fs");
 const { promisify } = require("util");
 const unlinkAsync = promisify(fs.unlink);
-const User = require("../../models/User");
-const ReactionType = require("../../models/community/ReactionType");
-const PostTopic = require("../../models/community/Post_topic");
-// const Media = require("../../models/Media");
+const User = require("../../../models/User");
+const ReactionType = require("../../../models/community/ReactionType");
+const PostTopic = require("../../../models/community/Post_topic");
+// const Media = require("../../../models/Media");
 
 // @desc      Get  Post List Of Mother
 // @route     GET /api/v1/babylist
@@ -56,10 +56,10 @@ exports.getPost = asyncHandler(async (req, res, next) => {
   if (!post)
     return res.status(404).json({ success: false, message: "Post not found" });
 
-  post = post.toJSON();
-  post.react = await Reaction.findOne({
-    where: { user_id: req.user.id, post_id: req.params.id },
-  });
+  // post = post.toJSON();
+  // post.react = await Reaction.findOne({
+  //   where: { user_id: req.user.id, post_id: req.params.id },
+  // });
 
   res.status(200).json({
     success: true,
@@ -73,15 +73,13 @@ exports.getPost = asyncHandler(async (req, res, next) => {
 // @access    Private
 exports.createPost = asyncHandler(async (req, res, next) => {
   const postData = req.body;
-  delete postData.published;
-  delete postData.published_date;
-  postData.user_id = req.user.id;
+  // postData.user_id = req.user.id;
   let post = await Post.create(postData);
   req.files.forEach(async (element) => {
     const { mimetype, filename, path: file_path } = element;
 
     let postMedia = {
-      uploaded_by: req.user.username,
+      uploaded_by: req.admin.username,
       file_path,
       mime_type: mimetype,
       file_name: filename,
@@ -110,10 +108,8 @@ exports.createPost = asyncHandler(async (req, res, next) => {
 exports.updatePost = asyncHandler(async (req, res) => {
   const id = req.params.id;
   const newData = req.body;
-  delete newData.published;
-  delete newData.published_date;
   const updated = await Post.update(newData, {
-    where: { id, user_id: req.user.id },
+    where: { id },
   });
   if (!updated[0])
     return res.status(404).json({ success: false, message: "Post not found" });
@@ -131,7 +127,7 @@ exports.deletePost = asyncHandler(async (req, res) => {
       attributes: ["id", "file_path"],
     },
   });
-  const plain = post.toJSON();
+  // const plain = post.toJSON();
   // console.log(plain.Media);
 
   await Promise.all(
@@ -147,7 +143,7 @@ exports.deletePost = asyncHandler(async (req, res) => {
   );
 
   const deleted = await Post.destroy({
-    where: { id, user_id: req.user.id },
+    where: { id },
   });
   if (!deleted)
     return res.status(404).json({ success: false, message: "Post not found" });
