@@ -6,7 +6,6 @@ const ReactionType = require("../models/community/ReactionType");
 const advancedResults = (model, include, language) =>
   asyncHandler(async (req, res, next) => {
     const reqQuery = { ...req.query };
-    console.log("advanced result");
 
     const {
       select,

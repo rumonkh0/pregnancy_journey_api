@@ -80,6 +80,12 @@ filtered = (type) => {
         endDate = new Date();
         startDate.setHours(0, 0, 0, 0);
         break;
+      case "specday":
+        var { year, month, day } = req.params;
+        startDate = new Date(year, month - 1, day);
+        day++;
+        endDate = new Date(year, month - 1, day);
+        break;
       case "week":
         startDate = new Date();
         endDate = new Date();
@@ -91,7 +97,7 @@ filtered = (type) => {
         startDate.setDate(startDate.getDate() - 30);
         break;
       case "specmonth":
-        const { year, month } = req.params;
+        var { year, month } = req.params;
         startDate = new Date(year, month - 1, 1);
         endDate = new Date(year, month, 0);
         break;
@@ -121,6 +127,7 @@ router.use(protect);
 
 router.get("/", getHistory(Mood));
 router.get("/today", filtered("day"));
+router.get("/specday/:day/:month/:year", filtered("specday"));
 router.get("/month/:month/:year", filtered("specmonth"));
 router.get("/weekstat", filteredstat("week"));
 router.get("/monthstat", filteredstat("month"));
