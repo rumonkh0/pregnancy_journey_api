@@ -21,7 +21,12 @@ const Media = require("../models/Media");
 
 const router = express.Router();
 
-router.get("/blogs", advancedResults(Blog, undefined, "lan"), getAll(Blog));
+const populate = {
+  model: Media,
+  as: "media",
+};
+
+router.get("/blogs", advancedResults(Blog, populate, "lan"), getAll(Blog));
 router.get("/warningsigns", getAll(WarningSign, { model: Media, as: "media" }));
 router.get("/dailytips", getAll(DailyTip));
 router.get("/dailyreads", getAll(DailyRead));
@@ -29,7 +34,7 @@ router.get("/videos", getAll(Video, { model: Media, as: "media" }));
 router.get("/babyprogresstimeline", getAll(BabyProgressTimeline));
 router.get("/motherprogresstimeline", getAll(MotherProgressTimeline));
 router.get("/drugslider", getAll(DrugSlider));
-router.get("/blogcategories", getAll(BlogCategory));
+router.get("/blogcategories", getAll(BlogCategory, populate));
 
 router.get("/blogs/:modelPk", getOne(Blog));
 router.get(

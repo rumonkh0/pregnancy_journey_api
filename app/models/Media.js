@@ -1,7 +1,5 @@
 const { sequelize } = require("../../config/db");
 const { DataTypes } = require("sequelize");
-const Post = require("./community/Post");
-const PostMedia = require("./community/PostMedia");
 const PostTopic = require("./community/Post_topic");
 
 const Media = sequelize.define(

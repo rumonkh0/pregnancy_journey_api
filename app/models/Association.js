@@ -3,7 +3,7 @@ const Media = require("./Media");
 const PostMedia = require("./community/PostMedia");
 const DailyRead = require("./daily/Daily_read");
 const DailyTip = require("./daily/Daily_tip");
-const Blog = require("./blogs/Blog");
+// const Blog = require("./blogs/Blog");
 const MotherProgressTimeline = require("./progress_timeline/Mother_progress_timeline");
 const BabyProgressTimeline = require("./progress_timeline/Baby_progress_timeline");
 const WarningSign = require("./Warning_sign");
@@ -23,7 +23,8 @@ Media.belongsToMany(Post, { through: PostMedia, foreignKey: "media_id" });
 
 DailyRead.belongsTo(Media, { foreignKey: "image", as: "media" });
 DailyTip.belongsTo(Media, { foreignKey: "image", as: "media" });
-Blog.belongsTo(Media, { foreignKey: "image", as: "media" });
+// Blog.belongsTo(Media, { foreignKey: "image", as: "media" });
+// Blog.hasMany(Media, { foreignKey: "image", as: "media" });
 MotherProgressTimeline.belongsTo(Media, { foreignKey: "image", as: "media" });
 BabyProgressTimeline.belongsTo(Media, { foreignKey: "image", as: "media" });
 WarningSign.belongsTo(Media, { foreignKey: "image", as: "media" });
