@@ -1,3 +1,5 @@
+const path = require("path");
+const fs = require("fs");
 const PostTopic = require("../../../models/community/Post_topic");
 const asyncHandler = require("../../../middleware/async");
 const { Media, Post } = require("../../../models/Association");
@@ -42,7 +44,25 @@ exports.getReactionType = asyncHandler(async (req, res, next) => {
 // @route     POST /api/v1/babylist
 // @access    Private
 exports.createReactionType = asyncHandler(async (req, res, next) => {
-  console.log(req.body);
+  if (!req.file) {
+    return res.status(400).json({
+      success: false,
+      message: "Image is required",
+    });
+  }
+
+  const { mimetype, filename, path: file_path } = req.file;
+  req.media = {
+    uploaded_by: req.admin.username,
+    file_path,
+    mime_type: mimetype,
+    file_name: filename,
+    file_type: path.extname(filename).slice(1),
+  };
+
+  let media = await Media.create(req.media);
+  req.body.image = media.id;
+
   const reaction = await PostTopic.create(req.body);
   res
     .status(201)
@@ -53,10 +73,34 @@ exports.createReactionType = asyncHandler(async (req, res, next) => {
 // @route     PUT /api/v1/babylist/:id
 // @access    Private
 exports.updateReactionType = asyncHandler(async (req, res) => {
-  const id = req.params.babyId;
+  const id = req.params.pk;
   const newData = req.body;
-  const updated = await PostTopic.update(newData, {
-    where: { id, mother_id: req.user.id },
+
+  if (!req.file) {
+    let updated = await PostTopic.update(newData, {
+      where: { id },
+    });
+    if (!updated[0]) {
+      res.status(404).json({ success: false, message: "Post topic not found" });
+      return;
+    }
+    return res.json({ message: "Post topic updated" });
+  }
+
+  const { mimetype, filename, path: file_path } = req.file;
+  req.media = {
+    uploaded_by: req.admin.username,
+    file_path,
+    mime_type: mimetype,
+    file_name: filename,
+    file_type: path.extname(filename).slice(1),
+  };
+
+  let media = await Media.create(req.media);
+  newData.image = media.id;
+
+  let updated = await PostTopic.update(newData, {
+    where: { id },
   });
   if (!updated[0]) {
     res.status(404).json({ success: false, message: "Post topic not found" });
