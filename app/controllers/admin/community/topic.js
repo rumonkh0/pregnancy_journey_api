@@ -42,6 +42,7 @@ exports.getReactionType = asyncHandler(async (req, res, next) => {
 // @route     POST /api/v1/babylist
 // @access    Private
 exports.createReactionType = asyncHandler(async (req, res, next) => {
+  console.log(req.body);
   const reaction = await PostTopic.create(req.body);
   res
     .status(201)
