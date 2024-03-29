@@ -1,8 +1,19 @@
 const Admin = require("../../models/Admin");
+const path = require("path");
+const fs = require("fs");
 const asyncHandler = require("../../middleware/async");
 const Role = require("../../models/Role");
 const Media = require("../../models/Media");
 const AdminRole = require("../../models/AdminRole");
+
+// @desc      Get all admins
+// @route     GET /api/v1/bootcamps
+// @access    Public
+exports.getRoles = asyncHandler(async (req, res, next) => {
+  const admins = await Role.findAll({ attributes: ["id", "role"] });
+  res.status(200).json({ success: true, data: admins });
+});
+
 // @desc      Get all admins
 // @route     GET /api/v1/bootcamps
 // @access    Public
@@ -71,9 +82,91 @@ exports.createAdmin = asyncHandler(async (req, res, next) => {
 exports.updateAdmin = asyncHandler(async (req, res) => {
   const id = req.params.adminId;
   const newData = req.body;
+
+  // Find the admin by id
+  var admin = await Admin.findOne({
+    where: { id },
+    include: { model: Media, as: "profile_photo" },
+  });
+
+  if (!admin) {
+    return res.status(404).json({
+      success: false,
+      message: "Admin not found",
+      error: "Admin not found",
+    });
+  }
+  let adminData;
+
+  if (!req.file) {
+    updated = await Admin.update(newData, {
+      where: {
+        id,
+      },
+    });
+
+    if (!updated[0]) {
+      return res
+        .status(304)
+        .json({ success: false, message: "Recond no modified" });
+    }
+
+    adminData = await Admin.findByPk(id);
+
+    return res.status(200).json({
+      success: true,
+      message: "Admin information updated successfully",
+      data: adminData,
+    });
+  }
+
+  const { mimetype, filename, path: file_path } = req.file;
+  req.media = {
+    uploaded_by: req.admin.username,
+    file_path,
+    mime_type: mimetype,
+    file_name: filename,
+    file_type: path.extname(filename).slice(1),
+  };
+
+  let media, prevMedia;
+
+  try {
+    userWithMedia = await Admin.findByPk(id, {
+      include: [
+        {
+          model: Media,
+          as: "profile_photo",
+          required: false,
+        },
+      ],
+    });
+
+    media = await Media.create(req.media);
+    newData.photo = media.id;
+    //delete previous photo
+    // if (userWithMedia.media) {
+    //   await unlinkAsync(userWithMedia.media.file_path);
+    //   await Media.destroy({ where: { id: user.photo } });
+    // }
+  } catch (err) {
+    if (req.file && req.file && req.file.path) {
+      const filePath = req.file.path;
+      await unlinkAsync(filePath);
+    }
+    return res.status(200).json({
+      remark: "UNSUCCESSFULL",
+      success: false,
+      message: "data upload failed",
+      error: err,
+    });
+  }
+
   const updated = await Admin.update(newData, { where: { id } });
-  const admin = await Admin.findByPk(id);
-  if (!updated) {
+  admin = await Admin.findByPk(id, {
+    include: { model: Media, as: "profile_photo" },
+  });
+  if (!updated[0]) {
     res.status(404).json({ success: "false", message: "Admin not found" });
     return;
   }
