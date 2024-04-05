@@ -14,7 +14,7 @@ const { protect } = require("../../../middleware/auth");
 
 router.use(protect);
 
-router.get("/list", getAllItem(ChecklistItem));
+router.get("/item", getAllItem(ChecklistItem));
 // router.get("/:modelPk", getOne(ChecklistItem));
 // router.post("/", create(ChecklistItem));
 // router.put("/:modelPk", update(ChecklistItem));
