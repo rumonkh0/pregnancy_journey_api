@@ -63,6 +63,7 @@ const adminDashboard = require("./app/routes/admin/dashboard");
 const adminHelpDesk = require("./app/routes/admin/helpDesk");
 const babyCare = require("./app/routes/admin/babyCare");
 const adminGeneral = require("./app/routes/admin/general/general");
+const adminChecklist = require("./app/routes/admin/checklist");
 const imageUpload = require("./app/routes/uploadMedia");
 
 const app = express();
@@ -135,7 +136,7 @@ app.use("/admin/api/v1/helpdesk", adminHelpDesk);
 app.use("/admin/api/v1/admin", admins);
 app.use("/admin/api/v1/babycare", babyCare);
 app.use("/admin/api/v1/general", adminGeneral);
-// app.use("/admin/api/v1/checklist", adminGeneral);
+app.use("/admin/api/v1/checklist", adminChecklist);
 
 app.use("/admin/api/v1/imageup", imageUpload);
 

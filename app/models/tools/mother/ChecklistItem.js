@@ -17,11 +17,11 @@ const ChecklistItem = sequelize.define(
       allowNull: false,
     },
     createdAt: {
-      type: DataTypes.INTEGER,
+      type: DataTypes.DATE,
       allowNull: false,
     },
     updatedAt: {
-      type: DataTypes.INTEGER,
+      type: DataTypes.DATE,
       allowNull: false,
     },
   },

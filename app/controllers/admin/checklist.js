@@ -73,14 +73,8 @@ exports.getOneSubItem = (Model) => {
 // @desc      Create
 // @route     POST /api/v1/route/:babyId
 // @access    Private
-exports.create = (Model) => {
+exports.createItem = (Model) => {
   return asyncHandler(async (req, res, next) => {
-    // Extract baby ID from the request params or body
-    const { userId } = req.params;
-
-    // Get the feed history for the specified baby
-    req.body.user_id = userId;
-    req.body.admin_id = req.admin.id;
     const babyFeed = await Model.create(req.body);
 
     res.status(200).json({ success: true, message: "Created", data: babyFeed });
