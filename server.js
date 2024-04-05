@@ -51,6 +51,7 @@ const reaction = require("./app/routes/community/reaction");
 const general = require("./app/routes/general");
 const bpTracker = require("./app/routes/tools/mother/bpTracker");
 const helpDesk = require("./app/routes/helpDesk");
+const checklist = require("./app/routes/tools/mother/checklist");
 
 //admin section
 const admins = require("./app/routes/admin/admin");
@@ -121,6 +122,7 @@ app.use("/api/v1/comment", comment);
 app.use("/api/v1/reaction", reaction);
 app.use("/api/v1/general", general);
 app.use("/api/v1/helpdesk", helpDesk);
+app.use("/api/v1/checklist", checklist);
 
 //admin section
 app.use("/admin/api/v1/auth", adminLogin);
@@ -133,6 +135,7 @@ app.use("/admin/api/v1/helpdesk", adminHelpDesk);
 app.use("/admin/api/v1/admin", admins);
 app.use("/admin/api/v1/babycare", babyCare);
 app.use("/admin/api/v1/general", adminGeneral);
+// app.use("/admin/api/v1/checklist", adminGeneral);
 
 app.use("/admin/api/v1/imageup", imageUpload);
 
