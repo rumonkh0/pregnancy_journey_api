@@ -9,6 +9,9 @@ const ChecklistItem = sequelize.define(
       primaryKey: true,
       autoIncrement: true,
     },
+    type: {
+      type: DataTypes.STRING(10),
+    },
     order: {
       type: DataTypes.INTEGER,
     },

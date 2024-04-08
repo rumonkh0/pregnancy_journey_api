@@ -1,5 +1,6 @@
 const asyncHandler = require("../../middleware/async");
 const { where } = require("sequelize");
+const Checklist = require("../../models/tools/mother/Checklist");
 
 // @desc      Get  Baby get all as history
 // @route     GET /api/v1/route/history
@@ -33,6 +34,9 @@ exports.getOneItem = (Model) => {
       where: {
         item,
       },
+      include: {
+        model: Checklist,
+      },
     });
 
     if (!data) {
@@ -43,7 +47,9 @@ exports.getOneItem = (Model) => {
 
     res.status(200).json({ success: true, message: "Data found", data });
   });
-}; // @desc      Get single
+}; 
+
+// @desc      Get single
 // @route     GET /api/v1/route/:modelPk
 // @access    Private
 exports.getOneSubItem = (Model) => {

@@ -9,6 +9,13 @@ const BabyProgressTimeline = require("./progress_timeline/Baby_progress_timeline
 const WarningSign = require("./Warning_sign");
 const BlogCategories = require("./blogs/Blog_category");
 const Video = require("./Video");
+
+const ChecklistItem = require("./tools/mother/ChecklistItem");
+const ChecklistSubItem = require("./tools/mother/ChecklistSubItem");
+const Checklist = require("./tools/mother/Checklist");
+
+ChecklistItem.hasMany(ChecklistSubItem, { foreignKey: "item" });
+ChecklistSubItem.hasMany(Checklist, { foreignKey: "subitem" });
 // const Admin = require("./Admin");
 // const Role = require("./Role");
 // const AdminRole = require("./AdminRole");
