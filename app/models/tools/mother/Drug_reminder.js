@@ -26,10 +26,13 @@ const DrugReminder = sequelize.define(
       type: DataTypes.STRING(45),
       allowNull: false,
     },
-    created_at: {
+    createdAt: {
       type: DataTypes.DATE,
       allowNull: false,
-      defaultValue: DataTypes.NOW,
+    },
+    updatedAt: {
+      type: DataTypes.DATE,
+      allowNull: false,
     },
     user_id: {
       type: DataTypes.INTEGER,
@@ -38,7 +41,7 @@ const DrugReminder = sequelize.define(
   },
   {
     tableName: "drug_reminder",
-    timestamps: false, // Adjust if needed
+    timestamps: true, // Adjust if needed
   }
 );
 

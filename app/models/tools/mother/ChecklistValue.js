@@ -7,9 +7,11 @@ const ChecklistValue = sequelize.define(
     user_id: {
       type: DataTypes.INTEGER,
       primaryKey: true,
+      allowNull: false,
     },
     check_values: {
       type: DataTypes.TEXT,
+      allowNull: false,
     },
   },
   {
