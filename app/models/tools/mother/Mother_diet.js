@@ -11,6 +11,10 @@ const MotherDiet = sequelize.define(
       primaryKey: true,
       autoIncrement: true,
     },
+    status: {
+      type: DataTypes.STRING(20),
+      allowNull: false,
+    },
     user_id: {
       type: DataTypes.INTEGER,
       allowNull: false,
@@ -58,7 +62,7 @@ const MotherDiet = sequelize.define(
   }
 );
 
-MotherDiet.belongsTo(User, { foreignKey: "user_idQuery" });
-User.hasMany(MotherDiet, { foreignKey: "user_idQuery" });
+MotherDiet.belongsTo(User, { foreignKey: "user_id" });
+User.hasMany(MotherDiet, { foreignKey: "user_id" });
 
 module.exports = MotherDiet;

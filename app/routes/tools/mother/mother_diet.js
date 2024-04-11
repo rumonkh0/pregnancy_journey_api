@@ -7,7 +7,7 @@ const {
   create,
   deleteOne,
   deleteAll,
-} = require("../../../controllers/helpDesk");
+} = require("../../../controllers/tools/mother/motherDiet");
 
 const router = express.Router();
 const { protect } = require("../../../middleware/auth");

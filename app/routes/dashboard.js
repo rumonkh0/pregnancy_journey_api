@@ -12,6 +12,11 @@ const Video = require("../models/Video");
 const Media = require("../models/Media");
 const BabyProg = require("../models/progress_timeline/Baby_progress_timeline");
 const MotherProg = require("../models/progress_timeline/Mother_progress_timeline");
+
+const BabyGrowthDev = require("../models/BabyGrowthDev");
+const BabyGrowth = require("../models/BabyGrowth");
+const DailyTipBaby = require("../models/daily/Daily_tip_baby");
+
 const { tokenCheck } = require("../middleware/auth");
 const router = express.Router();
 
@@ -45,6 +50,95 @@ const lanFilter = (data, lan) => {
     }
   }
 };
+
+const dashboardBaby = asyncHandler(async (req, res, next) => {
+  const { id, week, day, lan } = req.query;
+  let baby, babyGrowthDev, babyGrowth, dailyTips, weightData, videos, blogs;
+
+  //Get User Data
+  // if (req.baby) {
+  //   baby = await User.findOne({
+  //     // attributes: ["id", "username", "first_name", "last_name", ],
+  //     where: { id: req.baby.id },
+  //     include: { model: Media, as: "media" },
+  //   });
+
+  //   //Get Baby List
+  //   babyList = await BabyList.findAll({
+  //     where: { mother_id: baby.id },
+  //     include: { model: Media, as: "media" },
+  //   });
+
+  //   //Get Weight Data
+  //   weightData = await WeightLog.findAll({ where: { user_id: req.baby.id } });
+  // }
+
+  //Get Baby Data
+  if (req.user)
+    baby = await BabyList.findOne({
+      where: { id, mother_id: req.user.id },
+      include: {
+        model: Media,
+        as: "media",
+        attributes: ["file_name", "file_path"],
+      },
+    });
+
+  //Baby Growth Development
+  babyGrowthDev = await BabyGrowthDev.findOne({ where: { week } });
+
+  //Baby Weight And Height Log
+  babyGrowth = await BabyGrowth.findAll({
+    where: { baby_id: baby.id },
+    attributes: ["week", "height", "weight"],
+  });
+
+  //Baby Progress Timeline
+  let babyProgressTimeline = await BabyProg.findOne({
+    where: { day },
+    include: { model: Media, as: "media" },
+  });
+
+  //Get All Blogs
+  //   let blogs = await Blog.findAll();
+  blogs = lanFilter(
+    await Blog.findAll({
+      include: { model: Media, as: "media" },
+    }),
+    lan
+  );
+
+  //Get Daily Tips
+  dailyTips = lanFilter(
+    await DailyTipBaby.findOne({
+      where: { day },
+      // include: { model: Media, as: "media" },
+    }),
+    lan
+  );
+
+  //Get Videos
+  videos = lanFilter(
+    await Video.findAll({ include: { model: Media, as: "media" } }),
+    lan
+  );
+
+  res.status(200).json({
+    remark: "SUCCESSFULL",
+    success: true,
+    message: "Baby dashboard found",
+    data: {
+      baby,
+      babyGrowthDev,
+      babyGrowth,
+      dailyTips,
+      weightData,
+      babyProgressTimeline,
+      blogs,
+      videos,
+    },
+  });
+});
 
 const dashboard = asyncHandler(async (req, res, next) => {
   const { day, lan } = req.query;
@@ -147,6 +241,20 @@ const dashboard = asyncHandler(async (req, res, next) => {
     },
   });
 });
+
+router.get(
+  "/baby",
+  (req, res, next) => {
+    let token = tokenCheck(req);
+    if (token !== "none" && token !== undefined) {
+      next();
+    } else {
+      dashboardBaby(req, res, next);
+    }
+  },
+  protect,
+  dashboardBaby
+);
 
 router.get(
   "/",
