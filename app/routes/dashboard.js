@@ -199,7 +199,12 @@ const dashboard = asyncHandler(async (req, res, next) => {
   //   let blogs = await Blog.findAll();
   blogs = lanFilter(
     await Blog.findAll({
-      include: { model: Media, as: "media" },
+      // attributes: ["title", "id"],
+      include: {
+        model: Media,
+        as: "media",
+        attributes: ["file_name", "file_path"],
+      },
     }),
     lan
   );
