@@ -21,7 +21,7 @@ exports.getAllItem = (Model) => {
       });
     }
     // Get the feed history for the specified baby
-    res.status(200).json({ success: true, data });
+    res.status(200).json({ success: true, message: "Data found", data });
   });
 };
 
@@ -121,7 +121,7 @@ exports.checkBabyOwner = asyncHandler(async (req, res, next) => {
 // @access    Private
 exports.postBabyValues = (Model) => {
   return asyncHandler(async (req, res, next) => {
-    babyId = req.params.babyId;
+    var babyId = req.params.babyId;
     req.body.baby_id = babyId;
     req.body.check_values = JSON.stringify(req.body.check_values);
 

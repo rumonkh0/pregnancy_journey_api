@@ -648,7 +648,7 @@ exports.oAuth = asyncHandler(async (req, res, next) => {
     default:
     // code block
   }
-  const data = await User.findOne({ where: {} });
+  // const data = await User.findOne({ where: {} });
 });
 
 exports.deviceToken = asyncHandler(async (req, res, next) => {
