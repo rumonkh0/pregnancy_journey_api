@@ -15,6 +15,7 @@ const MotherProg = require("../models/progress_timeline/Mother_progress_timeline
 
 const BabyGrowthDev = require("../models/BabyGrowthDev");
 const BabyGrowth = require("../models/BabyGrowth");
+const BabyGrowthWeek = require("../models/BabyGrowthWeekly");
 const DailyTipBaby = require("../models/daily/Daily_tip_baby");
 
 const { tokenCheck } = require("../middleware/auth");
@@ -53,7 +54,14 @@ const lanFilter = (data, lan) => {
 
 const dashboardBaby = asyncHandler(async (req, res, next) => {
   const { id, week, day, lan } = req.query;
-  let baby, babyGrowthDev, babyGrowth, dailyTips, weightData, videos, blogs;
+  let baby,
+    babyGrowthDev,
+    BabyGrowthWeekly,
+    babyGrowth,
+    dailyTips,
+    weightData,
+    videos,
+    blogs;
 
   //Get User Data
   // if (req.baby) {
@@ -141,7 +149,7 @@ const dashboardBaby = asyncHandler(async (req, res, next) => {
 });
 
 const dashboard = asyncHandler(async (req, res, next) => {
-  const { day, lan } = req.query;
+  const { day, lan, week } = req.query;
   let user,
     babyList,
     babySize,
@@ -170,15 +178,21 @@ const dashboard = asyncHandler(async (req, res, next) => {
     //Get Weight Data
     weightData = await WeightLog.findAll({ where: { user_id: req.user.id } });
   }
+
+  //Baby Growth Weekly
+  let BabyGrowthWeekly = await BabyGrowthWeek.findOne({
+    where: { week },
+  });
+
   //Baby Progress Timeline
   let babyProgressTimeline = await BabyProg.findOne({
-    where: { day },
+    where: { week },
     include: { model: Media, as: "media" },
   });
 
   //Mother Progress Timeline
   let motherProgressTimeline = await MotherProg.findOne({
-    where: { day },
+    where: { week },
     include: { model: Media, as: "media" },
   });
   //Get All Blogs
@@ -233,6 +247,7 @@ const dashboard = asyncHandler(async (req, res, next) => {
       dailyReads,
       dailyTips,
       weightData,
+      BabyGrowthWeekly,
       babyProgressTimeline,
       motherProgressTimeline,
       blogs,
