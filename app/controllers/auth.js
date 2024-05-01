@@ -633,6 +633,7 @@ exports.oAuth = asyncHandler(async (req, res, next) => {
           first_name,
           social_photo,
           last_name,
+          is_email_confirmed: "1",
           login_type: "google",
         };
         const user = await User.create(userdata);

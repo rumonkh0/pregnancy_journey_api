@@ -30,12 +30,14 @@ const objLangFilter = (obj, lan) => {
         ? JSON.parse(obj.title)[lan]
         : JSON.parse(obj.title)["en"]
     );
-    obj.setDataValue(
-      "description",
-      JSON.parse(obj.description)[lan]
-        ? JSON.parse(obj.description)[lan]
-        : JSON.parse(obj.description)["en"]
-    );
+    if (obj.description) {
+      obj.setDataValue(
+        "description",
+        JSON.parse(obj.description)[lan]
+          ? JSON.parse(obj.description)[lan]
+          : JSON.parse(obj.description)["en"]
+      );
+    }
     return obj;
   } catch (error) {}
 };
@@ -166,13 +168,21 @@ const dashboard = asyncHandler(async (req, res, next) => {
     user = await User.findOne({
       // attributes: ["id", "username", "first_name", "last_name", ],
       where: { id: req.user.id },
-      include: { model: Media, as: "media" },
+      include: {
+        model: Media,
+        as: "media",
+        attributes: ["file_name", "file_path"],
+      },
     });
 
     //Get Baby List
     babyList = await BabyList.findAll({
       where: { mother_id: user.id },
-      include: { model: Media, as: "media" },
+      include: {
+        model: Media,
+        as: "media",
+        attributes: ["file_name", "file_path"],
+      },
     });
 
     //Get Weight Data
@@ -187,19 +197,27 @@ const dashboard = asyncHandler(async (req, res, next) => {
   //Baby Progress Timeline
   let babyProgressTimeline = await BabyProg.findOne({
     where: { week },
-    include: { model: Media, as: "media" },
+    include: {
+      model: Media,
+      as: "media",
+      attributes: ["file_name", "file_path"],
+    },
   });
 
   //Mother Progress Timeline
   let motherProgressTimeline = await MotherProg.findOne({
     where: { week },
-    include: { model: Media, as: "media" },
+    include: {
+      model: Media,
+      as: "media",
+      attributes: ["file_name", "file_path"],
+    },
   });
   //Get All Blogs
   //   let blogs = await Blog.findAll();
   blogs = lanFilter(
     await Blog.findAll({
-      // attributes: ["title", "id"],
+      attributes: ["id", "title"],
       include: {
         model: Media,
         as: "media",
@@ -213,7 +231,11 @@ const dashboard = asyncHandler(async (req, res, next) => {
   dailyReads = lanFilter(
     await DailyRead.findOne({
       where: { day },
-      include: { model: Media, as: "media" },
+      include: {
+        model: Media,
+        as: "media",
+        attributes: ["file_name", "file_path"],
+      },
     }),
     lan
   );
@@ -222,21 +244,35 @@ const dashboard = asyncHandler(async (req, res, next) => {
   dailyTips = lanFilter(
     await DailyTip.findOne({
       where: { day },
-      include: { model: Media, as: "media" },
+      include: {
+        model: Media,
+        as: "media",
+        attributes: ["file_name", "file_path"],
+      },
     }),
     lan
   );
 
   //Get Videos
   videos = lanFilter(
-    await Video.findAll({ include: { model: Media, as: "media" } }),
+    await Video.findAll({
+      include: {
+        model: Media,
+        as: "media",
+        attributes: ["file_name", "file_path"],
+      },
+    }),
     lan
   );
 
   //Get Warning Signs
   warningSigns = lanFilter(
     await WarningSign.findAll({
-      include: { model: Media, as: "media" },
+      include: {
+        model: Media,
+        as: "media",
+        attributes: ["file_name", "file_path"],
+      },
     }),
     lan
   );
