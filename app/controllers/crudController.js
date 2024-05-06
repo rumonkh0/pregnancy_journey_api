@@ -136,6 +136,7 @@ exports.getOne = (Model, include) => {
 exports.create = (Model) => {
   return asyncHandler(async (req, res, next) => {
     let data = req.body;
+    console.log(req.body);
     // console.log(req.file);
     if (!req.file) {
       let result = await Model.create(data);

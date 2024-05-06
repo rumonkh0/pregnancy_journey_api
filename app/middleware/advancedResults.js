@@ -77,13 +77,29 @@ const advancedResults = (model, include, language) =>
     }
 
     // Finding resource
-    const query = {
-      where,
-      attributes: select ? select.split(",") : undefined,
-      order: sort ? sortingQuery : [["createdAt", "DESC"]],
-      offset: page ? (page - 1) * limit : 0,
-      limit,
-    };
+    if (model.name === "blogs") {
+      var query = {
+        where,
+        attributes: select ? select.split(",") : undefined,
+        order: sort
+          ? sortingQuery
+          : [
+              ["order", "ASC"],
+              ["createdAt", "DESC"],
+            ],
+        offset: page ? (page - 1) * limit : 0,
+        limit,
+      };
+    } else {
+      var query = {
+        where,
+        attributes: select ? select.split(",") : undefined,
+        order: sort ? sortingQuery : [["createdAt", "DESC"]],
+        offset: page ? (page - 1) * limit : 0,
+        limit,
+      };
+    }
+
     // Include associated models if needed
     if (include) {
       query.include = include;
