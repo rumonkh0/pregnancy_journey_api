@@ -1,4 +1,5 @@
 const express = require("express");
+const { sequelize } = require("../../config/db");
 const asyncHandler = require("../middleware/async");
 const { protect } = require("../middleware/auth");
 const User = require("../models/User");
@@ -217,6 +218,8 @@ const dashboard = asyncHandler(async (req, res, next) => {
   //   let blogs = await Blog.findAll();
   blogs = lanFilter(
     await Blog.findAll({
+      order: sequelize.literal("RAND()"),
+      limit: 3,
       attributes: ["id", "title"],
       include: {
         model: Media,
