@@ -70,6 +70,8 @@ const advancedResults = (model, include, language) =>
       );
     }
     let where = convertToSequelizeQuery(reqQuery);
+    if (model.name === "Post") where.published = 1;
+
     // console.log(where);
     // where = { ...where, field: { [Op.substring]: search } };
     if (search && field) {
@@ -99,6 +101,8 @@ const advancedResults = (model, include, language) =>
         limit,
       };
     }
+
+    console.log(where);
 
     // Include associated models if needed
     if (include) {
