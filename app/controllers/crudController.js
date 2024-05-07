@@ -14,6 +14,7 @@ const Media = require("../models/Media");
 
 exports.stringify = (...fields) => {
   return asyncHandler(async (req, res, next) => {
+    console.log(req.file);
     if (req.body)
       fields.map((field) => {
         if (req.body[field] && typeof req.body[field] == "object") {
@@ -136,7 +137,7 @@ exports.getOne = (Model, include) => {
 exports.create = (Model) => {
   return asyncHandler(async (req, res, next) => {
     let data = req.body;
-    console.log(req.body);
+    // console.log(req.body);
     // console.log(req.file);
     if (!req.file) {
       let result = await Model.create(data);
