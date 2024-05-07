@@ -14,7 +14,7 @@ exports.checkOwner = asyncHandler(async (req, res, next) => {
       message: "you are not owner of the comment",
     });
   }
-  console.log("checked");
+  // console.log("checked");
   next();
 });
 
