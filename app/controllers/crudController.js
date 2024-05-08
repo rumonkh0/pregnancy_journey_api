@@ -1,6 +1,8 @@
 const asyncHandler = require("../middleware/async");
 const path = require("path");
 const fs = require("fs");
+const { promisify } = require("util");
+const unlinkAsync = promisify(fs.unlink);
 const { where } = require("sequelize");
 const Media = require("../models/Media");
 
@@ -14,7 +16,6 @@ const Media = require("../models/Media");
 
 exports.stringify = (...fields) => {
   return asyncHandler(async (req, res, next) => {
-    console.log(req.file);
     if (req.body)
       fields.map((field) => {
         if (req.body[field] && typeof req.body[field] == "object") {
@@ -185,20 +186,84 @@ exports.create = (Model) => {
 // @access    Private
 exports.update = (Model) => {
   return asyncHandler(async (req, res) => {
+    var updated;
+    let fieldUpdates = req.body;
+    // console.log(fieldUpdates);
+    console.log(req.file);
     // Extract baby ID from the request params or body
     const { modelPk } = req.params;
     // Get the feed history for the specified baby
-    const updated = await Model.update(req.body, {
-      where: { id: modelPk },
+    if (!req.file) {
+      updated = await Model.update(req.body, {
+        where: { id: modelPk },
+      });
+
+      if (!updated[0]) {
+        return res
+          .status(200)
+          .json({ success: false, message: "Record not modified" });
+      }
+
+      return res.status(200).json({ success: true, message: "Record updated" });
+    }
+
+    const { mimetype, filename, path: file_path } = req.file;
+    req.media = {
+      uploaded_by: req.admin.username,
+      file_path,
+      mime_type: mimetype,
+      file_name: filename,
+      file_type: path.extname(filename).slice(1),
+    };
+
+    let media, prevMedia;
+
+    try {
+      // userWithMedia = await Model.findByPk(id, {
+      //   include: [
+      //     {
+      //       model: Media,
+      //       as: "media",
+      //       required: false,
+      //     },
+      //   ],
+      // });
+
+      media = await Media.create(req.media);
+      req.body.image = media.id;
+      //delete previous photo
+      // if (userWithMedia.media) {
+      //   await unlinkAsync(userWithMedia.media.file_path);
+      //   await Media.destroy({ where: { id: user.photo } });
+      // }
+    } catch (err) {
+      if (req.file && req.file && req.file.path) {
+        const filePath = req.file.path;
+        await unlinkAsync(filePath);
+      }
+      return res.status(200).json({
+        remark: "UNSUCCESSFULL",
+        success: false,
+        message: "data upload failed",
+        error: err,
+      });
+    }
+
+    updated = await Model.update(req.body, {
+      where: {
+        id: modelPk,
+      },
     });
 
     if (!updated[0]) {
       return res
-        .status(200)
-        .json({ success: false, message: "Record no modified" });
+        .status(304)
+        .json({ success: false, message: "Recond no modified" });
     }
-
-    res.status(200).json({ success: true, message: "updated" });
+    res.status(200).json({
+      success: true,
+      message: "Data updated",
+    });
   });
 };
 
