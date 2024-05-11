@@ -102,7 +102,7 @@ const advancedResults = (model, include, language) =>
       };
     }
 
-    console.log(where);
+    // console.log(where);
 
     // Include associated models if needed
     if (include) {

@@ -188,8 +188,6 @@ exports.update = (Model) => {
   return asyncHandler(async (req, res) => {
     var updated;
     let fieldUpdates = req.body;
-    // console.log(fieldUpdates);
-    console.log(req.file);
     // Extract baby ID from the request params or body
     const { modelPk } = req.params;
     // Get the feed history for the specified baby

@@ -1,6 +1,8 @@
 const User = require("../../models/User");
 const path = require("path");
+const { promisify } = require("util");
 const fs = require("fs");
+const unlinkAsync = promisify(fs.unlink);
 const Baby = require("../../models/Baby");
 const asyncHandler = require("../../middleware/async");
 const Media = require("../../models/Media");
@@ -116,11 +118,11 @@ exports.updateUser = asyncHandler(async (req, res) => {
 
     media = await Media.create(req.media);
     userDetailsToUpdate.photo = media.id;
-    //delete previous photo
-    // if (userWithMedia.media) {
-    //   await unlinkAsync(userWithMedia.media.file_path);
-    //   await Media.destroy({ where: { id: user.photo } });
-    // }
+    // delete previous photo
+    if (userWithMedia.media) {
+      await unlinkAsync(userWithMedia.media.file_path);
+      await Media.destroy({ where: { id: user.photo } });
+    }
   } catch (err) {
     if (req.file && req.file && req.file.path) {
       const filePath = req.file.path;
