@@ -6,6 +6,7 @@ const unlinkAsync = promisify(fs.unlink);
 const Baby = require("../../models/Baby");
 const asyncHandler = require("../../middleware/async");
 const Media = require("../../models/Media");
+const { where } = require("sequelize");
 // @desc      Get all users
 // @route     GET /api/v1/bootcamps
 // @access    Public
@@ -120,11 +121,17 @@ exports.updateUser = asyncHandler(async (req, res) => {
     userDetailsToUpdate.photo = media.id;
     // delete previous photo
     if (userWithMedia.media) {
-      await unlinkAsync(userWithMedia.media.file_path);
+      try {
+        await unlinkAsync(userWithMedia.media.file_path);
+      } catch (error) {
+        console.log("No prev file found");
+      }
+
       await Media.destroy({ where: { id: user.photo } });
     }
   } catch (err) {
-    if (req.file && req.file && req.file.path) {
+    // console.log(err);
+    if (req.file && req.file.path) {
       const filePath = req.file.path;
       await unlinkAsync(filePath);
     }

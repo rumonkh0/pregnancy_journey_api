@@ -278,11 +278,13 @@ exports.updateDetails = asyncHandler(async (req, res, next) => {
 
     media = await Media.create(req.media);
     userDetailsToUpdate.photo = media.id;
-    //delete previous photo
-    // if (userWithMedia.media) {
-    //   await unlinkAsync(userWithMedia.media.file_path);
-    //   await Media.destroy({ where: { id: user.photo } });
-    // }
+    // delete previous photo
+    if (userWithMedia.media) {
+      try {
+        await unlinkAsync(userWithMedia.media.file_path);
+      } catch (error) {}
+      await Media.destroy({ where: { id: user.photo } });
+    }
   } catch (err) {
     if (req.file && req.file && req.file.path) {
       const filePath = req.file.path;
