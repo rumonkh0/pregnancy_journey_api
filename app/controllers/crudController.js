@@ -104,6 +104,8 @@ exports.getOne = (Model, include) => {
       include: { model: Media, as: "media" },
     });
 
+    console.log(data);
+
     if (!data) {
       return res
         .status(200)
@@ -127,7 +129,7 @@ exports.getOne = (Model, include) => {
           : JSON.parse(data.description)["en"]
       );
     }
-
+    console.log(data);
     res.status(200).json({ success: true, message: "Data found", data });
   });
 };
