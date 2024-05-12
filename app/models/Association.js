@@ -13,6 +13,8 @@ const Video = require("./Video");
 const ChecklistItem = require("./tools/mother/ChecklistItem");
 const ChecklistSubItem = require("./tools/mother/ChecklistSubItem");
 const Checklist = require("./tools/mother/Checklist");
+const deviceToken = require("./DeviceToken");
+const User = require("./User");
 
 ChecklistItem.hasMany(ChecklistSubItem, { foreignKey: "item" });
 ChecklistSubItem.hasMany(Checklist, { foreignKey: "subitem" });
@@ -40,4 +42,5 @@ BlogCategories.belongsTo(Media, { foreignKey: "image", as: "media" });
 
 // PostMedia.belongsTo(Post, { foreignKey: "post_id" });
 // PostMedia.belongsTo(Media, { foreignKey: "media_id" });
+
 module.exports = { Post, Media, PostMedia };

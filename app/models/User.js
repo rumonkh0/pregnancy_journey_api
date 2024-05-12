@@ -9,6 +9,7 @@ const { Post } = require("./Association");
 const Reaction = require("./community/Reaction");
 const Reply = require("./community/Reply");
 const Comment = require("./community/Comment");
+const deviceToken = require("./DeviceToken");
 
 const User = sequelize.define(
   "User",
@@ -284,4 +285,6 @@ User.hasMany(Comment, { foreignKey: "user_id" });
 Comment.belongsTo(User, { foreignKey: "user_id" });
 User.hasMany(Reply, { foreignKey: "user_id" });
 Reply.belongsTo(User, { foreignKey: "user_id" });
+User.hasMany(deviceToken, { foreignKey: "user_id" });
+deviceToken.belongsTo(User, { foreignKey: "user_id" });
 module.exports = User;
