@@ -106,7 +106,7 @@ const dashboardBaby = asyncHandler(async (req, res, next) => {
 
   //Baby Progress Timeline
   let babyProgressTimeline = await BabyProg.findOne({
-    where: { day },
+    where: { week },
     include: { model: Media, as: "media" },
   });
 
