@@ -20,16 +20,12 @@ exports.getAllPost = asyncHandler(async (req, res, next) => {
   return res.status(200).json(res.advancedResults);
 });
 
-// @desc      Get single post
-// @route     GET /api/v1/babylist/:id
-// @access    Private
-exports.getPost = asyncHandler(async (req, res, next) => {
-  const id = req.params.id;
-  let post = await Post.findOne({
-    where: { id },
+exports.getMyPost = asyncHandler(async (req, res, next) => {
+  const id = req.user.id;
+  let post = await Post.findAll({
+    where: { user_id: id },
     include: [
       { model: Media, attributes: ["id", "file_name", "file_path"] },
-
       {
         model: User,
         include: {
@@ -54,6 +50,59 @@ exports.getPost = asyncHandler(async (req, res, next) => {
     ],
   });
   if (!post)
+    return res.status(404).json({ success: false, message: "Post not found" });
+
+  if (post.published == 0 && post.User.id !== req.user.id)
+    return res.status(404).json({ success: false, message: "Post not found" });
+
+  // post = post.toJSON();
+  // post.react = await Reaction.findOne({
+  //   where: { user_id: req.user.id, post_id: req.params.id },
+  // });
+
+  res.status(200).json({
+    success: true,
+    message: "Post found",
+    data: post,
+  });
+});
+
+// @desc      Get single post
+// @route     GET /api/v1/babylist/:id
+// @access    Private
+exports.getPost = asyncHandler(async (req, res, next) => {
+  const id = req.params.id;
+  let post = await Post.findOne({
+    where: { id },
+    include: [
+      { model: Media, attributes: ["id", "file_name", "file_path"] },
+      {
+        model: User,
+        include: {
+          model: Media,
+          as: "media",
+          attributes: ["id", "file_path", "file_name"],
+        },
+        attributes: ["id", "username", "first_name", "last_name"],
+        require: false,
+      },
+      // {
+      //   model: Reaction,
+      //   include: [
+      //     { model: User, attributes: ["id", "username"] },
+      //     { model: ReactionType, attributes: ["type_name"] },
+      //   ],
+      // },
+      {
+        model: PostTopic,
+        attributes: ["id", "title"],
+      },
+    ],
+  });
+  if (!post)
+    return res.status(404).json({ success: false, message: "Post not found" });
+
+  if (post.published == 0 && post.User.id !== req.user.id)
     return res.status(404).json({ success: false, message: "Post not found" });
 
   post = post.toJSON();
