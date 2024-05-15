@@ -7,6 +7,7 @@ const {
   createSubItem,
   createOne,
   updateItem,
+  deleteItem,
 } = require("../../controllers/admin/checklist");
 const ChectlistItem = require("../../models/tools/mother/ChecklistItem");
 const ChectlistSubItem = require("../../models/tools/mother/ChecklistSubItem");
@@ -21,6 +22,8 @@ router.use(protect, authorize("superadmin", "admin", "user"));
 // nav main items
 router.get("/item", getAllItem(ChectlistItem));
 router.post("/item", createItem(ChecklistItem));
+router.put("/item/:id", updateItem(ChecklistItem));
+router.delete("/item/:id", deleteItem(ChecklistItem));
 
 //all subitems and its checkitems under a item
 router.get("/subitem/:item", getOneItem(ChectlistSubItem));

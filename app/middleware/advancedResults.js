@@ -70,7 +70,9 @@ const advancedResults = (model, include, language) =>
       );
     }
     let where = convertToSequelizeQuery(reqQuery);
-    if (model.name === "Post") where.published = 1;
+    if (model.name === "Post" && req.admin === undefined) {
+      where.published = 1;
+    }
 
     // console.log(where);
     // where = { ...where, field: { [Op.substring]: search } };

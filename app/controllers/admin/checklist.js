@@ -47,7 +47,7 @@ exports.getOneItem = (Model) => {
 
     res.status(200).json({ success: true, message: "Data found", data });
   });
-}; 
+};
 
 // @desc      Get single
 // @route     GET /api/v1/route/:modelPk
@@ -80,8 +80,32 @@ exports.getOneSubItem = (Model) => {
 exports.createItem = (Model) => {
   return asyncHandler(async (req, res, next) => {
     const babyFeed = await Model.create(req.body);
-
     res.status(200).json({ success: true, message: "Created", data: babyFeed });
+  });
+};
+
+// @desc      UPDATE
+// @route     POST /api/v1/route/:babyId
+// @access    Private
+exports.updateItem = (Model) => {
+  return asyncHandler(async (req, res, next) => {
+    const babyFeed = await Model.update(req.body, {
+      where: { id: req.params.id },
+    });
+    res
+      .status(200)
+      .json({ success: true, message: "Item Updated", data: babyFeed });
+  });
+};
+// @desc      UPDATE
+// @route     POST /api/v1/route/:babyId
+// @access    Private
+exports.deleteItem = (Model) => {
+  return asyncHandler(async (req, res, next) => {
+    const babyFeed = await Model.delete({ where: { id: req.params.id } });
+    res
+      .status(200)
+      .json({ success: true, message: "Item deleted", data: babyFeed });
   });
 };
 
