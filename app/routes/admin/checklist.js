@@ -8,6 +8,10 @@ const {
   createOne,
   updateItem,
   deleteItem,
+  updateSubItem,
+  deleteSubItem,
+  updateOne,
+  deleteOne,
 } = require("../../controllers/admin/checklist");
 const ChectlistItem = require("../../models/tools/mother/ChecklistItem");
 const ChectlistSubItem = require("../../models/tools/mother/ChecklistSubItem");
@@ -28,11 +32,15 @@ router.delete("/item/:id", deleteItem(ChecklistItem));
 //all subitems and its checkitems under a item
 router.get("/subitem/:item", getOneItem(ChectlistSubItem));
 router.post("/subitem", createSubItem(ChectlistSubItem));
+router.put("/subitem/:id", updateSubItem(ChectlistSubItem));
+router.delete("/subitem/:id", deleteSubItem(ChectlistSubItem));
 
 
 router.get("/:subitem", getOneSubItem(Chectlist));
 
 //create checklist
 router.post("/", createOne(Chectlist));
+router.put("/:id", updateOne(Chectlist));
+router.delete("/:id", deleteOne(Chectlist));
 
 module.exports = router;

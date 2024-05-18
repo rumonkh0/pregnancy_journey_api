@@ -81,11 +81,11 @@ exports.getOneSubItem = (Model) => {
 // @access    Private
 exports.createItem = (Model) => {
   return asyncHandler(async (req, res, next) => {
-    if (req.body.title.trim() == "") {
-      return res
-        .status(400)
-        .json({ success: false, message: "Please Give a title" });
-    }
+    // if (req.body.title.trim() == "") {
+    //   return res
+    //     .status(400)
+    //     .json({ success: false, message: "Please Give a title" });
+    // }
     const babyFeed = await Model.create(req.body);
     res.status(200).json({ success: true, message: "Created", data: babyFeed });
   });
@@ -109,7 +109,8 @@ exports.updateItem = (Model) => {
 // @access    Private
 exports.deleteItem = (Model) => {
   return asyncHandler(async (req, res, next) => {
-    const babyFeed = await Model.delete({ where: { id: req.params.id } });
+    const babyFeed = await Model.findByPk(req.params.id);
+    babyFeed.destroy();
     res
       .status(200)
       .json({ success: true, message: "Item deleted", data: babyFeed });
@@ -127,6 +128,34 @@ exports.createSubItem = (Model) => {
   });
 };
 
+// @desc      Update
+// @route     POST /api/v1/route/:babyId
+// @access    Private
+exports.updateSubItem = (Model) => {
+  return asyncHandler(async (req, res, next) => {
+    const { title, order } = req.body;
+    const babyFeed = await Model.update(req.body, {
+      where: {
+        id: req.params.id,
+      },
+    });
+
+    res.status(200).json({ success: true, message: "Sub-Item Updated" });
+  });
+};
+
+// @desc      delete
+// @route     POST /api/v1/route/:babyId
+// @access    Private
+exports.deleteSubItem = (Model) => {
+  return asyncHandler(async (req, res, next) => {
+    const babyFeed = await Model.findByPk(req.params.id);
+    await babyFeed.destroy();
+
+    res.status(200).json({ success: true, message: "Sub-Item Deleted" });
+  });
+};
+
 // @desc      Create
 // @route     POST /api/v1/route/:babyId
 // @access    Private
@@ -135,6 +164,32 @@ exports.createOne = (Model) => {
     const babyFeed = await Model.create(req.body);
 
     res.status(200).json({ success: true, message: "Created", data: babyFeed });
+  });
+};
+
+// @desc      Create
+// @route     POST /api/v1/route/:babyId
+// @access    Private
+exports.updateOne = (Model) => {
+  return asyncHandler(async (req, res, next) => {
+    const { title, order } = req.body;
+    const babyFeed = await Model.update(req.body, {
+      where: { id: req.params.id },
+    });
+
+    res.status(200).json({ success: true, message: "Check Value Added" });
+  });
+};
+
+// @desc      Create
+// @route     POST /api/v1/route/:babyId
+// @access    Private
+exports.deleteOne = (Model) => {
+  return asyncHandler(async (req, res, next) => {
+    const babyFeed = await Model.findByPk(req.params.id);
+    await babyFeed.destroy();
+
+    res.status(200).json({ success: true, message: "Check Value Deleted" });
   });
 };
 
@@ -166,7 +221,7 @@ exports.update = (Model) => {
 // @desc      Delete
 // @route     DELETE /api/v1/babyfeed/:babyId/:modelPk
 // @access    Private/Admin
-exports.deleteOne = (Model) => {
+exports.deleteOnes = (Model) => {
   return asyncHandler(async (req, res) => {
     // Extract baby ID from the request params or body
     const { modelPk } = req.params;
