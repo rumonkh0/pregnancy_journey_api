@@ -1,8 +1,8 @@
 const { sequelize } = require("../../../config/db");
 const { DataTypes } = require("sequelize");
 
-const BabyDailyTip = sequelize.define(
-  "baby_daily_tips",
+const BabyBlogCategories = sequelize.define(
+  "blog_categories",
   {
     id: {
       type: DataTypes.INTEGER,
@@ -10,12 +10,12 @@ const BabyDailyTip = sequelize.define(
       primaryKey: true,
       autoIncrement: true,
     },
-    day: {
+    order: {
       type: DataTypes.INTEGER,
       allowNull: true,
     },
     title: {
-      type: DataTypes.STRING(255),
+      type: DataTypes.TEXT,
       allowNull: true,
     },
     description: {
@@ -23,7 +23,7 @@ const BabyDailyTip = sequelize.define(
       allowNull: true,
     },
     image: {
-      type: DataTypes.STRING(255),
+      type: DataTypes.STRING(45),
       allowNull: true,
     },
     createdAt: {
@@ -32,13 +32,13 @@ const BabyDailyTip = sequelize.define(
     },
     updatedAt: {
       type: DataTypes.DATE,
-      allowNull: false,
+      allowNull: true,
     },
   },
   {
-    tableName: "baby_daily_tips",
+    tableName: "baby_blog_categories",
     timestamps: true,
   }
 );
 
-module.exports = BabyDailyTip;
+module.exports = BabyBlogCategories;

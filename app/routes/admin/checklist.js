@@ -20,7 +20,7 @@ router.use(protect, authorize("superadmin", "admin", "user"));
 // router.use('/:motherId/babylist', babyListRouter);
 
 // nav main items
-router.get("/item", getAllItem(ChectlistItem));
+router.get("/item/:type", getAllItem(ChectlistItem));
 router.post("/item", createItem(ChecklistItem));
 router.put("/item/:id", updateItem(ChecklistItem));
 router.delete("/item/:id", deleteItem(ChecklistItem));

@@ -23,10 +23,22 @@ const Post = sequelize.define(
     },
     title: {
       type: DataTypes.STRING(255),
+      validate: {
+        len: {
+          args: [10, 100],
+          msg: "The TItle length should be 10-100 characters.",
+        },
+      },
       allowNull: false,
     },
     content: {
       type: DataTypes.TEXT,
+      validate: {
+        len: {
+          args: [70],
+          msg: "The description length should be at least 70 characters.",
+        },
+      },
       allowNull: true,
     },
     published: {

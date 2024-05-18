@@ -7,7 +7,9 @@ const Checklist = require("../../models/tools/mother/Checklist");
 // @access    Private
 exports.getAllItem = (Model) => {
   return asyncHandler(async (req, res, next) => {
+    var type = req.params.type;
     const data = await Model.findAll({
+      where: { type },
       order: [["order", "DESC"]],
     });
     if (!data) {
@@ -79,6 +81,11 @@ exports.getOneSubItem = (Model) => {
 // @access    Private
 exports.createItem = (Model) => {
   return asyncHandler(async (req, res, next) => {
+    if (req.body.title.trim() == "") {
+      return res
+        .status(400)
+        .json({ success: false, message: "Please Give a title" });
+    }
     const babyFeed = await Model.create(req.body);
     res.status(200).json({ success: true, message: "Created", data: babyFeed });
   });

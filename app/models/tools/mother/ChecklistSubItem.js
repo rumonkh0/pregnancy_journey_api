@@ -15,6 +15,7 @@ const ChecklistSubItem = sequelize.define(
     },
     order: {
       type: DataTypes.INTEGER,
+      defaultValue: 0,
     },
     title: {
       type: DataTypes.TEXT,

@@ -18,6 +18,8 @@ const BabyGrowthDev = require("../models/BabyGrowthDev");
 const BabyGrowth = require("../models/BabyGrowth");
 const BabyGrowthWeek = require("../models/BabyGrowthWeekly");
 const DailyTipBaby = require("../models/daily/Daily_tip_baby");
+const BabyBlog = require("../models/blogs/BabyBlog");
+const BabyVideo = require("../models/BabyVideo")
 
 const { tokenCheck } = require("../middleware/auth");
 const router = express.Router();
@@ -94,7 +96,6 @@ const dashboardBaby = asyncHandler(async (req, res, next) => {
         attributes: ["file_name", "file_path"],
       },
     });
-
   //Baby Growth Development
   babyGrowthDev = await BabyGrowthDev.findOne({ where: { week } });
 
@@ -113,7 +114,7 @@ const dashboardBaby = asyncHandler(async (req, res, next) => {
   //Get All Blogs
   //   let blogs = await Blog.findAll();
   blogs = lanFilter(
-    await Blog.findAll({
+    await BabyBlog.findAll({
       include: { model: Media, as: "media" },
     }),
     lan
@@ -130,7 +131,7 @@ const dashboardBaby = asyncHandler(async (req, res, next) => {
 
   //Get Videos
   videos = lanFilter(
-    await Video.findAll({ include: { model: Media, as: "media" } }),
+    await BabyVideo.findAll({ include: { model: Media, as: "media" } }),
     lan
   );
 

@@ -14,10 +14,17 @@ const ChecklistItem = sequelize.define(
     },
     order: {
       type: DataTypes.INTEGER,
+      defaultValue: 0,
     },
     title: {
       type: DataTypes.TEXT,
       allowNull: false,
+      validate: {
+        len: {
+          args: [3],
+          msg: "The title length should be at least 3 characters.",
+        },
+      },
     },
     createdAt: {
       type: DataTypes.DATE,

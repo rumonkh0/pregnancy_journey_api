@@ -1,8 +1,10 @@
 const { sequelize } = require("../../../config/db");
 const { DataTypes } = require("sequelize");
+const BabyBlogCategories = require("./Baby_Blog_category");
+const { Media } = require("../Association");
 
-const BabyDailyTip = sequelize.define(
-  "baby_daily_tips",
+const BabyBlog = sequelize.define(
+  "baby_blogs",
   {
     id: {
       type: DataTypes.INTEGER,
@@ -10,20 +12,24 @@ const BabyDailyTip = sequelize.define(
       primaryKey: true,
       autoIncrement: true,
     },
-    day: {
+    order: {
       type: DataTypes.INTEGER,
       allowNull: true,
     },
     title: {
-      type: DataTypes.STRING(255),
+      type: DataTypes.TEXT,
       allowNull: true,
+    },
+    category: {
+      type: DataTypes.INTEGER,
+      allowNull: false,
     },
     description: {
       type: DataTypes.TEXT,
       allowNull: true,
     },
     image: {
-      type: DataTypes.STRING(255),
+      type: DataTypes.INTEGER,
       allowNull: true,
     },
     createdAt: {
@@ -32,13 +38,17 @@ const BabyDailyTip = sequelize.define(
     },
     updatedAt: {
       type: DataTypes.DATE,
-      allowNull: false,
+      allowNull: true,
     },
   },
   {
-    tableName: "baby_daily_tips",
+    tableName: "baby_blogs",
     timestamps: true,
   }
 );
 
-module.exports = BabyDailyTip;
+BabyBlogCategories.hasMany(BabyBlog, { foreignKey: "category" });
+BabyBlog.belongsTo(BabyBlogCategories, { foreignKey: "category" });
+BabyBlog.belongsTo(Media, { foreignKey: "image", as: "media" });
+
+module.exports = BabyBlog;
