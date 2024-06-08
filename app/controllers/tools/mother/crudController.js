@@ -1,4 +1,5 @@
 const asyncHandler = require("../../../middleware/async");
+const { Op } = require("sequelize");
 const { where } = require("sequelize");
 
 //check owner of the model
@@ -33,8 +34,30 @@ exports.checkOwner = (Model) =>
 // @access    Private
 exports.getHistory = (Model) => {
   return asyncHandler(async (req, res, next) => {
+    const fromDate = req.query.from_date;
+    const toDate = req.query.to_date;
+
+    // Construct the where condition based on the provided dates
+    let whereCondition = { user_id: req.user.id };
+    if (fromDate && toDate) {
+      // If both from_date and to_date are provided, fetch records within the date range
+      whereCondition = {
+        ...whereCondition,
+        createdAt: {
+          [Op.between]: [fromDate, toDate],
+        },
+      };
+    } else if (fromDate) {
+      // If only from_date is provided, fetch records for that specific date
+      whereCondition = {
+        ...whereCondition,
+        createdAt: fromDate,
+      };
+    }
+
+    console.log(whereCondition);
     const data = await Model.findAll({
-      where: { user_id: req.user.id },
+      where: whereCondition,
       order: [["createdAt", "DESC"]],
     });
     if (!data) {
