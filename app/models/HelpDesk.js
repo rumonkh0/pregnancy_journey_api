@@ -20,7 +20,7 @@ const HelpDesk = sequelize.define(
       allowNull: true, // Assuming a help desk message can be from a user or admin
     },
     message: {
-      type: DataTypes.STRING(255),
+      type: DataTypes.TEXT,
       allowNull: false,
     },
     createdAt: {
