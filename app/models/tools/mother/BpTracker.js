@@ -22,6 +22,10 @@ const BpTracker = sequelize.define(
       type: DataTypes.INTEGER,
       allowNull: true, // Assuming diastolic can be NULL
     },
+    heart_rate: {
+      type: DataTypes.INTEGER,
+      allowNull: true, 
+    },
     createdAt: {
       type: DataTypes.DATE,
       allowNull: true, // Assuming createdAt can be NULL
