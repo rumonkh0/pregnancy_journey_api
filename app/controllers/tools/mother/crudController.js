@@ -48,14 +48,20 @@ exports.getHistory = (Model) => {
         },
       };
     } else if (fromDate) {
-      // If only from_date is provided, fetch records for that specific date
+      const startDate = new Date(fromDate);
+      startDate.setHours(0, 0, 0, 0);
+      const endDate = new Date(fromDate);
+      endDate.setHours(23, 59, 59, 999);
       whereCondition = {
         ...whereCondition,
-        createdAt: fromDate,
+        createdAt: {
+          [Op.between]: [startDate, endDate],
+        },
       };
     }
 
     console.log(whereCondition);
+
     const data = await Model.findAll({
       where: whereCondition,
       order: [["createdAt", "DESC"]],

@@ -1,6 +1,7 @@
 const BabySymptom = require("../../models/Baby_care_models/Baby_symptom");
 const asyncHandler = require("../../middleware/async");
 const Baby = require("../../models/Baby");
+const { Op } = require("sequelize");
 const { where } = require("sequelize");
 
 // @desc      Get  Baby Feed history of a baby
@@ -10,9 +11,35 @@ exports.getBabySymptomsHistory = asyncHandler(async (req, res, next) => {
   // Extract baby ID from the request params or body
   const { symptomId } = req.params;
 
+  const fromDate = req.query.from_date;
+  const toDate = req.query.to_date;
+
+  // Construct the where condition based on the provided dates
+  let whereCondition = { id: symptomId, mother_id: req.user.id };
+  if (fromDate && toDate) {
+    // If both from_date and to_date are provided, fetch records within the date range
+    whereCondition = {
+      ...whereCondition,
+      createdAt: {
+        [Op.between]: [fromDate, toDate],
+      },
+    };
+  } else if (fromDate) {
+    const startDate = new Date(fromDate);
+    startDate.setHours(0, 0, 0, 0);
+    const endDate = new Date(fromDate);
+    endDate.setHours(23, 59, 59, 999);
+    whereCondition = {
+      ...whereCondition,
+      createdAt: {
+        [Op.between]: [startDate, endDate],
+      },
+    };
+  }
+
   // Check if the requesting mother owns the specified baby
   const baby = await Baby.findOne({
-    where: { id: symptomId, mother_id: req.user.id },
+    where: whereCondition,
   });
   if (!baby) {
     return res.status(403).json({

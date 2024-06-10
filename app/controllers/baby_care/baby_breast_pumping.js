@@ -1,6 +1,7 @@
 const BreastPump = require("../../models/Baby_care_models/Baby_breast_pumping");
 const asyncHandler = require("../../middleware/async");
 const Baby = require("../../models/Baby");
+const { Op } = require("sequelize");
 const { where } = require("sequelize");
 
 //Check owner of baby
@@ -23,10 +24,35 @@ const { where } = require("sequelize");
 exports.getBabyBreastPumpsHistory = asyncHandler(async (req, res, next) => {
   // Extract baby ID from the request params or body
   const { babyId } = req.params;
+  const fromDate = req.query.from_date;
+  const toDate = req.query.to_date;
+
+  // Construct the where condition based on the provided dates
+  let whereCondition = { id: babyId, mother_id: req.user.id };
+  if (fromDate && toDate) {
+    // If both from_date and to_date are provided, fetch records within the date range
+    whereCondition = {
+      ...whereCondition,
+      createdAt: {
+        [Op.between]: [fromDate, toDate],
+      },
+    };
+  } else if (fromDate) {
+    const startDate = new Date(fromDate);
+    startDate.setHours(0, 0, 0, 0);
+    const endDate = new Date(fromDate);
+    endDate.setHours(23, 59, 59, 999);
+    whereCondition = {
+      ...whereCondition,
+      createdAt: {
+        [Op.between]: [startDate, endDate],
+      },
+    };
+  }
 
   // Check if the requesting mother owns the specified baby
   const baby = await Baby.findOne({
-    where: { id: babyId, mother_id: req.user.id },
+    where: whereCondition,
   });
   if (!baby) {
     return res.status(403).json({
@@ -40,13 +66,11 @@ exports.getBabyBreastPumpsHistory = asyncHandler(async (req, res, next) => {
     where: { baby_id: babyId },
   });
 
-  res
-    .status(200)
-    .json({
-      success: true,
-      message: "Found History",
-      data: breastPumpsHistory,
-    });
+  res.status(200).json({
+    success: true,
+    message: "Found History",
+    data: breastPumpsHistory,
+  });
 });
 
 // @desc      Get single breastpump
@@ -70,7 +94,9 @@ exports.getSingleBreastPump = asyncHandler(async (req, res, next) => {
   // Get the feed history for the specified baby
   const breastPump = await BreastPump.findByPk(breastPumpId);
 
-  res.status(200).json({ success: true,message: "data found", data: breastPump });
+  res
+    .status(200)
+    .json({ success: true, message: "data found", data: breastPump });
 });
 
 // @desc      Create baby feed

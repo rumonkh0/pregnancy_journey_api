@@ -9,6 +9,8 @@ const DailyRead = require("../models/daily/Daily_read");
 const DailyTip = require("../models/daily/Daily_tip");
 const WeightLog = require("../models/tools/mother/Weight");
 const WarningSign = require("../models/Warning_sign");
+const KickCounter = require("../models/tools/mother/Baby_kick_counter");
+const ContractionTime = require("../models/tools/mother/Mother_contraction_time");
 const Video = require("../models/Video");
 const Media = require("../models/Media");
 const BabyProg = require("../models/progress_timeline/Baby_progress_timeline");
@@ -19,9 +21,10 @@ const BabyGrowth = require("../models/BabyGrowth");
 const BabyGrowthWeek = require("../models/BabyGrowthWeekly");
 const DailyTipBaby = require("../models/daily/Daily_tip_baby");
 const BabyBlog = require("../models/blogs/BabyBlog");
-const BabyVideo = require("../models/BabyVideo")
+const BabyVideo = require("../models/BabyVideo");
 
 const { tokenCheck } = require("../middleware/auth");
+const { Op } = require("sequelize");
 const router = express.Router();
 
 // router.use(protect);
@@ -165,6 +168,8 @@ const dashboard = asyncHandler(async (req, res, next) => {
     blogCategories,
     warningSigns;
 
+  const today = new Date().toISOString().slice(0, 10);
+
   //Get User Data
   if (req.user) {
     user = await User.findOne({
@@ -213,6 +218,26 @@ const dashboard = asyncHandler(async (req, res, next) => {
       model: Media,
       as: "media",
       attributes: ["file_name", "file_path"],
+    },
+  });
+  const startDate = new Date(today);
+  startDate.setHours(0, 0, 0, 0);
+  const endDate = new Date(today);
+  endDate.setHours(23, 59, 59, 999);
+  //get today kick counter
+  let todayTotalKicks = await KickCounter.count({
+    where: {
+      createdAt: {
+        [Op.between]: [startDate, endDate],
+      },
+    },
+  });
+
+  let totalContructionTime = await ContractionTime.sum("duration", {
+    where: {
+      createdAt: {
+        [Op.between]: [startDate, endDate],
+      },
     },
   });
   //Get All Blogs
@@ -280,7 +305,7 @@ const dashboard = asyncHandler(async (req, res, next) => {
     }),
     lan
   );
-
+  console.log(today);
   res.status(200).json({
     remark: "SUCCESSFULL",
     success: true,
@@ -291,6 +316,8 @@ const dashboard = asyncHandler(async (req, res, next) => {
       babySize,
       dailyReads,
       dailyTips,
+      todayTotalKicks,
+      totalContructionTime,
       weightData,
       BabyGrowthWeekly,
       babyProgressTimeline,

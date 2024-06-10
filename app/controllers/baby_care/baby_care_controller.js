@@ -1,5 +1,6 @@
 const asyncHandler = require("../../middleware/async");
 const Baby = require("../../models/Baby");
+const { Op } = require("sequelize");
 const { where } = require("sequelize");
 
 exports.checkBabyOwner = asyncHandler(async (req, res, next) => {
@@ -35,9 +36,35 @@ exports.getHistory = (Model) => {
     // Extract baby ID from the request params or body
     const { babyId } = req.params;
 
+    const fromDate = req.query.from_date;
+    const toDate = req.query.to_date;
+
+    // Construct the where condition based on the provided dates
+    let whereCondition = { baby_id: babyId };
+    if (fromDate && toDate) {
+      // If both from_date and to_date are provided, fetch records within the date range
+      whereCondition = {
+        ...whereCondition,
+        createdAt: {
+          [Op.between]: [fromDate, toDate],
+        },
+      };
+    } else if (fromDate) {
+      const startDate = new Date(fromDate);
+      startDate.setHours(0, 0, 0, 0);
+      const endDate = new Date(fromDate);
+      endDate.setHours(23, 59, 59, 999);
+      whereCondition = {
+        ...whereCondition,
+        createdAt: {
+          [Op.between]: [startDate, endDate],
+        },
+      };
+    }
+
     // Get the feed history for the specified baby
     const history = await Model.findAll({
-      where: { baby_id: babyId },
+      where: whereCondition,
     });
 
     res
@@ -53,6 +80,27 @@ exports.getOne = (Model) => {
   return asyncHandler(async (req, res, next) => {
     // Extract baby ID from the request params or body
     const { babyId, modelPk } = req.params;
+
+    const fromDate = req.query.from_date;
+    const toDate = req.query.to_date;
+
+    // Construct the where condition based on the provided dates
+    let whereCondition = { user_id: req.user.id };
+    if (fromDate && toDate) {
+      // If both from_date and to_date are provided, fetch records within the date range
+      whereCondition = {
+        ...whereCondition,
+        createdAt: {
+          [Op.between]: [fromDate, toDate],
+        },
+      };
+    } else if (fromDate) {
+      // If only from_date is provided, fetch records for that specific date
+      whereCondition = {
+        ...whereCondition,
+        createdAt: fromDate,
+      };
+    }
 
     // Get the feed history for the specified baby
     const babyFeed = await Model.findByPk(modelPk);

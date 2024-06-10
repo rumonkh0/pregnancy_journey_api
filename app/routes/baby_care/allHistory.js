@@ -8,6 +8,7 @@ const BabyMedication = require("../../models/Baby_care_models/Baby_medication");
 const BabyNote = require("../../models/Baby_care_models/Baby_note");
 const babySymptom = require("../../models/Baby_care_models/Baby_symptom");
 const BabyTemp = require("../../models/Baby_care_models/Baby_temperature");
+const { Op } = require("sequelize");
 
 const router = express.Router();
 const { protect } = require("../../middleware/auth");
@@ -15,11 +16,33 @@ const { protect } = require("../../middleware/auth");
 // Retrieve data from related tables based on baby_id and sort by createdAt
 const getCombinedBabyData = async (req, res, next) => {
   try {
+    const fromDate = req.query.from_date; // Get the 'from_date' query parameter
+    const toDate = req.query.to_date; // Get the 'to_date' query parameter
+
+    const whereCondition = {
+      id: req.params.babyId,
+      mother_id: req.user.id,
+    };
+
+    // Add date filtering conditions if 'from_date' and 'to_date' are provided
+    if (fromDate && toDate) {
+      whereCondition.createdAt = {
+        [Op.between]: [fromDate, toDate],
+      };
+    } else if (fromDate) {
+      const startDate = new Date(fromDate);
+      startDate.setHours(0, 0, 0, 0);
+      const endDate = new Date(fromDate);
+      endDate.setHours(23, 59, 59, 999);
+      whereCondition = {
+        ...whereCondition,
+        createdAt: {
+          [Op.between]: [startDate, endDate],
+        },
+      };
+    }
     const babyData = await BabyList.findOne({
-      where: {
-        id: req.params.babyId,
-        mother_id: req.user.id,
-      },
+      where: whereCondition,
       include: [
         { model: BabySleep },
         { model: BabyPump },
@@ -62,13 +85,11 @@ const getCombinedBabyData = async (req, res, next) => {
 
     // Sort the combined array by createdAt
     combinedData.sort((a, b) => new Date(a.createdAt) - new Date(b.createdAt));
-    res
-      .status(200)
-      .json({
-        success: true,
-        message: "Filtered result prepared",
-        data: combinedData,
-      });
+    res.status(200).json({
+      success: true,
+      message: "Filtered result prepared",
+      data: combinedData,
+    });
   } catch (error) {
     // console.error("Error:", error);
     throw error;
