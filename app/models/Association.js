@@ -13,8 +13,10 @@ const Video = require("./Video");
 const ChecklistItem = require("./tools/mother/ChecklistItem");
 const ChecklistSubItem = require("./tools/mother/ChecklistSubItem");
 const Checklist = require("./tools/mother/Checklist");
+const HelpDesk = require("./HelpDesk");
 const deviceToken = require("./DeviceToken");
 const User = require("./User");
+const Admin = require("./Admin");
 
 ChecklistItem.hasMany(ChecklistSubItem, { foreignKey: "item" });
 ChecklistSubItem.hasMany(Checklist, { foreignKey: "subitem" });
@@ -38,6 +40,10 @@ MotherProgressTimeline.belongsTo(Media, { foreignKey: "image", as: "media" });
 BabyProgressTimeline.belongsTo(Media, { foreignKey: "image", as: "media" });
 WarningSign.belongsTo(Media, { foreignKey: "image", as: "media" });
 BlogCategories.belongsTo(Media, { foreignKey: "image", as: "media" });
+
+HelpDesk.belongsTo(Admin, { foreignKey: "admin_id" });
+HelpDesk.belongsTo(HelpDesk, { foreignKey: "user_id", as: "lastMessage" });
+
 // Video.belongsTo(Media, { foreignKey: "image", as: "media" });
 
 // PostMedia.belongsTo(Post, { foreignKey: "post_id" });

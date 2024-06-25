@@ -577,10 +577,14 @@ const sendTokenResponse = (admin, statusCode, res) => {
   const token = admin.getSignedJwtToken();
 
   const options = {
-    expires: new Date(
-      Date.now() + process.env.JWT_COOKIE_EXPIRE * 24 * 60 * 60 * 1000
-    ),
-    httpOnly: true,
+    httpOnly: false,
+    secure: false,
+    sameSite: "Lax",
+    path: "/",
+    maxAge: process.env.JWT_COOKIE_EXPIRE * 24 * 60 * 60 * 1000,
+    // expires: new Date(
+    //   Date.now() + process.env.JWT_COOKIE_EXPIRE * 24 * 60 * 60 * 1000
+    // ),
   };
 
   if (process.env.NODE_ENV === "production") {

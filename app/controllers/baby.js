@@ -70,13 +70,14 @@ exports.createBaby = asyncHandler(async (req, res, next) => {
     media = await Media.create(req.media);
     babyData.photo = media.id;
     //delete previous photo
-    if (userWithMedia.media) {
-      try {
-        await unlinkAsync(userWithMedia.media.file_path);
-      } catch (error) {}
-      await Media.destroy({ where: { id: user.photo } });
-    }
+    // if (userWithMedia.media) {
+    //   try {
+    //     await unlinkAsync(userWithMedia.media.file_path);
+    //   } catch (error) {}
+    //   await Media.destroy({ where: { id: user.photo } });
+    // }
   } catch (err) {
+    console.log(err);
     if (req.file && req.file.path) {
       const filePath = req.file.path;
       await unlinkAsync(filePath);
@@ -105,6 +106,12 @@ exports.updateBaby = asyncHandler(async (req, res) => {
   const babyDetailsToUpdate = req.body;
 
   let baby = await Baby.findOne({ where: { id } });
+
+  if (!baby) {
+    return res.status(404).json({ success: false, message: "No baby found" });
+  }
+
+  console.log(baby);
 
   if (!req.file) {
     const updated = await Baby.update(babyDetailsToUpdate, {
@@ -149,14 +156,20 @@ exports.updateBaby = asyncHandler(async (req, res) => {
 
     media = await Media.create(req.media);
     babyDetailsToUpdate.photo = media.id;
+    console.log(userWithMedia);
     //delete previous photo
     if (userWithMedia.media) {
       try {
         await unlinkAsync(userWithMedia.media.file_path);
-      } catch (error) {}
-      await Media.destroy({ where: { id: user.photo } });
+      } catch (error) {
+        console.log(error);
+      }
+
+      await Media.destroy({ where: { id: userWithMedia.photo } });
+      console.log("me executed successfully");
     }
   } catch (err) {
+    console.log(err);
     if (req.file && req.file.path) {
       const filePath = req.file.path;
       await unlinkAsync(filePath);

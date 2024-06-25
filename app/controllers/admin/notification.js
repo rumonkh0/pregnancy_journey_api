@@ -1,7 +1,31 @@
 const asyncHandler = require("../../middleware/async");
 const deviceToken = require("../../models/DeviceToken");
 // const fetch = require("node-fetch");
+const { google } = require("googleapis");
+// const axios = require("axios");
+const SCOPES = "https://www.googleapis.com/auth/firebase.messaging";
 const User = require("../../models/User");
+
+const getAccessToken = () => {
+  return new Promise(function (resolve, reject) {
+    const key = require("../../../config/googleConfigFile.json");
+    const jwtClient = new google.auth.JWT(
+      key.client_email,
+      null,
+      key.private_key,
+      SCOPES,
+      null
+    );
+
+    jwtClient.authorize(function (err, tokens) {
+      if (err) {
+        reject(err);
+        return;
+      }
+      resolve(tokens.access_token);
+    });
+  });
+};
 
 // @desc      Send Notification To All User
 // @route     POST /admin/api/v1/sendnotification/all
@@ -66,21 +90,38 @@ exports.sendToUser = asyncHandler(async (req, res, next) => {
   const notificationTitle = req.body.title;
 
   try {
-    const serverKey = process.env.NOTIFICATION_SERVER_KEY;
-    const response = await fetch("https://fcm.googleapis.com/fcm/send", {
-      method: "POST",
-      headers: {
-        Authorization: `key=${serverKey}`,
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        to: fcmTokenOrTopic,
+    const access_token = await getAccessToken();
+    var notification = JSON.stringify({
+      message: {
+        token: fcmTokenOrTopic, // this is the fcm token of user which you want to send notification
         notification: {
           body: notificationBody,
           title: notificationTitle,
         },
-      }),
+        apns: {
+          headers: {
+            "apns-priority": "10",
+          },
+          payload: {
+            aps: {
+              sound: "default",
+            },
+          },
+        },
+        data: req.body.for_app,
+      },
     });
+    const response = await fetch(
+      "https://fcm.googleapis.com/v1/projects/pregnancy-journey/messages:send",
+      {
+        method: "POST",
+        headers: {
+          Authorization: `Bearer ${access_token}`,
+          "Content-Type": "application/json",
+        },
+        body: notification,
+      }
+    );
 
     const responseData = await response.json();
     console.log(responseData);

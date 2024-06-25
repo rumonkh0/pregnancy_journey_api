@@ -2,8 +2,12 @@ const express = require("express");
 const dotenv = require("dotenv");
 const path = require("path");
 const morgan = require("morgan");
+// const axios = require("axios");
+// testin for copying remote files
+
 const cookieParser = require("cookie-parser");
 const errorHandler = require("./app/middleware/error");
+// const fetch = require("node-fetch");
 // const bodyParser = require("body-parser");
 const cors = require("cors");
 
@@ -81,8 +85,16 @@ if (process.env.NODE_ENV === "development") {
   app.use(morgan("dev"));
 }
 
-// Enable CORS
-app.use(cors());
+// Enable CORSconst
+// FRONTEND_URL = "https://pregnancy-admin.vercel.app"; // Replace with your actual frontend URL
+FRONTEND_URL = "http://localhost:3000";
+
+app.use(
+  cors({
+    origin: FRONTEND_URL,
+    credentials: true, // Allow credentials
+  })
+);
 
 // Set static folder
 app.use("/public", express.static(path.join(__dirname, "public")));
@@ -141,6 +153,24 @@ app.use("/admin/api/v1/general", adminGeneral);
 app.use("/admin/api/v1/checklist", adminChecklist);
 
 app.use("/admin/api/v1/imageup", imageUpload);
+
+// app.get("/admin/api/v1/ayy", async (req, res) => {
+//   try {
+//     // const response = await fetch("https://api.github.com/users/github");
+//     const response = await fetch(
+//       "https://jsonplaceholder.typicode.com/todos/1",
+//       { timeout: 10000000 }
+//     );
+//     const data = await response.json();
+//     res.status(200).json(data);
+//   } catch (error) {
+//     console.error(error);
+//     res.status(404).json({
+//       success: false,
+//       message: "maraqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqq",
+//     });
+//   }
+// });
 
 // app.use("/api/v1/reaction", reaction);
 app.use(errorHandler);

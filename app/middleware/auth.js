@@ -5,6 +5,7 @@ const User = require("../models/User");
 const Admin = require("../models/Admin");
 const Role = require("../models/Role");
 const Media = require("../models/Media");
+//haha there i am direct copy
 
 exports.tokenCheck = (req) => {
   let token;
@@ -15,9 +16,11 @@ exports.tokenCheck = (req) => {
   ) {
     // Set token from Bearer token in header
     token = req.headers.authorization.split(" ")[1];
+    // console.log("hola me here");
   } else if (req.cookies.token) {
     // Set token from cookie
     token = req.cookies.token;
+    // console.log("hola me here");
   }
 
   return token;
@@ -25,6 +28,7 @@ exports.tokenCheck = (req) => {
 
 // Protect routes
 exports.protect = asyncHandler(async (req, res, next) => {
+  console.log(req.cookies);
   let token = this.tokenCheck(req);
 
   // Make sure token exists

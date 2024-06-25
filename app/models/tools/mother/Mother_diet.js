@@ -62,7 +62,5 @@ const MotherDiet = sequelize.define(
   }
 );
 
-MotherDiet.belongsTo(User, { foreignKey: "user_id" });
-User.hasMany(MotherDiet, { foreignKey: "user_id" });
 
 module.exports = MotherDiet;

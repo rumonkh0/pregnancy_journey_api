@@ -10,6 +10,8 @@ const Reaction = require("./community/Reaction");
 const Reply = require("./community/Reply");
 const Comment = require("./community/Comment");
 const deviceToken = require("./DeviceToken");
+const HelpDesk = require("./HelpDesk");
+const MotherDiet = require("./tools/mother/Mother_diet");
 
 const User = sequelize.define(
   "User",
@@ -287,4 +289,9 @@ User.hasMany(Reply, { foreignKey: "user_id" });
 Reply.belongsTo(User, { foreignKey: "user_id" });
 User.hasMany(deviceToken, { foreignKey: "user_id" });
 deviceToken.belongsTo(User, { foreignKey: "user_id" });
+MotherDiet.belongsTo(User, { foreignKey: "user_id" });
+User.hasMany(MotherDiet, { foreignKey: "user_id" });
+User.hasMany(HelpDesk, { foreignKey: "user_id" });
+HelpDesk.belongsTo(User, { foreignKey: "user_id" });
+
 module.exports = User;
