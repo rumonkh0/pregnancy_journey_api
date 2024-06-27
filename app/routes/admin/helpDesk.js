@@ -187,11 +187,11 @@ router.get(
 //   })
 // );
 
-// router.get("/:userId/:modelPk", getOne(HelpDesk));
-// router.post("/:userId", create(HelpDesk));
-// // // router.put("/:modelPk", update(HelpDesk));
-// router.delete("/userId/:modelPk", deleteOne(HelpDesk));
-// router.delete("/", deleteAll(HelpDesk));
+router.get("/:userId/:modelPk", getOne(HelpDesk));
+router.post("/:userId", create(HelpDesk));
+// // router.put("/:modelPk", update(HelpDesk));
+router.delete("/userId/:modelPk", deleteOne(HelpDesk));
+router.delete("/", deleteAll(HelpDesk));
 router.get("/:userId", getAllOfUser(HelpDesk, "asc"));
 
 module.exports = router;

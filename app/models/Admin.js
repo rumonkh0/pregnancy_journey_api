@@ -31,6 +31,18 @@ const Admin = sequelize.define(
       type: DataTypes.STRING,
       allowNull: true,
     },
+    designation: {
+      type: DataTypes.TEXT,
+      allowNull: true,
+    },
+    bio_data: {
+      type: DataTypes.TEXT,
+      allowNull: true,
+    },
+    type: {
+      type: DataTypes.STRING,
+      allowNull: true,
+    },
     email: {
       type: DataTypes.STRING,
       allowNull: false,
