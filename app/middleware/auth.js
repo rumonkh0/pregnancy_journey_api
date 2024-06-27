@@ -28,7 +28,7 @@ exports.tokenCheck = (req) => {
 
 // Protect routes
 exports.protect = asyncHandler(async (req, res, next) => {
-  console.log(req.cookies);
+  // console.log(req.cookies);
   let token = this.tokenCheck(req);
 
   // Make sure token exists

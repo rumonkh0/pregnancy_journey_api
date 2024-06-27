@@ -82,12 +82,17 @@ exports.register = asyncHandler(async (req, res, next) => {
 
   user.save();
 
-  const sendResult = await sendEmail({
-    email: user.email,
-    subject: "Email confirmation OTP",
-    otp: OTP,
-    username,
-  });
+  try {
+    const emailsnd = await sendEmail({
+      email: user.email,
+      subject: "Email confirmation OTP",
+      otp: OTP,
+      username,
+    });
+    // console.log(emailsnd);
+  } catch (error) {
+    console.log(`email not send: `);
+  }
   // user.password = null;
   sendTokenResponse(user, 200, res);
 });
@@ -519,12 +524,18 @@ exports.resendOTP = asyncHandler(async (req, res, next) => {
 
   user.save();
 
-  const sendResult = await sendEmail({
-    email: user.email,
-    subject: "Email confirmation OTP",
-    otp: OTP,
-    username: req.user.username,
-  });
+  try {
+    await sendEmail({
+      email: user.email,
+      subject: "Email confirmation OTP",
+      otp: OTP,
+      username: req.user.username,
+    });
+  } catch (error) {
+    return res
+      .status(400)
+      .json({ success: false, message: "Fail to send OTP" });
+  }
 
   res.status(200).json({ success: true, message: "OTP send" });
 });
