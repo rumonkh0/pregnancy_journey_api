@@ -21,7 +21,11 @@ const HelpDesk = sequelize.define(
     },
     message: {
       type: DataTypes.TEXT,
-      allowNull: false,
+      allowNull: true,
+    },
+    image: {
+      type: DataTypes.INTEGER,
+      allowNull: true,
     },
     createdAt: {
       type: DataTypes.DATE,
@@ -37,6 +41,5 @@ const HelpDesk = sequelize.define(
     timestamps: true,
   }
 );
-
 
 module.exports = HelpDesk;

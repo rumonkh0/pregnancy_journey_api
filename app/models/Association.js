@@ -44,6 +44,8 @@ BlogCategories.belongsTo(Media, { foreignKey: "image", as: "media" });
 HelpDesk.belongsTo(Admin, { foreignKey: "admin_id" });
 HelpDesk.belongsTo(HelpDesk, { foreignKey: "user_id", as: "lastMessage" });
 
+HelpDesk.belongsTo(Media, { foreignKey: "image", as: "media" });
+
 // Video.belongsTo(Media, { foreignKey: "image", as: "media" });
 
 // PostMedia.belongsTo(Post, { foreignKey: "post_id" });

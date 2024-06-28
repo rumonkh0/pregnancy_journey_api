@@ -1,4 +1,7 @@
 const express = require("express");
+const path = require("path");
+const fs = require("fs");
+const multer = require("multer");
 const { Op, literal } = require("sequelize");
 const HelpDesk = require("../../models/HelpDesk");
 const {
@@ -162,6 +165,7 @@ router.get(
            FROM help_desk hd
            GROUP BY user_id)`
       ),
+      order: [["createdAt", "DESC"]],
     });
 
     // const result = lastMessages.filter((message) => message.admin_id == null);
@@ -230,11 +234,55 @@ router.get(
 // );
 
 router.get("/:userId/:modelPk", getOne(HelpDesk));
-router.post("/:userId", upload.single("help_desk_image"), create(HelpDesk));
+router.post(
+  "/:userId",
+  upload.single("help_desk_image"),
+  asyncHandler(async (req, res, next) => {
+    // Extract baby ID from the request params or body
+    const { userId } = req.params;
+
+    // Get the feed history for the specified baby
+    req.body.user_id = userId;
+    req.body.admin_id = req.body.admin_id || req.admin.id;
+    const babyFeed = await HelpDesk.create(req.body);
+
+    res.status(200).json({ success: true, message: "Created", data: babyFeed });
+  })
+);
 // // router.put("/:modelPk", update(HelpDesk));
 router.delete("/userId/:modelPk", deleteOne(HelpDesk));
 router.delete("/", deleteAll(HelpDesk));
-router.get("/:userId", getAllOfUser(HelpDesk, "asc"));
+router.get(
+  "/:userId",
+  asyncHandler(async (req, res, next) => {
+    const data = await HelpDesk.findAll({
+      where: { user_id: req.params.userId },
+      include: [
+        { model: User, attributes: ["username"] },
+        {
+          model: Media,
+          attributes: [
+            "id",
+            "uploaded_by",
+            "file_name",
+            "file_path",
+            "mime_type",
+          ],
+          as: "media",
+        },
+      ],
+      order: [["createdAt", "ASC"]],
+    });
+    if (!data) {
+      return res.status(403).json({
+        success: false,
+        message: "no record found.",
+      });
+    }
+    // Get the feed history for the specified baby
+    res.status(200).json({ success: true, data });
+  })
+);
 
 module.exports = router;
 

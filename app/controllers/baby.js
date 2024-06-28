@@ -69,13 +69,6 @@ exports.createBaby = asyncHandler(async (req, res, next) => {
   try {
     media = await Media.create(req.media);
     babyData.photo = media.id;
-    //delete previous photo
-    // if (userWithMedia.media) {
-    //   try {
-    //     await unlinkAsync(userWithMedia.media.file_path);
-    //   } catch (error) {}
-    //   await Media.destroy({ where: { id: user.photo } });
-    // }
   } catch (err) {
     console.log(err);
     if (req.file && req.file.path) {

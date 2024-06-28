@@ -15,6 +15,7 @@ let sequelize;
 // );
 
 sequelize = new Sequelize(
+  // "pregnancy_journeyl",
   process.env.DATABASE,
   process.env.USER,
   process.env.PASSWORD,

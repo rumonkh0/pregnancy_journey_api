@@ -2,6 +2,7 @@ const asyncHandler = require("../middleware/async");
 const { where } = require("sequelize");
 const Admin = require("../models/Admin");
 const User = require("../models/User");
+const Media = require("../models/Media");
 
 // @desc      Get  Baby get all as history
 // @route     GET /api/v1/route/history
@@ -12,8 +13,22 @@ exports.getHistory = (Model) => {
       where: { user_id: req.user.id },
       order: [["createdAt", "ASC"]],
       include: [
-        { model: Admin, attributes: ["id", "username"] },
+        {
+          model: Admin,
+          attributes: ["id", "username", "type", "designation", "bio_data"],
+        },
         { model: User, attributes: ["username", "email"] },
+        {
+          model: Media,
+          attributes: [
+            "id",
+            "uploaded_by",
+            "file_name",
+            "file_path",
+            "mime_type",
+          ],
+          as: "media",
+        },
       ],
     });
     if (!data) {
