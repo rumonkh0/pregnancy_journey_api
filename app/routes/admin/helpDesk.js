@@ -17,6 +17,48 @@ const { Sequelize } = require("sequelize");
 const User = require("../../models/User");
 const Media = require("../../models/Media");
 const Admin = require("../../models/Admin");
+
+const uploadDirectory = "public/uploads/helpdesk/";
+
+// Ensure that the upload directory exists; if not, create it
+if (!fs.existsSync(uploadDirectory)) {
+  fs.mkdirSync(uploadDirectory, { recursive: true });
+}
+
+const allowedExtensions = [".jpg", ".jpeg", ".png", ".gif"];
+
+const storage = multer.diskStorage({
+  destination: function (req, file, cb) {
+    cb(null, uploadDirectory);
+  },
+  filename: function (req, file, cb) {
+    cb(
+      null,
+      file.fieldname +
+        "-" +
+        req.admin.username +
+        "-" +
+        Date.now() +
+        path.extname(file.originalname)
+    );
+  },
+});
+
+const upload = multer({
+  storage: storage,
+  fileFilter: (req, file, cb) => {
+    const ext = path.extname(file.originalname).toLowerCase();
+    if (allowedExtensions.includes(ext)) {
+      cb(null, true);
+    } else {
+      cb(new Error("Invalid file type. Only images are allowed."));
+    }
+  },
+  limits: {
+    fileSize: 5 * 1024 * 1024, // 5 MB size limit
+  },
+});
+
 router.use(protect);
 router.use(authorize("superadmin", "help_desk"));
 
@@ -188,7 +230,7 @@ router.get(
 // );
 
 router.get("/:userId/:modelPk", getOne(HelpDesk));
-router.post("/:userId", create(HelpDesk));
+router.post("/:userId", upload.single("help_desk_image"), create(HelpDesk));
 // // router.put("/:modelPk", update(HelpDesk));
 router.delete("/userId/:modelPk", deleteOne(HelpDesk));
 router.delete("/", deleteAll(HelpDesk));
