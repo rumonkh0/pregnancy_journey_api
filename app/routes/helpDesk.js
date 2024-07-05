@@ -67,14 +67,14 @@ router.post(
   "/",
   upload.single("help_desk_image"),
   asyncHandler(async (req, res, next) => {
+    req.body.user_id = req.user.id;
     if (!req.file) {
-      if (!req.message) {
+      if (!req.body.message) {
         return res.status(404).json({
           success: false,
           message: "message is required",
         });
       }
-
       await HelpDesk.create(req.body);
       return res.status(200).json({ success: true, message: "Message Sent" });
     }
@@ -111,7 +111,7 @@ router.post(
     /////////////////////////////////////////////////////////
 
     // Get the feed history for the specified baby
-    console.log(req.body.image);
+    // console.log(req.body.image);
     req.body.user_id = req.user.id;
     const babyFeed = await HelpDesk.create(req.body);
 
@@ -122,7 +122,7 @@ router.post(
 router.delete("/:modelPk", deleteOne(HelpDesk));
 // router.delete("/", deleteAll(HelpDesk));
 
-router.get("/", getHistory(MotherDiet));
-router.get("/:modelPk", getOne(MotherDiet));
-router.post("/", create(MotherDiet));
+// router.get("/", getHistory(MotherDiet));
+// router.get("/:modelPk", getOne(MotherDiet));
+// router.post("/", create(MotherDiet));
 module.exports = router;

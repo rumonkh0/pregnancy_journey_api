@@ -240,10 +240,60 @@ router.post(
   asyncHandler(async (req, res, next) => {
     // Extract baby ID from the request params or body
     const { userId } = req.params;
+    req.body.user_id = userId;
+    req.body.admin_id = req.body.admin_id ?? req.admin.id;
+
+    if (!req.file) {
+      if (!req.body.message) {
+        return res.status(404).json({
+          success: false,
+          message: "message is required",
+        });
+      }
+
+      await HelpDesk.create(req.body);
+      return res.status(200).json({ success: true, message: "Message Sent" });
+    }
+
+
+    const { mimetype, filename, path: file_path } = req.file;
+    req.media = {
+      uploaded_by: req.admin.username,
+      file_path,
+      mime_type: mimetype,
+      file_name: filename,
+      file_type: path.extname(filename).slice(1),
+    };
+
+    // console.log(req.media);
+
+    let media;
+    try {
+      media = await Media.create(req.media);
+      req.body.image = media.id;
+    } catch (err) {
+      console.log(err);
+      if (req.file && req.file.path) {
+        const filePath = req.file.path;
+        await unlinkAsync(filePath);
+      }
+      return res.status(200).json({
+        remark: "UNSUCCESSFULL",
+        success: false,
+        message: "data upload failed",
+        error: err,
+      });
+    }
+
+    // if (req.body.message.trim() === "") {
+    //   return res.status(404).json({
+    //     success: false,
+    //     message: "Message is required",
+    //   });
+    // }
 
     // Get the feed history for the specified baby
-    req.body.user_id = userId;
-    req.body.admin_id = req.body.admin_id || req.admin.id;
+
     const babyFeed = await HelpDesk.create(req.body);
 
     res.status(200).json({ success: true, message: "Created", data: babyFeed });
