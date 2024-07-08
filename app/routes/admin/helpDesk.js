@@ -28,7 +28,31 @@ if (!fs.existsSync(uploadDirectory)) {
   fs.mkdirSync(uploadDirectory, { recursive: true });
 }
 
-const allowedExtensions = [".jpg", ".jpeg", ".png", ".gif"];
+const allowedExtensions = [
+  ".jpg",
+  ".jpeg",
+  ".png",
+  ".gif",
+  ".svg",
+  ".doc",
+  ".docx",
+  ".pdf",
+  ".txt",
+  ".rtf",
+  ".odt",
+  ".ods",
+  ".odp",
+  ".xls",
+  ".xlsx",
+  ".ppt",
+  ".pptx",
+  ".csv",
+  ".tsv",
+  ".xml",
+  ".html",
+  ".htm",
+  ".md",
+];
 
 const storage = multer.diskStorage({
   destination: function (req, file, cb) {
@@ -254,7 +278,6 @@ router.post(
       await HelpDesk.create(req.body);
       return res.status(200).json({ success: true, message: "Message Sent" });
     }
-
 
     const { mimetype, filename, path: file_path } = req.file;
     req.media = {

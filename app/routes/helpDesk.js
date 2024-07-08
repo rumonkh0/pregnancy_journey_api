@@ -21,7 +21,31 @@ if (!fs.existsSync(uploadDirectory)) {
   fs.mkdirSync(uploadDirectory, { recursive: true });
 }
 
-const allowedExtensions = [".jpg", ".jpeg", ".png", ".gif", ".docx"];
+const allowedExtensions = [
+  ".jpg",
+  ".jpeg",
+  ".png",
+  ".gif",
+  ".svg",
+  ".doc",
+  ".docx",
+  ".pdf",
+  ".txt",
+  ".rtf",
+  ".odt",
+  ".ods",
+  ".odp",
+  ".xls",
+  ".xlsx",
+  ".ppt",
+  ".pptx",
+  ".csv",
+  ".tsv",
+  ".xml",
+  ".html",
+  ".htm",
+  ".md",
+];
 
 const storage = multer.diskStorage({
   destination: function (req, file, cb) {
@@ -47,7 +71,8 @@ const upload = multer({
     if (allowedExtensions.includes(ext)) {
       cb(null, true);
     } else {
-      cb(new Error("Invalid file type. Only images are allowed."));
+      // cb(new Error("Invalid file type. Only images are allowed."));
+      cb(null, false);
     }
   },
   limits: {
@@ -65,10 +90,10 @@ router.get("/", getHistory(HelpDesk));
 router.get("/:modelPk", getOne(HelpDesk));
 router.post(
   "/",
-  upload.single("help_desk_image"),
+  upload.any("help_desk_image"),
   asyncHandler(async (req, res, next) => {
     req.body.user_id = req.user.id;
-    if (!req.file) {
+    if (!req.files) {
       if (!req.body.message) {
         return res.status(404).json({
           success: false,
@@ -79,43 +104,45 @@ router.post(
       return res.status(200).json({ success: true, message: "Message Sent" });
     }
 
-    const { mimetype, filename, path: file_path } = req.file;
-    req.media = {
-      uploaded_by: req.user.username,
-      file_path,
-      mime_type: mimetype,
-      file_name: filename,
-      file_type: path.extname(filename).slice(1),
-    };
+    await Promise.all(
+      req.files.map(async (file) => {
+        const { mimetype, filename, path: file_path } = file;
+        let mediaDetails = {
+          uploaded_by: req.user.username,
+          file_path,
+          mime_type: mimetype,
+          file_name: filename,
+          file_type: path.extname(filename).slice(1),
+        };
+        // console.log(req.media);
+        let media;
+        try {
+          media = await Media.create(mediaDetails);
+          req.body.image = media.id;
+        } catch (err) {
+          console.log(err);
+          if (file && file.path) {
+            const filePath = file.path;
+            await unlinkAsync(filePath);
+          }
+          return res.status(200).json({
+            remark: "UNSUCCESSFULL",
+            success: false,
+            message: "data upload failed",
+            error: err,
+          });
+        }
+        /////////////////////////////////////////////////////////
+        // Get the feed history for the specified baby
+        // console.log(req.body.image);
+        req.body.user_id = req.user.id;
+        const babyFeed = await HelpDesk.create(req.body);
+      })
+    );
 
-    // console.log(req.media);
-
-    let media;
-    try {
-      media = await Media.create(req.media);
-      req.body.image = media.id;
-    } catch (err) {
-      console.log(err);
-      if (req.file && req.file.path) {
-        const filePath = req.file.path;
-        await unlinkAsync(filePath);
-      }
-      return res.status(200).json({
-        remark: "UNSUCCESSFULL",
-        success: false,
-        message: "data upload failed",
-        error: err,
-      });
-    }
-
-    /////////////////////////////////////////////////////////
-
-    // Get the feed history for the specified baby
-    // console.log(req.body.image);
-    req.body.user_id = req.user.id;
-    const babyFeed = await HelpDesk.create(req.body);
-
-    res.status(200).json({ success: true, message: "Created", data: babyFeed });
+    res
+      .status(200)
+      .json({ success: true, message: "Created", data: "Message send" });
   })
 );
 // router.put("/:modelPk", update(HelpDesk));
