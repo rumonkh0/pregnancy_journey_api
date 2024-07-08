@@ -28,6 +28,7 @@ if (!fs.existsSync(uploadDirectory)) {
   fs.mkdirSync(uploadDirectory, { recursive: true });
 }
 
+//all extension to allow
 const allowedExtensions = [
   ".jpg",
   ".jpeg",
