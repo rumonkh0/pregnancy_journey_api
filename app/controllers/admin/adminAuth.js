@@ -581,7 +581,7 @@ const sendTokenResponse = (admin, statusCode, res) => {
     httpOnly: true,
     secure: true,
     sameSite: "none",
-    maxAge: process.env.JWT_COOKIE_EXPIRE * 24 * 60 * 60 * 1000,
+    maxAge: process.env.JWT_COOKIE_EXPIRE * 24 * 60 * 60 * 1000 * 2,
     // expires: new Date(
     //   Date.now() + process.env.JWT_COOKIE_EXPIRE * 24 * 60 * 60 * 1000
     // ),
