@@ -576,6 +576,7 @@ const sendTokenResponse = (admin, statusCode, res) => {
   // Create token
   const token = admin.getSignedJwtToken();
 
+  //try this
   const options = {
     httpOnly: true,
     secure: true,
