@@ -15,7 +15,22 @@ exports.getHistory = (Model) => {
       include: [
         {
           model: Admin,
-          attributes: ["id", "username", "type", "designation", "bio_data"],
+          attributes: [
+            "id",
+            "username",
+            "first_name",
+            "last_name",
+            "type",
+            "designation",
+            "bio_data",
+          ],
+          include: [
+            {
+              model: Media,
+              as: "profile_photo",
+              attributes: ["file_name", "file_type", "file_path"],
+            },
+          ],
         },
         { model: User, attributes: ["username", "email"] },
         {

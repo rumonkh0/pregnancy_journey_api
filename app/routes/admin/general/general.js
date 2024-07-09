@@ -11,6 +11,7 @@ const motherProgress = require("./motherProgress");
 const babyProgress = require("./babyProgress");
 const drugSlider = require("./drugSlider");
 const videos = require("./videos");
+const languages = require("./language");
 
 const uploadDirectory = "public/uploads/general/";
 
@@ -71,6 +72,9 @@ router.use(
 router.use("/babyprogress", upload.single("babyprogress_image"), babyProgress);
 router.use("/drugslider", upload.single("drugslider_image"), drugSlider);
 router.use("/videos", upload.single("videos_image"), videos);
+
+//general settings
+router.use("/language",  languages)
 
 // const warning = () => {
 
