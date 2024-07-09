@@ -13,7 +13,11 @@ exports.getBabyList = asyncHandler(async (req, res, next) => {
   const babyList = await Baby.findAll({
     where: { mother_id: req.user.id },
     include: { model: Media, as: "media" },
-    order: [["createdAt", "DESC"]],
+    order: [
+      ["baby_serial", "ASC"],
+      ["birth_date", "ASC"],
+      ["createdAt", "ASC"],
+    ],
   });
   res.json({ success: true, message: "Found babies", data: babyList });
 });

@@ -23,7 +23,7 @@ const BlogCategories = sequelize.define(
       allowNull: true,
     },
     image: {
-      type: DataTypes.STRING(45),
+      type: DataTypes.INTEGER,
       allowNull: true,
     },
     createdAt: {

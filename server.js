@@ -59,6 +59,7 @@ const checklist = require("./app/routes/tools/mother/checklist");
 
 //admin section
 const admins = require("./app/routes/admin/admin");
+const adminBabylist = require("./app/routes/admin/babylist");
 const sendnotification = require("./app/routes/admin/notification");
 const adminLogin = require("./app/routes/admin/adminAuth");
 const adminPost = require("./app/routes/admin/community/post");
@@ -87,11 +88,23 @@ if (process.env.NODE_ENV === "development") {
 
 // Enable CORSconst
 // FRONTEND_URL = "https://pregnancy-admin.vercel.app"; // Replace with your actual frontend URL
-FRONTEND_URL = "http://localhost:3000";
+FRONTEND_URLS = [
+  "http://localhost:3000",
+  "https://pregnancy-admin.vercel.app",
+  "https://pregnancy-admin-develop.vercel.app",
+];
 
 app.use(
   cors({
-    origin: FRONTEND_URL,
+    origin: (origin, callback) => {
+      // Allow requests with no origin, like mobile apps or curl requests
+      if (!origin) return callback(null, true);
+      if (FRONTEND_URLS.includes(origin)) {
+        return callback(null, true);
+      } else {
+        return callback(new Error("Not allowed by CORS"));
+      }
+    },
     credentials: true, // Allow credentials
   })
 );
@@ -142,6 +155,7 @@ app.use("/api/v1/checklist", checklist);
 app.use("/admin/api/v1/auth", adminLogin);
 app.use("/admin/api/v1/sendnotification", sendnotification);
 app.use("/admin/api/v1/users", users);
+app.use("/admin/api/v1/babylist", adminBabylist);
 app.use("/admin/api/v1/dashboard", adminDashboard);
 app.use("/admin/api/v1/post-topic", adminPostTopic);
 app.use("/admin/api/v1/post", adminPost);
