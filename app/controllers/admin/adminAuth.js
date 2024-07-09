@@ -577,10 +577,9 @@ const sendTokenResponse = (admin, statusCode, res) => {
   const token = admin.getSignedJwtToken();
 
   const options = {
-    httpOnly: false,
-    secure: false,
-    sameSite: "Lax",
-    path: "/",
+    httpOnly: true,
+    secure: true,
+    sameSite: "None",
     maxAge: process.env.JWT_COOKIE_EXPIRE * 24 * 60 * 60 * 1000,
     // expires: new Date(
     //   Date.now() + process.env.JWT_COOKIE_EXPIRE * 24 * 60 * 60 * 1000
