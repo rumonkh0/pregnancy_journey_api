@@ -1,8 +1,8 @@
 const { sequelize } = require("../../../config/db");
 const { DataTypes } = require("sequelize");
 
-const BlogCategories = sequelize.define(
-  "blog_categories",
+const A2zCategory = sequelize.define(
+  "a2z_categories",
   {
     id: {
       type: DataTypes.INTEGER,
@@ -36,9 +36,9 @@ const BlogCategories = sequelize.define(
     },
   },
   {
-    tableName: "blog_categories",
+    tableName: "a2z_categories",
     timestamps: true,
   }
 );
 
-module.exports = BlogCategories;
+module.exports = A2zCategory;

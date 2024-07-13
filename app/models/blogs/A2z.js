@@ -1,10 +1,10 @@
 const { sequelize } = require("../../../config/db");
 const { DataTypes } = require("sequelize");
-const BlogCategories = require("./Blog_category");
+const A2zCategory = require("./A2zCategory");
 const { Media } = require("../Association");
 
-const Blog = sequelize.define(
-  "blogs",
+const A2z = sequelize.define(
+  "a2z",
   {
     id: {
       type: DataTypes.INTEGER,
@@ -42,13 +42,13 @@ const Blog = sequelize.define(
     },
   },
   {
-    tableName: "blogs",
+    tableName: "a2z",
     timestamps: true,
   }
 );
 
-BlogCategories.hasMany(Blog, { foreignKey: "category" });
-Blog.belongsTo(BlogCategories, { foreignKey: "category" });
-Blog.belongsTo(Media, { foreignKey: "image", as: "media" });
+A2zCategory.hasMany(A2z, { foreignKey: "category" });
+A2z.belongsTo(A2zCategory, { foreignKey: "category" });
+A2z.belongsTo(Media, { foreignKey: "image", as: "media" });
 
-module.exports = Blog;
+module.exports = A2z;

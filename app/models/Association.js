@@ -8,6 +8,7 @@ const MotherProgressTimeline = require("./progress_timeline/Mother_progress_time
 const BabyProgressTimeline = require("./progress_timeline/Baby_progress_timeline");
 const WarningSign = require("./Warning_sign");
 const BlogCategories = require("./blogs/Blog_category");
+const A2zCategory = require("./blogs/A2zCategory");
 const Video = require("./Video");
 
 const ChecklistItem = require("./tools/mother/ChecklistItem");
@@ -40,6 +41,7 @@ MotherProgressTimeline.belongsTo(Media, { foreignKey: "image", as: "media" });
 BabyProgressTimeline.belongsTo(Media, { foreignKey: "image", as: "media" });
 WarningSign.belongsTo(Media, { foreignKey: "image", as: "media" });
 BlogCategories.belongsTo(Media, { foreignKey: "image", as: "media" });
+A2zCategory.belongsTo(Media, { foreignKey: "image", as: "media" });
 
 HelpDesk.belongsTo(Admin, { foreignKey: "admin_id" });
 HelpDesk.belongsTo(HelpDesk, { foreignKey: "user_id", as: "lastMessage" });

@@ -3,7 +3,9 @@ const fs = require("fs");
 const express = require("express");
 const multer = require("multer");
 const blog = require("./blog");
+const a2z = require("./a2z");
 const blogCategories = require("./blogCategories");
+const a2zCategories = require("./a2zCategories");
 const warningSign = require("./warningSign");
 const dailyReads = require("./dailyReads");
 const dailyTips = require("./dailyTips");
@@ -61,6 +63,12 @@ router.use(
   upload.single("blog_category_image"),
   blogCategories
 );
+router.use("/a2z", upload.single("a2z_image"), a2z);
+router.use(
+  "/a2zcategories",
+  upload.single("a2z_category_image"),
+  a2zCategories
+);
 router.use("/warningsigns", upload.single("warning_image"), warningSign);
 router.use("/dailyreads", upload.single("dailyreads_image"), dailyReads);
 router.use("/dailytips", upload.single("dailytips_image"), dailyTips);
@@ -74,7 +82,7 @@ router.use("/drugslider", upload.single("drugslider_image"), drugSlider);
 router.use("/videos", upload.single("videos_image"), videos);
 
 //general settings
-router.use("/language",  languages)
+router.use("/language", languages);
 
 // const warning = () => {
 
