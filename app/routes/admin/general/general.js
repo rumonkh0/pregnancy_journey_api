@@ -66,7 +66,7 @@ router.use(
 router.use("/a2z", upload.single("a2z_image"), a2z);
 router.use(
   "/a2zcategories",
-  upload.single("a2z_category_image"),
+  upload.single("a2zcategories_image"),
   a2zCategories
 );
 router.use("/warningsigns", upload.single("warning_image"), warningSign);
