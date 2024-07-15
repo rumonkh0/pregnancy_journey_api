@@ -44,6 +44,7 @@ filteredstat = (type) => {
         [Sequelize.fn("COUNT", "current_mood"), "count"],
       ],
       where: {
+        user_id: req.user.id,
         mood_time: {
           [Op.gte]: startDate,
           [Op.lte]: endDate,
