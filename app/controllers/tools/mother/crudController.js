@@ -147,7 +147,7 @@ exports.update = (Model) => {
 // @desc      Delete
 // @route     DELETE /api/v1/babyfeed/:babyId/:modelPk
 // @access    Private/Admin
-exports.deleteOne = (Model) => {
+exports.deleteOne = (Model, message) => {
   return asyncHandler(async (req, res) => {
     // Extract baby ID from the request params or body
     const { modelPk } = req.params;
@@ -157,19 +157,23 @@ exports.deleteOne = (Model) => {
       where: { id: modelPk, user_id: req.user.id },
     });
 
-    res.status(200).json({ success: true, message: "deleted" });
+    res
+      .status(200)
+      .json({ success: true, message: message ? message : "deleted" });
   });
 };
 
 // @desc      Delete all
 // @route     DELETE /api/v1/babyfeed/:babyId
 // @access    Private/Admin
-exports.deleteAll = (Model) => {
+exports.deleteAll = (Model, message) => {
   return asyncHandler(async (req, res) => {
     // Get the feed history for the specified baby
     const deleted = await Model.destroy({ where: { user_id: req.user.id } });
 
-    res.status(200).json({ success: true, message: "All data deleted" });
+    res
+      .status(200)
+      .json({ success: true, message: message ? message : "All data deleted" });
   });
 };
 

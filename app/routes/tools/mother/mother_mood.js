@@ -135,6 +135,6 @@ router.get("/monthstat", filteredstat("month"));
 router.get("/:modelPk", getOne(Mood));
 router.post("/", create(Mood));
 router.put("/:modelPk", update(Mood));
-router.delete("/:modelPk", deleteOne(Mood));
-router.delete("/", deleteAll(Mood));
+router.delete("/:modelPk", deleteOne(Mood, "Mother mood deleted"));
+router.delete("/", deleteAll(Mood, "All mother moods deleted"));
 module.exports = router;
