@@ -23,7 +23,7 @@ const MotherProgressTimeline = sequelize.define(
       allowNull: false,
     },
     image: {
-      type: DataTypes.STRING(255),
+      type: DataTypes.INTEGER,
       allowNull: false,
     },
     createdAt: {

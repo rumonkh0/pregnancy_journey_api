@@ -104,7 +104,7 @@ exports.getOne = (Model, include) => {
       include: { model: Media, as: "media" },
     });
 
-    console.log(data);
+    // console.log(data);
 
     if (!data) {
       return res
@@ -129,7 +129,7 @@ exports.getOne = (Model, include) => {
           : JSON.parse(data.description)["en"]
       );
     }
-    console.log(data);
+    // console.log(data);
     res.status(200).json({ success: true, message: "Data found", data });
   });
 };
@@ -219,7 +219,7 @@ exports.update = (Model) => {
     let media, prevMedia;
 
     try {
-      userWithMedia = await Model.findByPk(id, {
+      userWithMedia = await Model.findByPk(modelPk, {
         include: [
           {
             model: Media,
@@ -229,6 +229,8 @@ exports.update = (Model) => {
         ],
       });
 
+      // console.log(userWithMedia);
+
       media = await Media.create(req.media);
       req.body.image = media.id;
       //delete previous photo
@@ -236,14 +238,15 @@ exports.update = (Model) => {
         try {
           await unlinkAsync(userWithMedia.media.file_path);
         } catch (error) {}
-        await Media.destroy({ where: { id: user.photo } });
+        await Media.destroy({ where: { id: userWithMedia.id } });
       }
     } catch (err) {
       if (req.file && req.file && req.file.path) {
         const filePath = req.file.path;
         await unlinkAsync(filePath);
       }
-      return res.status(200).json({
+      console.log(err);
+      return res.status(400).json({
         remark: "UNSUCCESSFULL",
         success: false,
         message: "data upload failed",
