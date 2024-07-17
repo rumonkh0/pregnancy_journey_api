@@ -99,7 +99,7 @@ exports.updateAdmin = asyncHandler(async (req, res) => {
   let adminData;
 
   if (!req.file) {
-    updated = await Admin.update(newData, {
+    var updated = await Admin.update(newData, {
       where: {
         id,
       },
@@ -120,12 +120,14 @@ exports.updateAdmin = asyncHandler(async (req, res) => {
     });
   }
 
-  const { mimetype, filename, path: file_path } = req.file;
+  const { mimetype, filename, path: file_path, originalname } = req.file;
+  // console.log(req.file);
   req.media = {
     uploaded_by: req.admin.username,
     file_path,
     mime_type: mimetype,
     file_name: filename,
+    original_name: originalname,
     file_type: path.extname(filename).slice(1),
   };
 
@@ -164,7 +166,7 @@ exports.updateAdmin = asyncHandler(async (req, res) => {
     });
   }
 
-  const updated = await Admin.update(newData, { where: { id } });
+  updated = await Admin.update(newData, { where: { id } });
   admin = await Admin.findByPk(id, {
     include: { model: Media, as: "profile_photo" },
   });

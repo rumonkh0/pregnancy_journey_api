@@ -19,6 +19,10 @@ const Media = sequelize.define(
       type: DataTypes.STRING(255),
       allowNull: true,
     },
+    original_name: {
+      type: DataTypes.STRING(255),
+      allowNull: true,
+    },
     file_path: {
       type: DataTypes.STRING(255),
       allowNull: true,
