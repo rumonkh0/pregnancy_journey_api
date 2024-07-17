@@ -350,6 +350,8 @@ router.get(
             "file_name",
             "file_path",
             "mime_type",
+            "original_name",
+            "file_size",
           ],
           as: "media",
         },
