@@ -152,11 +152,18 @@ exports.create = (Model) => {
       });
     }
 
-    const { mimetype, filename, path: file_path, originalname } = req.file;
+    const {
+      mimetype,
+      filename,
+      path: file_path,
+      originalname,
+      size,
+    } = req.file;
     req.media = {
       uploaded_by: req.admin.username,
       file_path,
       mime_type: mimetype,
+      file_size: size,
       file_name: filename,
       original_name: originalname,
       file_type: path.extname(filename).slice(1),
@@ -208,11 +215,18 @@ exports.update = (Model) => {
       return res.status(200).json({ success: true, message: "Record updated" });
     }
 
-    const { mimetype, filename, path: file_path, originalname } = req.file;
+    const {
+      mimetype,
+      filename,
+      path: file_path,
+      originalname,
+      size,
+    } = req.file;
     req.media = {
       uploaded_by: req.admin.username,
       file_path,
       mime_type: mimetype,
+      file_size: size,
       file_name: filename,
       original_name: originalname,
       file_type: path.extname(filename).slice(1),

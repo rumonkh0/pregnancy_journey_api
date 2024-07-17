@@ -55,7 +55,7 @@ exports.createBaby = asyncHandler(async (req, res, next) => {
       .json({ success: true, message: "Baby created", data: baby });
   }
 
-  const { mimetype, filename, originalname, path: file_path } = req.file;
+  const { mimetype, filename, originalname, path: file_path, size } = req.file;
   // if (!mimetype.startsWith("image")) {
   //   return res.status(401).json({success: false, message: "File type must be image"})
   // }
@@ -65,6 +65,7 @@ exports.createBaby = asyncHandler(async (req, res, next) => {
     uploaded_by: req.user.username,
     file_path,
     mime_type: mimetype,
+    file_size: size,
     file_name: filename,
     original_name: originalname,
     file_type: path.extname(filename).slice(1),
@@ -126,7 +127,7 @@ exports.updateBaby = asyncHandler(async (req, res) => {
       .status(200)
       .json({ success: true, message: "Baby updated", data: baby });
   }
-  const { mimetype, filename, originalname, path: file_path } = req.file;
+  const { mimetype, filename, originalname, path: file_path, size } = req.file;
   // if (!mimetype.startsWith("image")) {
   //   return res.status(401).json({success: false, message: "File type must be image"})
   // }
@@ -136,6 +137,7 @@ exports.updateBaby = asyncHandler(async (req, res) => {
     uploaded_by: req.user.username,
     file_path,
     mime_type: mimetype,
+    file_size: size,
     file_name: filename,
     original_name: originalname,
     file_type: path.extname(filename).slice(1),

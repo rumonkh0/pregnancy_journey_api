@@ -51,12 +51,13 @@ exports.createReactionType = asyncHandler(async (req, res, next) => {
     });
   }
 
-  const { mimetype, filename, path: file_path, originalname } = req.file;
+  const { mimetype, filename, path: file_path, originalname, size } = req.file;
   req.media = {
     uploaded_by: req.admin.username,
     file_path,
     mime_type: mimetype,
     file_name: filename,
+    file_size: size,
     original_name: originalname,
     file_type: path.extname(filename).slice(1),
   };
@@ -88,12 +89,13 @@ exports.updateReactionType = asyncHandler(async (req, res) => {
     return res.json({ message: "Post topic updated" });
   }
 
-  const { mimetype, filename, path: file_path, originalname } = req.file;
+  const { mimetype, filename, path: file_path, originalname, size } = req.file;
   req.media = {
     uploaded_by: req.admin.username,
     file_path,
     mime_type: mimetype,
     file_name: filename,
+    file_size: size,
     original_name: originalname,
     file_type: path.extname(filename).slice(1),
   };

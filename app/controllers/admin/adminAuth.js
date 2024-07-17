@@ -233,16 +233,12 @@ exports.updateDetails = asyncHandler(async (req, res, next) => {
     });
   }
 
-  const { mimetype, filename, path: file_path, originalname } = req.file;
-  // if (!mimetype.startsWith("image")) {
-  //   return res
-  //     .status(401)
-  //     .json({ success: false, message: "File type must be image" });
-  // }
+  const { mimetype, filename, path: file_path, originalname, size } = req.file;
   req.media = {
     uploaded_by: req.admin.username,
     file_path,
     mime_type: mimetype,
+    file_size: size,
     file_name: filename,
     original_name: originalname,
     file_type: path.extname(filename).slice(1),

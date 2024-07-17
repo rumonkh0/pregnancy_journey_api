@@ -35,6 +35,10 @@ const Media = sequelize.define(
       type: DataTypes.STRING(255),
       allowNull: true,
     },
+    file_size: {
+      type: DataTypes.INTEGER,
+      allowNull: false,
+    },
     createdAt: {
       type: DataTypes.DATE,
       allowNull: true,

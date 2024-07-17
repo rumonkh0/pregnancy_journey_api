@@ -106,12 +106,20 @@ router.post(
 
     await Promise.all(
       req.files.map(async (file) => {
-        const { mimetype, filename, path: file_path } = file;
+        const {
+          mimetype,
+          filename,
+          path: file_path,
+          originalname,
+          size,
+        } = file;
         let mediaDetails = {
           uploaded_by: req.user.username,
           file_path,
           mime_type: mimetype,
           file_name: filename,
+          original_name: originalname,
+          file_size: size,
           file_type: path.extname(filename).slice(1),
         };
         // console.log(req.media);

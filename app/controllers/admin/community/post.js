@@ -76,13 +76,15 @@ exports.createPost = asyncHandler(async (req, res, next) => {
   // postData.user_id = req.user.id;
   let post = await Post.create(postData);
   req.files.forEach(async (element) => {
-    const { mimetype, filename, path: file_path } = element;
+    const { mimetype, filename, path: file_path, size, originalname } = element;
 
     let postMedia = {
       uploaded_by: req.admin.username,
       file_path,
       mime_type: mimetype,
+      file_size: size,
       file_name: filename,
+      original_name: originalname,
       file_type: path.extname(filename).slice(1),
     };
     let media = await Media.create(postMedia);

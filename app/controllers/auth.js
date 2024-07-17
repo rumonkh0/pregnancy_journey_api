@@ -257,7 +257,7 @@ exports.updateDetails = asyncHandler(async (req, res, next) => {
     });
   }
 
-  const { mimetype, filename, path: file_path, originalname } = req.file;
+  const { mimetype, filename, path: file_path, originalname, size } = req.file;
   // if (!mimetype.startsWith("image")) {
   //   return res
   //     .status(401)
@@ -266,7 +266,7 @@ exports.updateDetails = asyncHandler(async (req, res, next) => {
   req.media = {
     uploaded_by: req.user.username,
     file_path,
-    mime_type: mimetype,
+    mime_type: mimetype,file_size: size,
     file_name: filename,
     original_name: originalname,
     file_type: path.extname(filename).slice(1),

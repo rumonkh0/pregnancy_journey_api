@@ -77,7 +77,7 @@ exports.createBabyGallery = asyncHandler(async (req, res, next) => {
     return res
       .status(200)
       .json({ success: false, message: "please insert an image" });
-  const { mimetype, filename, path: file_path, originalname } = req.file;
+  const { mimetype, filename, path: file_path, originalname, size } = req.file;
 
   req.body.image = req.file.path;
 
@@ -86,6 +86,7 @@ exports.createBabyGallery = asyncHandler(async (req, res, next) => {
     file_path,
     mime_type: mimetype,
     file_name: filename,
+    file_size: size,
     original_name: originalname,
     file_type: path.extname(filename).slice(1),
   };
@@ -135,7 +136,7 @@ exports.updateBabyGallery = asyncHandler(async (req, res, next) => {
       .json({ success: true, message: "Baby updated", data: babygallery });
   }
 
-  const { mimetype, filename, originalname, path: file_path } = req.file;
+  const { mimetype, filename, originalname, path: file_path, size } = req.file;
   req.body.image = req.file.path;
 
   req.media = {
@@ -143,6 +144,7 @@ exports.updateBabyGallery = asyncHandler(async (req, res, next) => {
     file_path,
     mime_type: mimetype,
     file_name: filename,
+    file_size: size,
     original_name: originalname,
     file_type: path.extname(filename).slice(1),
   };
