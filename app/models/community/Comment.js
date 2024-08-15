@@ -1,9 +1,9 @@
 const { DataTypes, Sequelize } = require("sequelize");
 const { sequelize } = require("../../../config/db"); // Replace with your Sequelize instance
-const Post = require("./Post");
 const Reaction = require("./Reaction");
 const Reply = require("./Reply");
 const User = require("../User");
+const Media = require("../Media");
 
 const Comment = sequelize.define(
   "Comment",
@@ -32,8 +32,14 @@ const Comment = sequelize.define(
     total_comment: {
       type: DataTypes.INTEGER,
     },
+    total_report: {
+      type: DataTypes.INTEGER,
+    },
     content: {
       type: DataTypes.TEXT,
+    },
+    image: {
+      type: DataTypes.INTEGER,
     },
     createdAt: {
       type: DataTypes.DATE,
@@ -85,7 +91,7 @@ const getTotalComment = async (post_id, type) => {
     const result = await Comment.findOne(query);
 
     // Update averageCost field in Bootcamp model
-    console.log(type);
+    // console.log(type);
     type == "post"
       ? await sequelize.models.Post.update(
           { total_comment: result.total_comment },
@@ -104,4 +110,5 @@ const getTotalComment = async (post_id, type) => {
 
 Comment.hasMany(Reaction, { foreignKey: "comment_id", onDelete: "CASCADE" });
 Comment.hasMany(Reply, { foreignKey: "comment_id", onDelete: "CASCADE" });
+Comment.belongsTo(Media, { foreignKey: "image", as: "media" });
 module.exports = Comment;

@@ -1,5 +1,5 @@
 const express = require("express");
-const Video = require("../../../models/Video");
+const Video = require("../../../models/blogs/Video");
 
 const {
   getAll,

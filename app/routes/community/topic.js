@@ -12,8 +12,8 @@ const { protect } = require("../../middleware/auth");
 // router.use(protect);
 router.get("/", getAllReactionType);
 router.get("/:pk", getReactionType);
-router.post("/", createReactionType);
-router.put("/:pk", updateReactionType);
-router.delete("/:pk", deleteReactionType);
+// router.post("/", createReactionType);
+// router.put("/:pk", updateReactionType);
+// router.delete("/:pk", deleteReactionType);
 
 module.exports = router;

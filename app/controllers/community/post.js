@@ -11,6 +11,7 @@ const unlinkAsync = promisify(fs.unlink);
 const User = require("../../models/User");
 const ReactionType = require("../../models/community/ReactionType");
 const PostTopic = require("../../models/community/Post_topic");
+const Report = require("../../models/community/Report");
 // const Media = require("../../models/Media");
 
 // @desc      Get  Post List Of Mother
@@ -104,7 +105,12 @@ exports.getPost = asyncHandler(async (req, res, next) => {
 
   if (post.published == 0 && post.User.id !== req.user.id)
     return res.status(404).json({ success: false, message: "Post not found" });
-
+  if (post.User.id !== req.user.id) {
+    await Post.increment("total_views", { where: { id } });
+    // post.total_views = post.total_views + 1;
+    // // console.log(post);
+    // await post.save();
+  }
   post = post.toJSON();
   post.react = await Reaction.findOne({
     where: { user_id: req.user.id, post_id: req.params.id },
@@ -203,4 +209,18 @@ exports.deletePost = asyncHandler(async (req, res) => {
   if (!deleted)
     return res.status(404).json({ success: false, message: "Post not found" });
   res.json({ message: "Post deleted" });
+});
+
+exports.reportPost = asyncHandler(async (req, res) => {
+  req.body.post_id = req.params.id;
+  req.body.user_id = req.user.id;
+  var post = await Post.findByPk(req.params.id);
+  if (!post)
+    return res
+      .status(404)
+      .json({ remark: "FAILED", message: "Post not found" });
+  await Report.create(req.body);
+  return res
+    .status(200)
+    .json({ remark: "SUCCESS", message: "Report submitted for this post" });
 });

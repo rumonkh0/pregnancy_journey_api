@@ -1,4 +1,4 @@
-const { sequelize } = require("../../config/db");
+const { sequelize } = require("../../../config/db");
 const { DataTypes } = require("sequelize");
 
 const BabyGrowthWeekly = sequelize.define(
@@ -29,11 +29,35 @@ const BabyGrowthWeekly = sequelize.define(
       type: DataTypes.TEXT,
       allowNull: false,
     },
+    body_change_title: {
+      type: DataTypes.TEXT,
+      allowNull: true,
+    },
     body_change: {
       type: DataTypes.TEXT,
       allowNull: true,
     },
-    baby_details: {
+    baby_development_title: {
+      type: DataTypes.TEXT,
+      allowNull: true,
+    },
+    baby_development: {
+      type: DataTypes.TEXT,
+      allowNull: true,
+    },
+    organ_development: {
+      type: DataTypes.TEXT,
+      allowNull: true,
+    },
+    behaviour_development: {
+      type: DataTypes.TEXT,
+      allowNull: true,
+    },
+    to_dos: {
+      type: DataTypes.TEXT,
+      allowNull: true,
+    },
+    dont_dos: {
       type: DataTypes.TEXT,
       allowNull: true,
     },
@@ -43,5 +67,7 @@ const BabyGrowthWeekly = sequelize.define(
     timestamps: false,
   }
 );
+
+// BabyGrowthWeekly.belongsTo(Media, { foreignKey: "image", as: "media" });
 
 module.exports = BabyGrowthWeekly;

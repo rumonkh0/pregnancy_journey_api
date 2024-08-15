@@ -9,6 +9,7 @@ const {
   updatePost,
   deletePost,
   getMyPost,
+  reportPost,
 } = require("../../controllers/community/post");
 const commentRouter = require("./comment");
 const reactionRouter = require("./reaction");
@@ -90,7 +91,7 @@ const populate = [
 router.get("/", advancedResults(Post, populate), getAllPost);
 router.get("/me", getMyPost);
 router.get("/:id", getPost);
-
+router.post("/report/:id", reportPost);
 router.post("/", upload.any("2"), createPost);
 router.put("/:id", updatePost);
 router.delete("/:id", deletePost);

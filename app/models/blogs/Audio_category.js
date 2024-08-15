@@ -1,8 +1,8 @@
 const { sequelize } = require("../../../config/db");
 const { DataTypes } = require("sequelize");
 
-const BabyBlogCategories = sequelize.define(
-  "baby_blog_categories",
+const AudioCategories = sequelize.define(
+  "audio_categories",
   {
     id: {
       type: DataTypes.INTEGER,
@@ -23,7 +23,7 @@ const BabyBlogCategories = sequelize.define(
       allowNull: true,
     },
     image: {
-      type: DataTypes.STRING(45),
+      type: DataTypes.INTEGER,
       allowNull: true,
     },
     createdAt: {
@@ -36,9 +36,9 @@ const BabyBlogCategories = sequelize.define(
     },
   },
   {
-    tableName: "baby_blog_categories",
+    tableName: "audio_categories",
     timestamps: true,
   }
 );
 
-module.exports = BabyBlogCategories;
+module.exports = AudioCategories;

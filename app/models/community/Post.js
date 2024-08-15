@@ -56,6 +56,12 @@ const Post = sequelize.define(
     total_comment: {
       type: DataTypes.INTEGER,
     },
+    total_views: {
+      type: DataTypes.INTEGER,
+    },
+    total_report: {
+      type: DataTypes.INTEGER,
+    },
     updatedAt: {
       type: DataTypes.DATE,
       allowNull: true,

@@ -266,7 +266,8 @@ exports.updateDetails = asyncHandler(async (req, res, next) => {
   req.media = {
     uploaded_by: req.user.username,
     file_path,
-    mime_type: mimetype,file_size: size,
+    mime_type: mimetype,
+    file_size: size,
     file_name: filename,
     original_name: originalname,
     file_type: path.extname(filename).slice(1),
@@ -523,7 +524,7 @@ exports.resendOTP = asyncHandler(async (req, res, next) => {
 
   const message = `You are receiving this email because you need to confirm your email address. Heres your OTP: \n\n ${OTP}`;
 
-  user.save();
+  await user.save();
 
   try {
     await sendEmail({
@@ -584,7 +585,7 @@ exports.confirmEmail = asyncHandler(async (req, res, next) => {
   user.is_email_confirmed = "1";
 
   // save
-  user.save();
+  await user.save();
 
   // return token
   return res.status(200).json({

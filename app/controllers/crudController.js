@@ -14,6 +14,7 @@ const Media = require("../models/Media");
 |-----------------------------------------------------------------------------------------------|
 */
 
+//first stringfy all multilangual field from json to store jin database
 exports.stringify = (...fields) => {
   return asyncHandler(async (req, res, next) => {
     if (req.body)
@@ -44,7 +45,7 @@ exports.stringify = (...fields) => {
 //   });
 // };
 
-// @desc      Get  Baby get all as history
+// @desc      Get Get all as history
 // @route     GET /api/v1/route/history
 // @access    Private
 exports.getAll = (Model, include) => {

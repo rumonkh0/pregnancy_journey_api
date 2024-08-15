@@ -56,6 +56,7 @@ const general = require("./app/routes/general");
 const bpTracker = require("./app/routes/tools/mother/bpTracker");
 const helpDesk = require("./app/routes/helpDesk");
 const checklist = require("./app/routes/tools/mother/checklist");
+const weeklyGrowth = require("./app/routes/weeklyGrowth");
 
 //admin section
 const admins = require("./app/routes/admin/admin");
@@ -70,6 +71,9 @@ const babyCare = require("./app/routes/admin/babyCare");
 const adminGeneral = require("./app/routes/admin/general/general");
 const adminGeneralBaby = require("./app/routes/admin/general/baby/generalBaby");
 const adminChecklist = require("./app/routes/admin/checklist");
+const compareWord = require("./app/routes/admin/babyGrowthDev/sizeCompareword");
+const compareImage = require("./app/routes/admin/babyGrowthDev/sizeCompareImage");
+const growthDevWeek = require("./app/routes/admin/babyGrowthDev/growthDevWeek");
 const imageUpload = require("./app/routes/uploadMedia");
 
 const app = express();
@@ -87,7 +91,6 @@ if (process.env.NODE_ENV === "development") {
 }
 
 // Enable CORSconst
-// FRONTEND_URL = "https://pregnancy-admin.vercel.app"; // Replace with your actual frontend URL
 FRONTEND_URLS = [
   "http://localhost:3000",
   "https://pregnancy-admin.vercel.app",
@@ -149,7 +152,9 @@ app.use("/api/v1/comment", comment);
 app.use("/api/v1/reaction", reaction);
 app.use("/api/v1/general", general);
 app.use("/api/v1/helpdesk", helpDesk);
+weeklyGrowth;
 app.use("/api/v1/checklist", checklist);
+app.use("/api/v1/weeklygrowth", weeklyGrowth);
 
 //admin section
 app.use("/admin/api/v1/auth", adminLogin);
@@ -165,6 +170,9 @@ app.use("/admin/api/v1/babycare", babyCare);
 app.use("/admin/api/v1/general/baby", adminGeneralBaby);
 app.use("/admin/api/v1/general", adminGeneral);
 app.use("/admin/api/v1/checklist", adminChecklist);
+app.use("/admin/api/v1/compareword", compareWord);
+app.use("/admin/api/v1/compareimage", compareImage);
+app.use("/admin/api/v1/growthdevweek", growthDevWeek);
 
 app.use("/admin/api/v1/imageup", imageUpload);
 

@@ -9,14 +9,13 @@ const BabyProgressTimeline = require("./progress_timeline/Baby_progress_timeline
 const WarningSign = require("./Warning_sign");
 const BlogCategories = require("./blogs/Blog_category");
 const A2zCategory = require("./blogs/A2zCategory");
-const Video = require("./Video");
+const Video = require("./blogs/Video");
 
 const ChecklistItem = require("./tools/mother/ChecklistItem");
 const ChecklistSubItem = require("./tools/mother/ChecklistSubItem");
 const Checklist = require("./tools/mother/Checklist");
 const HelpDesk = require("./HelpDesk");
 const deviceToken = require("./DeviceToken");
-const User = require("./User");
 const Admin = require("./Admin");
 
 ChecklistItem.hasMany(ChecklistSubItem, { foreignKey: "item" });

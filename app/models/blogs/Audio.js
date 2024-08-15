@@ -1,9 +1,9 @@
-const { sequelize } = require("../../config/db");
+const { sequelize } = require("../../../config/db");
 const { DataTypes } = require("sequelize");
-const Media = require("./Media");
+const Media = require("../Media");
 
-const Video = sequelize.define(
-  "video",
+const Audio = sequelize.define(
+  "audio",
   {
     id: {
       type: DataTypes.INTEGER,
@@ -22,6 +22,14 @@ const Video = sequelize.define(
       type: DataTypes.STRING(255),
       allowNull: false,
     },
+    category: {
+      type: DataTypes.INTEGER,
+      allowNull: false,
+    },
+    paid: {
+      type: DataTypes.INTEGER,
+      allowNull: true,
+    },
     duration: {
       type: DataTypes.STRING(255),
       allowNull: false,
@@ -37,7 +45,6 @@ const Video = sequelize.define(
     image: {
       type: DataTypes.INTEGER,
       allowNull: false,
-      // You might want to add a reference to another table here, if 'media' refers to another table's primary key
     },
     updatedAt: {
       type: DataTypes.DATE,
@@ -45,16 +52,15 @@ const Video = sequelize.define(
     },
     createdAt: {
       type: DataTypes.DATE,
-      allowNull: false, // Assuming this can be NULL initially
+      allowNull: false, 
     },
   },
   {
-    // Other options for the model
-    tableName: "video", // Specify your table name here
+    tableName: "audio", 
     timestamps: true,
   }
 );
 
-Video.belongsTo(Media, { as: "media", foreignKey: "image" });
+Audio.belongsTo(Media, { as: "media", foreignKey: "image" });
 
-module.exports = Video;
+module.exports = Audio;

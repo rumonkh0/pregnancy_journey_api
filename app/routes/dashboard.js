@@ -11,15 +11,15 @@ const WeightLog = require("../models/tools/mother/Weight");
 const WarningSign = require("../models/Warning_sign");
 const KickCounter = require("../models/tools/mother/Baby_kick_counter");
 const ContractionTime = require("../models/tools/mother/Mother_contraction_time");
-const Video = require("../models/Video");
+const Video = require("../models/blogs/Video");
 const Media = require("../models/Media");
 const BabyProg = require("../models/progress_timeline/Baby_progress_timeline");
 const MotherProg = require("../models/progress_timeline/Mother_progress_timeline");
 
 const BabyGrowthDev = require("../models/BabyGrowthDev");
 const BabyGrowth = require("../models/BabyGrowth");
-const BabyGrowthWeek = require("../models/BabyGrowthWeekly");
-const DailyTipBaby = require("../models/daily/Daily_tip_baby");
+const BabyGrowthWeek = require("../models/babyGrowthDashboardWeekly/BabyGrowthWeekly");
+const DailyTipBaby = require("../models/daily/BabyDailyTip");
 const BabyBlog = require("../models/blogs/BabyBlog");
 const BabyVideo = require("../models/BabyVideo");
 
@@ -99,6 +99,7 @@ const dashboardBaby = asyncHandler(async (req, res, next) => {
         attributes: ["file_name", "file_path"],
       },
     });
+
   //Baby Growth Development
   babyGrowthDev = await BabyGrowthDev.findOne({ where: { week } });
 
