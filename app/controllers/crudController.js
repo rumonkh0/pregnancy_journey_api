@@ -96,10 +96,10 @@ exports.getAll = (Model, include) => {
 exports.getOne = (Model, include) => {
   return asyncHandler(async (req, res, next) => {
     const lan = req.query.lan;
-    // Extract baby ID from the request params or body
+    // Extract ID from the request params or body
     const { modelPk } = req.params;
 
-    // Get the feed history for the specified baby
+    // Get single data against model id
     const data = await Model.findOne({
       where: { id: modelPk },
       include: { model: Media, as: "media" },

@@ -38,31 +38,6 @@ router.get(
       strarr.map((field) => {
         obj.setDataValue(field, obj[field] && JSON.parse(obj[field]));
       });
-
-      // else
-      //   strarr.map((field) => {
-      //     obj.setDataValue(
-      //       field,
-      //       obj[field] &&
-      //         (JSON.parse(obj[field])[lan]
-      //           ? JSON.parse(obj[field])[lan]
-      //           : JSON.parse(obj[field])["en"])
-      //     );
-      //   });
-      // obj.setDataValue(
-      //   "body_change_title",
-      //   obj.body_change_title &&
-      //     (JSON.parse(obj.body_change_title)[lan]
-      //       ? JSON.parse(obj.body_change_title)[lan]
-      //       : JSON.parse(obj.body_change_title)["en"])
-      // );
-      // obj.setDataValue(
-      //   "body_change",
-      //   obj.body_change &&
-      //     (JSON.parse(obj.body_change)[lan]
-      //       ? JSON.parse(obj.body_change)[lan]
-      //       : JSON.parse(obj.body_change)["en"])
-      // );
       return obj;
     });
 
@@ -71,21 +46,26 @@ router.get(
 );
 router.get(
   "/:modelPk",
-  getOne(BabyGrowthWeekly, "BabyGrowthWeekly data found")
+  asyncHandler(async (req, res, next) => {
+    lan = req.query.lan;
+    const data = await BabyGrowthWeekly.findByPk(req.params.modelPk);
+
+    strarr.map((field) => {
+      data.setDataValue(
+        field,
+        data[field] &&
+          (JSON.parse(data[field])[lan]
+            ? JSON.parse(data[field])[lan]
+            : JSON.parse(data[field])["en"])
+      );
+    });
+
+    return res.status(200).json({ success: true, data });
+  })
 );
 router.post(
   "/",
-  stringify(
-    "body_change_title",
-    "body_change",
-    "baby_development",
-    "baby_development_title",
-    "BabyGrowthWeekly updated",
-    "organ_development",
-    "behaviour_development",
-    "to_dos",
-    "dont_dos"
-  ),
+  stringify(...strarr),
   create(BabyGrowthWeekly, "BabyGrowthWeekly created")
 );
 router.put("/:modelPk", update(BabyGrowthWeekly));
