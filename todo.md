@@ -1,10 +1,24 @@
+help desk e multiple msg send with message
+report 1 jon ektai korte parbe
+comment e notification
+notification log
+reward and its leaderboard
+baby er weight and height add korbe
+doctor add korte hobe
+help desk er user info e file download e somossa
+
+always notun data age thakbe.... baby tools check dite hobe
+
+reward ,,
+id
+reward type -- "daily" , "video", "audio", "reffer", "ad", "calculator"
+point - 1000
+
+###########################################################################################
 growth week data crud admin
 report table e pair column unique korte hbe.. (user_id, post_id) ,, (comment_id, user_id)
 
 sob model e relation associassion korte hobe
-
-baby_blog_category baby_blog, size_compare_words, reports, video categories, size_compare_images
-video te category, paid colum
 
 report kora jabe post/comment .......admin dekhte parbe koita report ke ke korche  
 comment e image post korte parbe...  
