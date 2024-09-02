@@ -165,6 +165,21 @@ const User = sequelize.define(
       allowNull: true,
       defaultValue: null,
     },
+    point: {
+      type: DataTypes.INTEGER,
+      allowNull: false,
+      defaultValue: 0,
+    },
+    deleted_date: {
+      type: DataTypes.DATE,
+      allowNull: true,
+      defaultValue: null,
+    },
+    strike_count: {
+      type: DataTypes.INTEGER,
+      allowNull: false,
+      defaultValue: 0,
+    },
     createdAt: {
       type: DataTypes.DATE,
       allowNull: false,
