@@ -59,6 +59,7 @@ const bpTracker = require("./app/routes/tools/mother/bpTracker");
 const helpDesk = require("./app/routes/helpDesk");
 const checklist = require("./app/routes/tools/mother/checklist");
 const weeklyGrowth = require("./app/routes/weeklyGrowth");
+const taskReward = require("./app/routes/admin/reward/reward");
 
 //admin section
 const admins = require("./app/routes/admin/admin");
@@ -95,7 +96,8 @@ if (process.env.NODE_ENV === "development") {
 // Rate limiting
 const limiter = rateLimit({
   windowMs: 10 * 60 * 1000, // 10 mins
-  limit: 100,
+  max: 10,
+  message: "Too many requests from this IP, please try again after 15 minutes",
 });
 app.use(limiter);
 
@@ -182,6 +184,7 @@ app.use("/admin/api/v1/checklist", adminChecklist);
 app.use("/admin/api/v1/compareword", compareWord);
 app.use("/admin/api/v1/compareimage", compareImage);
 app.use("/admin/api/v1/growthdevweek", growthDevWeek);
+app.use("/admin/api/v1/reward", taskReward);
 
 app.use("/admin/api/v1/imageup", imageUpload);
 

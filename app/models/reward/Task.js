@@ -22,14 +22,18 @@ const Task = sequelize.define(
       type: DataTypes.INTEGER,
       allowNull: false,
     },
-    created_at: {
+    createdAt: {
+      type: DataTypes.DATE,
+      defaultValue: DataTypes.NOW,
+    },
+    updatedAt: {
       type: DataTypes.DATE,
       defaultValue: DataTypes.NOW,
     },
   },
   {
     tableName: "tasks",
-    timestamps: false,
+    timestamps: true,
   }
 );
 
